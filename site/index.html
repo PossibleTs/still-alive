@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quem ainda esta vivo na XRPL</title>
+<meta name="description" content="Situacao real dos projetos da XRP Ledger, medida na rede e atualizada todo dia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+<style>
+:root{
+  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
+  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
+  --serif:"Fraunces",Georgia,serif;--sans:"Source Sans 3",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
+  --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
+}}
+:root[data-theme="dark"]{
+  --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
+  --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
+}
+*{box-sizing:border-box}
+body{background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:17px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
+.page{max-width:56rem;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1rem,4vw,2rem) 5rem;
+  display:flex;flex-direction:column;gap:2.5rem}
+.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5vw,2.9rem);
+  line-height:1.1;letter-spacing:-.015em;margin:.6rem 0 0;text-wrap:balance}
+.dek{color:var(--muted);max-width:34rem;margin:.8rem 0 0;font-size:1.1rem}
+h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;margin:0;
+  padding-top:1.2rem;border-top:1px solid var(--rule)}
+.placar{display:flex;flex-wrap:wrap;gap:.5rem}
+.selo{font-family:var(--mono);font-size:.75rem;padding:.35rem .7rem;border-radius:2px;
+  border:1px solid var(--rule);background:var(--surface)}
+.selo b{font-weight:500}
+.grupo{display:flex;flex-direction:column;gap:1rem}
+.cabeca{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
+.cabeca p{margin:0;color:var(--muted);font-size:.92rem}
+.lista{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr))}
+.card{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--slate);
+  border-radius:3px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.3rem}
+.card.ativo{border-left-color:var(--accent)}
+.card.morrendo{border-left-color:var(--amber)}
+.card.parado{border-left-color:var(--slate)}
+.card.morto{border-left-color:var(--red)}
+.nome{font-weight:600;display:flex;justify-content:space-between;gap:.6rem;align-items:baseline}
+.cat{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-transform:uppercase;
+  letter-spacing:.06em;white-space:nowrap}
+.motivo{font-size:.88rem;color:var(--muted)}
+.metricas{font-family:var(--mono);font-size:.74rem;color:var(--muted);
+  font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.15rem}
+.sobe{color:var(--accent)}.desce{color:var(--red)}
+.card a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
+.card a:hover{border-bottom-color:currentColor}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.metodo{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+  padding:1.2rem 1.4rem;font-size:.93rem}
+.metodo p{margin:0 0 .7rem;color:var(--muted);max-width:44rem}
+.metodo p:last-child{margin-bottom:0}
+.metodo code{font-family:var(--mono);font-size:.85em;background:var(--sunken);
+  padding:.1em .35em;border-radius:2px}
+footer{border-top:1px solid var(--rule);padding-top:1.2rem;font-size:.85rem;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="page">
+  <header>
+    <div class="eyebrow">Atualizado em 29/08/2026 as 21:54 UTC</div>
+    <h1>Quem ainda esta vivo na XRPL</h1>
+    <p class="dek">Diretorio nenhum diz quais projetos morreram. Esta pagina mede
+    a atividade real de cada um na rede, todo dia, e mostra a conta.</p>
+  </header>
+
+  <div class="placar"><span class="selo"><b>3</b> ativo</span><span class="selo"><b>2</b> morrendo</span><span class="selo"><b>1</b> parado</span><span class="selo"><b>3</b> morto</span><span class="selo"><b>1</b> indeterminado</span></div>
+
+    <section class="grupo">
+      <div class="cabeca"><h2>Ativo (3)</h2><p>Transacionando na rede agora.</p></div>
+      <div class="lista">
+      <article class="card ativo">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Token movimentado</a><span class="cat">Token</span></div>
+        <div class="motivo">4200 transacoes em 30 dias; ultima ha 0 dias.</div>
+        <div class="metricas">12.0k detentores · 4.2k tx/30d · 0d parado · <span class="sobe">+4.2% detentores</span></div>
+      </article>
+      <article class="card ativo">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Token blackholed vivo</a><span class="cat">Token</span></div>
+        <div class="motivo">Emissor blackholed (boa pratica); 8000 detentores e negociacao nas ultimas 24h.</div>
+        <div class="metricas">8.0k detentores · 0 tx/30d · 900d parado</div>
+      </article>
+      <article class="card ativo">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Explorador qualquer</a><span class="cat">Explorador</span></div>
+        <div class="motivo">Site no ar; projeto sem token para medir na rede.</div>
+        <div class="metricas">&nbsp;</div>
+      </article>
+      </div>
+    </section>
+    <section class="grupo">
+      <div class="cabeca"><h2>Morrendo (2)</h2><p>Ainda respira, mas o movimento caiu.</p></div>
+      <div class="lista">
+      <article class="card morrendo">
+        <div class="nome">Token blackholed quieto<span class="cat">Token</span></div>
+        <div class="motivo">Emissor blackholed; 900 detentores, mas sem negociacao nas ultimas 24h.</div>
+        <div class="metricas">900 detentores · 0 tx/30d · 1200d parado</div>
+      </article>
+      <article class="card morrendo">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Token minguando</a><span class="cat">Token</span></div>
+        <div class="motivo">60 transacoes em 30 dias.</div>
+        <div class="metricas">400 detentores · 60 tx/30d · 2d parado · <span class="desce">-11.5% detentores</span></div>
+      </article>
+      </div>
+    </section>
+    <section class="grupo">
+      <div class="cabeca"><h2>Parado (1)</h2><p>Sem atividade relevante ha meses.</p></div>
+      <div class="lista">
+      <article class="card parado">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Projeto encostado</a><span class="cat">Token</span></div>
+        <div class="motivo">Ultima atividade ha 120 dias; 3 transacoes em 30 dias.</div>
+        <div class="metricas">150 detentores · 3 tx/30d · 120d parado</div>
+      </article>
+      </div>
+    </section>
+    <section class="grupo">
+      <div class="cabeca"><h2>Morto (3)</h2><p>Sem sinal de vida e sem site no ar.</p></div>
+      <div class="lista">
+      <article class="card morto">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Projeto da onda de NFT</a><span class="cat">Token</span></div>
+        <div class="motivo">Sem nenhuma transacao ha 800 dias.</div>
+        <div class="metricas">80 detentores · 0 tx/30d · 800d parado</div>
+      </article>
+      <article class="card morto">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Projeto sumido</a><span class="cat">Token</span></div>
+        <div class="motivo">Site fora do ar e so 2 transacoes em 30 dias.</div>
+        <div class="metricas">30 detentores · 2 tx/30d · 40d parado</div>
+      </article>
+      <article class="card morto">
+        <div class="nome"><a href="https://exemplo.test" rel="nofollow noopener">Ferramenta abandonada</a><span class="cat">Ferramenta</span></div>
+        <div class="motivo">Site fora do ar e sem atividade mensuravel na rede.</div>
+        <div class="metricas">&nbsp;</div>
+      </article>
+      </div>
+    </section>
+    <section class="grupo">
+      <div class="cabeca"><h2>Indeterminado (1)</h2><p>Nao foi possivel medir com confianca.</p></div>
+      <div class="lista">
+      <article class="card indeterminado">
+        <div class="nome">Conta que nao respondeu<span class="cat">Token</span></div>
+        <div class="motivo">Conta do emissor nao respondeu.</div>
+        <div class="metricas">0 tx/30d</div>
+      </article>
+      </div>
+    </section>
+
+  <section class="grupo">
+    <h2>Como isto e medido</h2>
+    <div class="metodo">
+      <p>Para cada projeto com token, o robo consulta a conta do emissor num no
+      publico da XRPL e mede duas coisas: quando foi a ultima transacao e quantas
+      aconteceram nos ultimos 30 dias. Junta a isso o numero de detentores e o
+      volume negociado, e checa se o site do projeto ainda responde.</p>
+      <p>Emissor com a chave mestra desabilitada (<code>blackholed</code>) nao conta
+      como abandono: e boa pratica de seguranca, e nesse caso a vida do projeto e
+      julgada pelo token — detentores e negociacao — e nao pela conta emissora.</p>
+      <p>Os cortes usados: morto acima de 180 dias sem
+      transacao, parado acima de 90 dias ou menos de
+      10 transacoes no mes, ativo com pelo menos
+      100 transacoes no mes e movimento nos ultimos
+      7 dias. Sao escolhas discutiveis, e de proposito
+      estao expostas aqui.</p>
+      <p>Nada disto e conselho de investimento, e um projeto quieto na rede pode
+      estar muito vivo fora dela. Achou um erro? Abra uma issue no repositorio.</p>
+    </div>
+  </section>
+
+  <footer>
+    10 projetos observados · dados brutos em
+    <a href="dados.json">dados.json</a> · feito por um humano com um robo
+  </footer>
+</div>
+</body>
+</html>

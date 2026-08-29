@@ -1,0 +1,61 @@
+name: Atualizar
+
+# O robo inteiro: roda todo dia de madrugada, mede a rede, regenera a pagina
+# e publica. Sem servidor, sem custo, sem voce lembrar de nada.
+
+on:
+  schedule:
+    - cron: "17 6 * * *"   # 06:17 UTC = 03:17 em Sao Paulo
+  workflow_dispatch:        # botao para rodar na mao quando quiser
+
+permissions:
+  contents: write   # para gravar os snapshots do historico
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  coletar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Sem dependencias: o coletor usa so a biblioteca padrao. Isso e de
+      # proposito - e o que faz o projeto continuar rodando daqui a dois anos
+      # sem voce mexer em nada.
+      - name: Coletar sinais da rede
+        run: python coletor.py --limite 60
+
+      - name: Gerar a pagina
+        run: python gerar_site.py
+
+      # O historico e o que permite mostrar tendencia (queda de detentores).
+      # Sem ele, a pagina so sabe o presente.
+      - name: Guardar o snapshot do dia
+        run: |
+          git config user.name "robo"
+          git config user.email "robo@users.noreply.github.com"
+          git add historico dados.json
+          git diff --staged --quiet || git commit -m "dados: $(date -u +%F)"
+          git push
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  publicar:
+    needs: coletar
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
