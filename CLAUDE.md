@@ -37,6 +37,9 @@ coletor.py            projetos COM token
                       descobre no XRPL Meta -> mede na rede -> dados.json
 descoberta.py         projetos SEM token
                       xrp-ledger.toml + tipos de objeto + validadores
+institucional.py      descoberta continua de atores institucionais
+                      ouve o fluxo de transacoes (WebSocket proprio, stdlib)
+                      -> candidatos.json, para revisao humana
 gerar_site.py         dados.json -> site/index.html
 teste_local.py        exercita a classificacao de tokens, sem rede
 teste_corporativo.py  exercita a classificacao corporativa, sem rede
@@ -55,7 +58,12 @@ python coletor.py --limite 60                     # coleta real, ~5 min
 python coletor.py --no-rede                       # so reclassifica o que ja tem
 python descoberta.py bithomp.com                  # inspeciona um dominio
 python gerar_site.py
+python institucional.py --minutos 10            # ouve a rede, junta candidatos
 ```
+
+Antes de publicar, defina `XRPLVIVO_REPO` (ou `REPO` em `gerar_site.py`) com o
+endereço do repositório: é o canal de contestação da página. Sem ele o gerador
+avisa e a página sai sem para onde reclamar.
 
 ## As três armadilhas
 

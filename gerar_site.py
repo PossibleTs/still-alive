@@ -17,6 +17,9 @@ import json
 import os
 import sys
 
+# Endereco do repositorio, usado no canal de contestacao da pagina.
+REPO = os.environ.get("XRPLVIVO_REPO", "")
+
 SITUACOES = {
     "ativo": ("Ativo", "Transacionando na rede agora."),
     "morrendo": ("Morrendo", "Ainda respira, mas o movimento caiu."),
@@ -156,6 +159,18 @@ def gerar(dados: dict) -> str:
 
     lim = dados.get("limiares", {})
 
+    # Canal de contestacao. Chamar projeto dos outros de morto sem oferecer
+    # como reclamar e o jeito mais rapido de perder a comunidade. Preencha
+    # REPO (ou a variavel de ambiente XRPLVIVO_REPO) antes de publicar.
+    if REPO:
+        contestacao = (
+            f'<a href="{html.escape(REPO)}/issues/new">Abra uma issue</a> e me diga.'
+        )
+        contestacao_curta = f'<a href="{html.escape(REPO)}/issues">contestar</a>'
+    else:
+        contestacao = "Abra uma issue no repositorio."
+        contestacao_curta = "sem canal de contestacao configurado"
+
     return f"""<!doctype html>
 <html lang="pt-BR">
 <head>
@@ -188,23 +203,31 @@ def gerar(dados: dict) -> str:
       publico da XRPL e mede duas coisas: quando foi a ultima transacao e quantas
       aconteceram nos ultimos 30 dias. Junta a isso o numero de detentores e o
       volume negociado, e checa se o site do projeto ainda responde.</p>
-      <p>Emissor com a chave mestra desabilitada (<code>blackholed</code>) nao conta
-      como abandono: e boa pratica de seguranca, e nesse caso a vida do projeto e
-      julgada pelo token — detentores e negociacao — e nao pela conta emissora.</p>
+      <p>Emissor <code>blackholed</code> — aquele em que ninguem consegue mais
+      assinar: chave mestra desabilitada, sem chave regular e sem lista de
+      signatarios — nao conta como abandono. E boa pratica de seguranca, e nesse
+      caso a vida do projeto e julgada pelo token, detentores e negociacao, nao
+      pela conta emissora. Conta com a mestra desabilitada mas ainda operada por
+      lista de signatarios <em>nao</em> entra aqui: essa transaciona normalmente
+      e e medida como qualquer outra.</p>
       <p>Os cortes usados: morto acima de {lim.get('dias_morto','?')} dias sem
       transacao, parado acima de {lim.get('dias_parado','?')} dias ou menos de
       {lim.get('tx_minimo','?')} transacoes no mes, ativo com pelo menos
       {lim.get('tx_ativo','?')} transacoes no mes e movimento nos ultimos
       {lim.get('dias_ativo','?')} dias. Sao escolhas discutiveis, e de proposito
       estao expostas aqui.</p>
+      <p>A contagem de transacoes tem teto: acima de 2400 no mes ela aparece com
+      um <code>+</code>, porque a leitura para ali. E um piso, nao um total.</p>
       <p>Nada disto e conselho de investimento, e um projeto quieto na rede pode
-      estar muito vivo fora dela. Achou um erro? Abra uma issue no repositorio.</p>
+      estar muito vivo fora dela. <strong>Achou um erro? {contestacao}</strong>
+      Correcao de projeto vivo marcado como morto entra no mesmo dia.</p>
     </div>
   </section>
 
   <footer>
     {dados.get('total', 0)} projetos observados · dados brutos em
-    <a href="dados.json">dados.json</a> · feito por um humano com um robo
+    <a href="dados.json">dados.json</a> · {contestacao_curta} · feito por um
+    humano com um robo
   </footer>
 </div>
 </body>
@@ -213,6 +236,12 @@ def gerar(dados: dict) -> str:
 
 
 def main() -> None:
+    if not REPO:
+        print(
+            "! REPO vazio: a pagina sai sem canal de contestacao. Defina REPO em "
+            "gerar_site.py ou XRPLVIVO_REPO no ambiente antes de publicar.",
+            file=sys.stderr,
+        )
     # Argumento opcional para inspecionar dados de teste sem tocar na coleta real.
     origem = sys.argv[1] if len(sys.argv) > 1 else "dados.json"
     with open(origem, encoding="utf-8") as f:

@@ -30,7 +30,15 @@ jobs:
       # Sem dependencias: o coletor usa so a biblioteca padrao. Isso e de
       # proposito - e o que faz o projeto continuar rodando daqui a dois anos
       # sem voce mexer em nada.
+      # Os testes nao tocam a rede: rodam antes para nao publicar pagina
+      # gerada por um commit que quebrou a classificacao.
+      - name: Conferir a logica
+        run: |
+          python teste_local.py
+          python teste_corporativo.py
+
       - name: Coletar sinais da rede
+        timeout-minutes: 90
         run: python coletor.py --limite 60
 
       - name: Gerar a pagina

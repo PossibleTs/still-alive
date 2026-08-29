@@ -442,23 +442,31 @@ footer{border-top:1px solid var(--rule);padding-top:1.2rem;font-size:.85rem;colo
       publico da XRPL e mede duas coisas: quando foi a ultima transacao e quantas
       aconteceram nos ultimos 30 dias. Junta a isso o numero de detentores e o
       volume negociado, e checa se o site do projeto ainda responde.</p>
-      <p>Emissor com a chave mestra desabilitada (<code>blackholed</code>) nao conta
-      como abandono: e boa pratica de seguranca, e nesse caso a vida do projeto e
-      julgada pelo token — detentores e negociacao — e nao pela conta emissora.</p>
+      <p>Emissor <code>blackholed</code> — aquele em que ninguem consegue mais
+      assinar: chave mestra desabilitada, sem chave regular e sem lista de
+      signatarios — nao conta como abandono. E boa pratica de seguranca, e nesse
+      caso a vida do projeto e julgada pelo token, detentores e negociacao, nao
+      pela conta emissora. Conta com a mestra desabilitada mas ainda operada por
+      lista de signatarios <em>nao</em> entra aqui: essa transaciona normalmente
+      e e medida como qualquer outra.</p>
       <p>Os cortes usados: morto acima de 180 dias sem
       transacao, parado acima de 90 dias ou menos de
       10 transacoes no mes, ativo com pelo menos
       100 transacoes no mes e movimento nos ultimos
       7 dias. Sao escolhas discutiveis, e de proposito
       estao expostas aqui.</p>
+      <p>A contagem de transacoes tem teto: acima de 2400 no mes ela aparece com
+      um <code>+</code>, porque a leitura para ali. E um piso, nao um total.</p>
       <p>Nada disto e conselho de investimento, e um projeto quieto na rede pode
-      estar muito vivo fora dela. Achou um erro? Abra uma issue no repositorio.</p>
+      estar muito vivo fora dela. <strong>Achou um erro? <a href="https://github.com/exemplo/xrpl-vivo/issues/new">Abra uma issue</a> e me diga.</strong>
+      Correcao de projeto vivo marcado como morto entra no mesmo dia.</p>
     </div>
   </section>
 
   <footer>
     68 projetos observados · dados brutos em
-    <a href="dados.json">dados.json</a> · feito por um humano com um robo
+    <a href="dados.json">dados.json</a> · <a href="https://github.com/exemplo/xrpl-vivo/issues">contestar</a> · feito por um
+    humano com um robo
   </footer>
 </div>
 </body>
