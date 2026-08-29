@@ -6,11 +6,11 @@
  },
  "rHXuEaRYnnJHbDeuBH5w8yPh5uwNVh5zAg": {
   "holders": 84045,
-  "tx_janela": 2378,
+  "tx_janela": 2376,
   "tx_truncado": false
  },
  "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De": {
-  "holders": 72144,
+  "holders": 72143,
   "tx_janela": 2400,
   "tx_truncado": true
  },
@@ -23,6 +23,276 @@
   "holders": 41845,
   "tx_janela": 2400,
   "tx_truncado": true
+ },
+ "rKk7mu1dNB25fsPEJ4quoQd5B8QmaxewKi": {
+  "holders": 37946,
+  "tx_janela": 1937,
+  "tx_truncado": false
+ },
+ "r3dVizzUAS3U29WKaaSALqkieytA2LCoRe": {
+  "holders": 35709,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rchGBxcD1A1C2tdxF6papQYZ8kjRKMYcL": {
+  "holders": 33840,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rNdwi8ain5ibXNB9A7H3zzKtSxgVzAqqAe": {
+  "holders": 29803,
+  "tx_janela": 3,
+  "tx_truncado": false
+ },
+ "rDFXbW2ZZCG5WgPtqwNiA2xZokLMm9ivmN": {
+  "holders": 28963,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rCSCManTZ8ME9EoLrSHHYKW8PPwWMgkwr": {
+  "holders": 28697,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rcA8X3TVMST1n3CJeAdGk1RdRCHii7N2h": {
+  "holders": 25900,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rpakCr61Q92abPXJnVboKENmpKssWyHpwu": {
+  "holders": 23562,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rGG3wQ4kUzd7Jnmk1n5NWPZjjut62kCBfC": {
+  "holders": 22036,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rhub8VRN55s94qWKDv6jmDy1pUykJzF3wq": {
+  "holders": 15088,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rHKrPGdpaqNRqRvmsiqQhD6azqc4npWoLC": {
+  "holders": 18009,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rLqUC2eCPohYvJCEBJ77eCCqVL2uEiczjA": {
+  "holders": 17552,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rJMtvf5B3GbuFMrqybh5wYVXEH4QE8VyU1": {
+  "holders": 16098,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rMJAXYsbNzhwp7FfYnAsYP5ty3R9XnurPo": {
+  "holders": 15941,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "r9U2eJg3FgpYKX8PrFPSxHdVu4ZheLZRJ3": {
+  "holders": 15728,
+  "tx_janela": 68,
+  "tx_truncado": false
+ },
+ "r3qWgpz2ry3BhcRJ8JE6rxM8esrfhuKp4R": {
+  "holders": 15520,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rpHry9uUAhG3SCfmjVgypMYkGr2XQZqH4z": {
+  "holders": 15499,
+  "tx_janela": 274,
+  "tx_truncado": false
+ },
+ "rXPMxBeefHGxx2K7g5qmmWq3gFsgawkoa": {
+  "holders": 14734,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rNqGa93B8ewQP9mUwpwqA19SApbf62U7PY": {
+  "holders": 14517,
+  "tx_janela": 525,
+  "tx_truncado": false
+ },
+ "rs1MKY54miDtMFEGyNuPd3BLsXauFZUSrj": {
+  "holders": 14266,
+  "tx_janela": 2020,
+  "tx_truncado": false
+ },
+ "razqQKzJRdB4UxFPWf5NEpEG3WMkmwgcXA": {
+  "holders": 14229,
+  "tx_janela": 25,
+  "tx_truncado": false
+ },
+ "rBPtuMc4HBR1SuZyZv8hs7WBVxLBYrzxbY": {
+  "holders": 14160,
+  "tx_janela": 76,
+  "tx_truncado": false
+ },
+ "rGbsKNrVURRfU1WEb1aEqaoyRJDkvssyBa": {
+  "holders": 13817,
+  "tx_janela": 84,
+  "tx_truncado": false
+ },
+ "rBEARGUAsyu7tUw53rufQzFdWmJHpJEqFW": {
+  "holders": 13629,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rN1bCPAxHDvyJzvkUso1L2wvXufgE4gXPL": {
+  "holders": 13503,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rsygE5ynt2iSasscfCCeqaGBGiFKMCAUu7": {
+  "holders": 13312,
+  "tx_janela": 113,
+  "tx_truncado": false
+ },
+ "rfDhSfY5JMtCrje7hGxC8Gk6dC5PgNJh63": {
+  "holders": 13119,
+  "tx_janela": 50,
+  "tx_truncado": false
+ },
+ "rK9AtihZZYWAwZQnJCYzZnyW833vbcPXPf": {
+  "holders": 13097,
+  "tx_janela": 59,
+  "tx_truncado": false
+ },
+ "rLBnhMjV6ifEHYeV4gaS6jPKerZhQddFxW": {
+  "holders": 12949,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rN3EeRSxh9tLHAUDmL7Chh3vYYoUafAyyM": {
+  "holders": 12902,
+  "tx_janela": 2133,
+  "tx_truncado": false
+ },
+ "rhJYDuVMQxabTyiWuHQkQyDxr6uZEdpv5u": {
+  "holders": 12869,
+  "tx_janela": 137,
+  "tx_truncado": false
+ },
+ "r3XwJ1hr1PtbRvbhuUkybV6tmYzzA11WcB": {
+  "holders": 12839,
+  "tx_janela": 194,
+  "tx_truncado": false
+ },
+ "rnRXAnVZTyattZXEpKpgTyvdm17DpjrzSZ": {
+  "holders": 12690,
+  "tx_janela": 197,
+  "tx_truncado": false
+ },
+ "r96uXvCJxe3Yeeo9wCtJsLSpJiFUz2hvsB": {
+  "holders": 12253,
+  "tx_janela": 245,
+  "tx_truncado": false
+ },
+ "rfXwi3SqywQ2gSsvHgfdVsyZdTVM15BG7Z": {
+  "holders": 12094,
+  "tx_janela": 1206,
+  "tx_truncado": false
+ },
+ "rKiCet8SdvWxPXnAgYarFUXMh1zCPz432Y": {
+  "holders": 11778,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rJNV9i4Q6zvRhpE2zjxgkvff3eGHQohZht": {
+  "holders": 11569,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rNvhXtgDdd4Sh3NKLXcUH9Hozs4dqu62we": {
+  "holders": 11547,
+  "tx_janela": 47,
+  "tx_truncado": false
+ },
+ "rszenFJoDdiGjyezQc8pME9KWDQH43Tswh": {
+  "holders": 11448,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rNhSjAMnDJc9tDHH1R4sqggvgDGa8Bwj5T": {
+  "holders": 11360,
+  "tx_janela": 63,
+  "tx_truncado": false
+ },
+ "rBXXRBZ46rwCkS9mHom3WW8u7gSytb5KcZ": {
+  "holders": 11313,
+  "tx_janela": 81,
+  "tx_truncado": false
+ },
+ "rNjQ9HZYiBk1WhuscDkmJRSc3gbrBqqAaQ": {
+  "holders": 11291,
+  "tx_janela": 78,
+  "tx_truncado": false
+ },
+ "rhCAT4hRdi2Y9puNdkpMzxrdKa5wkppR62": {
+  "holders": 10960,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rDegPvsK5c2nzaKTn2PsuPZjs8b3neDDn": {
+  "holders": 10912,
+  "tx_janela": 39,
+  "tx_truncado": false
+ },
+ "rMzXS3BwhAwgb4fTK6ohik65jJUKKrzmqn": {
+  "holders": 10703,
+  "tx_janela": 14,
+  "tx_truncado": false
+ },
+ "rMy6sCaDVF1C2BT3qmNG6kgjVDZqZ74uoF": {
+  "holders": 10673,
+  "tx_janela": 280,
+  "tx_truncado": false
+ },
+ "rXCoYSUnkpygdtfpz3Df8dKQuRZjM9UFi": {
+  "holders": 10545,
+  "tx_janela": 820,
+  "tx_truncado": false
+ },
+ "rGm7WCVp9gb4jZHWTEtGUr4dd74z2XuWhE": {
+  "holders": 10303,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rht98AstPWmLPQMrwd9YDrcDoTjw9Tiu4B": {
+  "holders": 10141,
+  "tx_janela": 457,
+  "tx_truncado": false
+ },
+ "rPxw83ZP6thv7KmG5DpAW4cDW55DZRZ9wu": {
+  "holders": 9869,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rJnn9jdwaBfuyq383hNiX2oowLuLUm2DZD": {
+  "holders": 9701,
+  "tx_janela": 52,
+  "tx_truncado": false
+ },
+ "raDZ4t8WPXkmDfJWMLBcNZmmSHmBC523NZ": {
+  "holders": 9667,
+  "tx_janela": 2400,
+  "tx_truncado": true
+ },
+ "rf8dxyFrYWEcUQAM7QXdbbtcRPzjvoQybK": {
+  "holders": 9485,
+  "tx_janela": 132,
+  "tx_truncado": false
+ },
+ "rHLJNqxCoPXdm4CnLd3w63ZFRqAUU2U4vS": {
+  "holders": 9281,
+  "tx_janela": 76,
+  "tx_truncado": false
  },
  "Bithomp": {
   "holders": null,

@@ -269,6 +269,41 @@ def _num(v, padrao=0):
     return int(f) if f.is_integer() else f
 
 
+def nome_da_moeda(codigo: str | None) -> str:
+    """Codigo de moeda de 40 hex vira o texto que ele representa.
+
+    A XRPL guarda moedas de mais de tres letras como 20 bytes em hexadecimal:
+    "5852576562000..." e "XRWeb". Mostrar o hex cru na pagina e como listar um
+    projeto pelo numero de serie - ninguem reconhece, e parece erro.
+    Codigos que nao sao texto (tokens de pool, por exemplo, que comecam com
+    0x03) ficam como estao, abreviados.
+    """
+    if not codigo:
+        return ""
+    if len(codigo) != 40:
+        return codigo  # ja e um codigo de 3 letras
+    try:
+        cru = bytes.fromhex(codigo)
+    except ValueError:
+        return codigo
+    if cru[:1] == b"\x03":  # token de liquidez, nao tem nome legivel
+        return codigo[:8] + "..."
+    texto = cru.rstrip(b"\x00").decode("ascii", errors="ignore").strip()
+    return texto if texto.isprintable() and texto else codigo[:8] + "..."
+
+
+def normalizar_nomes(projetos: list[dict]) -> None:
+    """Conserta nome/moeda em hexadecimal de coletas antigas, no lugar."""
+    for p in projetos:
+        hexa = p.get("moeda_hex") or p.get("moeda")
+        if hexa and len(str(hexa)) == 40:
+            p["moeda_hex"] = hexa
+            p["moeda"] = nome_da_moeda(hexa)
+        nome = str(p.get("nome") or "")
+        if len(nome) == 40:
+            p["nome"] = nome_da_moeda(nome)
+
+
 def descobrir_tokens(limite: int) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     try:
@@ -286,10 +321,12 @@ def descobrir_tokens(limite: int) -> list[dict]:
         saida.append(
             {
                 "nome": _cava(t, "meta.token.name", "meta.issuer.name", padrao=None)
-                or _cava(t, "currency", padrao="(sem nome)"),
+                or nome_da_moeda(_cava(t, "currency"))
+                or "(sem nome)",
                 "categoria": "Token",
                 "emissor": emissor,
-                "moeda": _cava(t, "currency"),
+                "moeda": nome_da_moeda(_cava(t, "currency")),
+                "moeda_hex": _cava(t, "currency"),
                 "site": _cava(t, "meta.issuer.domain", "meta.token.domain", padrao=""),
                 "holders": _num(_cava(t, "metrics.holders")),
                 "trustlines": _num(_cava(t, "metrics.trustlines")),
@@ -467,6 +504,7 @@ def main() -> None:
     if args.no_rede:
         with open("dados.json", encoding="utf-8") as f:
             projetos = json.load(f)["projetos"]
+        normalizar_nomes(projetos)
         for p in projetos:
             p["situacao"], p["motivo"] = classificar(p)
     else:
