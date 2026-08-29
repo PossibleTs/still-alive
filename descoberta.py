@@ -16,6 +16,7 @@ ledger, onde o instrumento certo e o GitHub, nao a rede.
 
 from __future__ import annotations
 
+import base64
 import json
 import sys
 import time
@@ -28,7 +29,7 @@ try:
 except ModuleNotFoundError:  # pragma: no cover
     tomllib = None
 
-from coletor import RPC, TIMEOUT, AGENTE, _rpc, PAUSA_ENTRE_CHAMADAS
+from coletor import RPC, TIMEOUT, AGENTE, _rpc, PAUSA_ENTRE_CHAMADAS, RIPPLE_EPOCH
 
 # --------------------------------------------------------------------------
 # 1. IDENTIDADE: xrp-ledger.toml
@@ -46,11 +47,18 @@ from coletor import RPC, TIMEOUT, AGENTE, _rpc, PAUSA_ENTRE_CHAMADAS
 CAMINHO_TOML = "/.well-known/xrp-ledger.toml"
 
 
-def ler_toml(dominio: str) -> dict | None:
-    """Busca e interpreta o xrp-ledger.toml de um dominio."""
+def ler_toml(dominio: str) -> tuple[dict | None, str]:
+    """Busca e interpreta o xrp-ledger.toml. Devolve (conteudo, motivo).
+
+    O motivo importa: "nao publica identidade" e uma afirmacao sobre o projeto,
+    "nao consegui ler" e uma afirmacao sobre nos. Misturar as duas coisas e
+    acusar alguem de opacidade por causa de um timeout nosso.
+
+    Motivos: ok | ausente | nao_e_toml | bloqueado | erro_rede | sem_tomllib
+    """
     if tomllib is None:
         print("! precisa de Python 3.11+ para ler TOML", file=sys.stderr)
-        return None
+        return None, "sem_tomllib"
 
     dominio = dominio.replace("https://", "").replace("http://", "").strip("/")
     url = f"https://{dominio}{CAMINHO_TOML}"
@@ -58,17 +66,26 @@ def ler_toml(dominio: str) -> dict | None:
         req = urllib.request.Request(url, headers={"User-Agent": AGENTE})
         with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
             bruto = r.read().decode("utf-8", errors="replace")
-        return tomllib.loads(bruto)
-    except (urllib.error.URLError, TimeoutError, ValueError, tomllib.TOMLDecodeError):
-        return None
-    except Exception:
-        return None
+    except urllib.error.HTTPError as e:
+        if e.code == 404:
+            return None, "ausente"
+        # 403/429 sao bloqueio de bot: nao sabemos se o arquivo existe.
+        return None, "bloqueado" if e.code in (401, 403, 429) else "erro_rede"
+    except (urllib.error.URLError, TimeoutError, ValueError):
+        return None, "erro_rede"
+
+    try:
+        return tomllib.loads(bruto), "ok"
+    except tomllib.TOMLDecodeError:
+        # Muito site devolve o HTML da pagina inicial com 200 no lugar de 404
+        # (gatehub.net faz isso). Nao publica TOML, mas nao e falha nossa.
+        return None, "nao_e_toml"
 
 
-def resumir_toml(toml: dict | None) -> dict:
+def resumir_toml(toml: dict | None, motivo: str = "ok") -> dict:
     """Extrai os sinais uteis do arquivo, incluindo se ele proprio venceu."""
     if not toml:
-        return {"tem_toml": False}
+        return {"tem_toml": False, "toml_motivo": motivo}
 
     meta = toml.get("METADATA") or {}
     expira = meta.get("expires")
@@ -224,25 +241,67 @@ def papel_da_conta(endereco: str) -> dict:
 # --------------------------------------------------------------------------
 
 
+# Lista de validadores publicada pela Ripple, a UNL padrao que a maioria dos
+# servidores usa. O metodo "validators" do rippled e de administrador: no no
+# publico ele volta vazio, entao a fonte honesta e a lista assinada.
+UNL_PUBLICADA = "https://vl.ripple.com"
+
+
+def _unl_publicada() -> dict:
+    """Baixa e abre a UNL assinada. O conteudo vem num blob base64 - nao
+    verificamos a assinatura aqui, so lemos; por isso a fonte fica declarada
+    na saida, para quem quiser conferir."""
+    req = urllib.request.Request(UNL_PUBLICADA, headers={"User-Agent": AGENTE})
+    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+        envelope = json.loads(r.read().decode("utf-8"))
+
+    # Formato v1 traz um blob; o v2 traz uma lista deles (a atual e a ultima).
+    blobs = [envelope["blob"]] if "blob" in envelope else [
+        b["blob"] for b in envelope.get("blobs_v2", [])
+    ]
+    if not blobs:
+        return {}
+    return json.loads(base64.b64decode(blobs[-1]))
+
+
 def estado_dos_validadores() -> dict:
     """
     Quem opera validador e, por definicao, fornecedor de infraestrutura.
     A NegativeUNL e a propria rede dizendo quais validadores considera fora do
     ar - nao ha sinal de vida mais direto e menos discutivel que esse.
     """
-    lista = _rpc("validators", {})
+    quantidade = None
+    expira_em = None
+    try:
+        blob = _unl_publicada()
+        validadores = blob.get("validators") or []
+        quantidade = len(validadores)
+        if blob.get("expiration"):
+            # A lista tambem conta o tempo no epoch da XRPL.
+            expira_em = time.strftime(
+                "%Y-%m-%d", time.gmtime(blob["expiration"] + RIPPLE_EPOCH)
+            )
+    except Exception as e:
+        print(f"! nao consegui ler a UNL publicada: {e}", file=sys.stderr)
+
+    # A NegativeUNL e um objeto unico do ledger. A opcao correta do
+    # ledger_entry e "nunl"; "negative_unl" devolve unknownOption.
+    # Quando nenhum validador esta desabilitado o objeto simplesmente nao
+    # existe, e o no responde entryNotFound - isso e lista vazia, nao falha.
     negativa = set()
-    res = _rpc("ledger_entry", {"index": None, "negative_unl": True}) or {}
-    entrada = (res.get("node") or {}).get("DisabledValidators") or []
-    for d in entrada:
+    res = _rpc("ledger_entry", {"nunl": True, "ledger_index": "validated"}) or {}
+    erro = res.get("error")
+    for d in (res.get("node") or {}).get("DisabledValidators") or []:
         chave = (d.get("DisabledValidator") or {}).get("PublicKey")
         if chave:
             negativa.add(chave)
 
-    validadores = lista.get("validator_list", {}).get("validators") or lista.get("publisher_lists") or []
     return {
-        "quantidade_unl": len(validadores) if isinstance(validadores, list) else None,
+        "fonte_unl": UNL_PUBLICADA,
+        "quantidade_unl": quantidade,
+        "unl_expira_em": expira_em,
         "na_lista_negativa": sorted(negativa),
+        "lista_negativa_lida": erro in (None, "entryNotFound"),
     }
 
 
@@ -310,8 +369,8 @@ def medir_projeto_corporativo(projeto: dict) -> dict:
     p = dict(projeto)
     dominio = (p.get("site") or "").replace("https://", "").replace("http://", "").strip("/")
 
-    toml = ler_toml(dominio) if dominio else None
-    p.update(resumir_toml(toml))
+    toml, motivo_toml = ler_toml(dominio) if dominio else (None, "sem_dominio")
+    p.update(resumir_toml(toml, motivo_toml))
 
     contas = p.get("contas") or p.get("contas_declaradas") or []
     if contas and dominio:
