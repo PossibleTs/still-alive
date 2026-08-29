@@ -16,7 +16,7 @@ teste_corporativo.py exercita a classificação de projetos sem token
 ## Rodar
 
 ```bash
-python teste_local.py && python gerar_site.py   # confere a lógica e o visual
+python teste_local.py && python gerar_site.py dados_teste.json   # confere a lógica e o visual
 open site/index.html
 
 python coletor.py --limite 60                   # coleta de verdade (~5 min)
