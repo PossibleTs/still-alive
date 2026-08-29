@@ -105,21 +105,55 @@ def _rpc(metodo: str, params: dict) -> dict:
     return {}
 
 
+# Hospedeiros que servem SO o xrp-ledger.toml. Quem registra token pela
+# FirstLedger ganha um subdominio desses como "dominio" no XRPL Meta - e um
+# endereco de metadado, nao o site do projeto. Bater na raiz da 404 sempre, e
+# dizer "site fora do ar" seria acusar de morto quem nunca teve site ali.
+HOSPEDEIROS_DE_METADADO = (".toml.firstledger.net",)
+
+
 def site_responde(url: str) -> bool | None:
-    """True se o site responde, False se nao, None se nem deu para tentar."""
+    """
+    True se o site responde, False se esta fora do ar, None se nao da para
+    afirmar nada.
+
+    A diferenca entre False e None e o produto inteiro: False vira "site fora
+    do ar" na pagina, e isso e uma acusacao. Dominio que nao resolve e prova.
+    Erro 5xx e o servidor deles tropecando agora - pode ser transitorio, e uma
+    amostra so nao basta para dizer que o projeto abandonou o site.
+    """
     if not url:
         return None
     if not url.startswith("http"):
         url = "https://" + url
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": AGENTE}, method="GET")
-        with urllib.request.urlopen(req, timeout=12) as r:
-            return r.status < 400
-    except urllib.error.HTTPError as e:
-        # 403 e 429 sao bloqueio de bot, nao site morto.
-        return e.code in (401, 403, 429)
-    except Exception:
-        return False
+
+    hospedeiro = url.split("://", 1)[1].split("/", 1)[0].lower()
+    if hospedeiro.endswith(HOSPEDEIROS_DE_METADADO):
+        return None  # nao e site do projeto, e o TOML hospedado por terceiro
+
+    req = urllib.request.Request(url, headers={"User-Agent": AGENTE}, method="GET")
+    for tentativa in range(2):
+        try:
+            with urllib.request.urlopen(req, timeout=12) as r:
+                return r.status < 400
+        except urllib.error.HTTPError as e:
+            # 401/403/429 sao bloqueio de bot: o site esta la, so nao quer robo.
+            if e.code in (401, 403, 429):
+                return True
+            # 5xx e erro do servidor deles, nao ausencia de site.
+            if e.code >= 500:
+                return None
+            return False
+        except (urllib.error.URLError, TimeoutError, OSError) as e:
+            # Nome que nao resolve e dominio que acabou: isso e prova de morte.
+            motivo = str(getattr(e, "reason", e))
+            if "not known" in motivo or "Name or service" in motivo:
+                return False
+            if tentativa == 0:
+                time.sleep(1.5)
+                continue
+            return False
+    return False
 
 
 # --------------------------------------------------------------------------
