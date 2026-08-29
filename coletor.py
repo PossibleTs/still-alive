@@ -69,9 +69,19 @@ PROJETOS_SEM_TOKEN = [
 
 
 def _get_json(url: str) -> Any:
+    """GET com retentativa. O XRPL Meta pendura a conexao de vez em quando
+    (medido: ~1 em 3 chamadas). Sem retentativa a coleta diaria as vezes sai
+    sem token nenhum e ninguem percebe."""
     req = urllib.request.Request(url, headers={"User-Agent": AGENTE})
-    with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-        return json.loads(r.read().decode("utf-8"))
+    for tentativa in range(3):
+        try:
+            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                return json.loads(r.read().decode("utf-8"))
+        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+            if tentativa == 2:
+                raise
+            print(f"    . {url} falhou ({e}); tentando de novo", file=sys.stderr)
+            time.sleep(2.0 * (tentativa + 1))
 
 
 def _rpc(metodo: str, params: dict) -> dict:
@@ -219,6 +229,18 @@ def _cava(d: dict, *caminhos, padrao=None):
     return padrao
 
 
+def _num(v, padrao=0):
+    """XRPL Meta devolve parte das metricas como string ("447", "4983.50").
+    Converte para numero; sem isso a comparacao com os limiares explode."""
+    if v in (None, ""):
+        return padrao
+    try:
+        f = float(v)
+    except (TypeError, ValueError):
+        return padrao
+    return int(f) if f.is_integer() else f
+
+
 def descobrir_tokens(limite: int) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     try:
@@ -241,10 +263,10 @@ def descobrir_tokens(limite: int) -> list[dict]:
                 "emissor": emissor,
                 "moeda": _cava(t, "currency"),
                 "site": _cava(t, "meta.issuer.domain", "meta.token.domain", padrao=""),
-                "holders": _cava(t, "metrics.holders", padrao=0),
-                "trustlines": _cava(t, "metrics.trustlines", padrao=0),
-                "volume_24h": float(_cava(t, "metrics.volume_24h", padrao=0) or 0),
-                "trocas_24h": _cava(t, "metrics.exchanges_24h", "metrics.exchanges24h", padrao=0),
+                "holders": _num(_cava(t, "metrics.holders")),
+                "trustlines": _num(_cava(t, "metrics.trustlines")),
+                "volume_24h": _num(_cava(t, "metrics.volume_24h")),
+                "trocas_24h": _num(_cava(t, "metrics.exchanges_24h", "metrics.exchanges24h")),
             }
         )
     return saida
@@ -414,6 +436,14 @@ def main() -> None:
             p["situacao"], p["motivo"] = classificar(p)
     else:
         projetos = coletar(args.limite)
+        # Sem tokens a pagina inteira perde o sentido. Melhor abortar e manter
+        # o dados.json anterior do que publicar em silencio uma lista vazia.
+        if args.limite > 0 and not any(p.get("categoria") == "Token" for p in projetos):
+            print(
+                "! nenhum token veio do XRPL Meta - dados.json NAO foi alterado.",
+                file=sys.stderr,
+            )
+            sys.exit(1)
         salvar_snapshot(projetos)
 
     ordem = {"ativo": 0, "morrendo": 1, "parado": 2, "morto": 3, "indeterminado": 4}

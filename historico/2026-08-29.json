@@ -1,0 +1,54 @@
+{
+ "rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz": {
+  "holders": 215909,
+  "tx_janela": 2400
+ },
+ "rHXuEaRYnnJHbDeuBH5w8yPh5uwNVh5zAg": {
+  "holders": 84045,
+  "tx_janela": 2378
+ },
+ "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De": {
+  "holders": 72146,
+  "tx_janela": 2400
+ },
+ "rcoreNywaoz2ZCQ8Lg2EbSLnGuRBmun6D": {
+  "holders": 62738,
+  "tx_janela": 2400
+ },
+ "rhcyBrowwApgNonehKBj8Po5z4gTyRknaU": {
+  "holders": 41845,
+  "tx_janela": 2400
+ },
+ "Bithomp": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "XRPSCAN": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "Xaman": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "GemWallet": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "XRP Toolkit": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "xrp.cafe": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "OnTheDex": {
+  "holders": null,
+  "tx_janela": null
+ },
+ "XRPL Meta": {
+  "holders": null,
+  "tx_janela": null
+ }
+}
