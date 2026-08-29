@@ -15,6 +15,7 @@ import datetime as dt
 import html
 import json
 import os
+import sys
 
 SITUACOES = {
     "ativo": ("Ativo", "Transacionando na rede agora."),
@@ -107,7 +108,9 @@ def card(p: dict) -> str:
     if p.get("holders"):
         metricas.append(f'{_fmt(p["holders"])} detentores')
     if p.get("tx_janela") is not None:
-        metricas.append(f'{_fmt(p["tx_janela"])} tx/30d')
+        # Com o teto de paginacao a contagem e um piso, nao um total.
+        mais = "+" if p.get("tx_truncado") else ""
+        metricas.append(f'{_fmt(p["tx_janela"])}{mais} tx/30d')
     if isinstance(p.get("dias_sem_atividade"), int):
         metricas.append(f'{p["dias_sem_atividade"]}d parado')
     v = p.get("variacao_holders")
@@ -210,14 +213,16 @@ def gerar(dados: dict) -> str:
 
 
 def main() -> None:
-    with open("dados.json", encoding="utf-8") as f:
+    # Argumento opcional para inspecionar dados de teste sem tocar na coleta real.
+    origem = sys.argv[1] if len(sys.argv) > 1 else "dados.json"
+    with open(origem, encoding="utf-8") as f:
         dados = json.load(f)
     os.makedirs("site", exist_ok=True)
     with open("site/index.html", "w", encoding="utf-8") as f:
         f.write(gerar(dados))
     with open("site/dados.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
-    print(f"site/index.html escrito ({dados.get('total', 0)} projetos).")
+    print(f"site/index.html escrito a partir de {origem} ({dados.get('total', 0)} projetos).")
 
 
 if __name__ == "__main__":

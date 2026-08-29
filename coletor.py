@@ -195,17 +195,45 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
     return {"ultima_atividade": ultima, "tx_janela": total, "erro": None, "truncado": True}
 
 
+# Endereco "buraco negro" canonico da XRPL: chave publica de valor zero, sem
+# chave privada correspondente. Regular key apontada para ca = ninguem assina.
+BURACO_NEGRO = "rrrrrrrrrrrrrrrrrrrrBZbvji"
+
+
 def conta_esta_blackholed(endereco: str) -> bool:
     """
-    Emissor 'blackholed' (chave mestra desabilitada, regular key descartada) e
-    boa pratica de seguranca, nao abandono. Contar isso como morte e o erro
-    que faria a pagina inteira perder credibilidade no primeiro dia.
+    Emissor 'blackholed' (ninguem consegue mais assinar pela conta) e boa
+    pratica de seguranca, nao abandono. Contar isso como morte e o erro que
+    faria a pagina inteira perder credibilidade no primeiro dia.
+
+    Mestra desabilitada NAO basta: e so metade do teste. O emissor do RLUSD tem
+    a mestra desabilitada e transaciona todo dia, porque a Ripple assina por
+    signer list de 26 chaves. Blackhole de verdade exige que nao sobre nenhum
+    caminho de assinatura: mestra desabilitada, regular key ausente ou no
+    buraco negro, e nenhuma signer list.
     """
-    res = _rpc("account_info", {"account": endereco, "ledger_index": "validated"})
+    res = _rpc(
+        "account_info",
+        {"account": endereco, "ledger_index": "validated", "signer_lists": True},
+    )
     dados = res.get("account_data") or {}
     flags = dados.get("Flags", 0)
     LSF_DISABLE_MASTER = 0x00100000
-    return bool(flags & LSF_DISABLE_MASTER)
+    if not flags & LSF_DISABLE_MASTER:
+        return False
+
+    chave = dados.get("RegularKey")
+    if chave and chave != BURACO_NEGRO:
+        return False
+
+    # A signer list vem em account_data.signer_lists ou na raiz do result,
+    # conforme a versao da API do no.
+    listas = dados.get("signer_lists") or res.get("signer_lists") or []
+    for lista in listas:
+        if lista.get("SignerEntries"):
+            return False
+
+    return True
 
 
 # --------------------------------------------------------------------------
@@ -293,6 +321,9 @@ def classificar(p: dict) -> tuple[str, str]:
     classificacao vira acusacao sem prova."""
     dias = p.get("dias_sem_atividade")
     tx = p.get("tx_janela") or 0
+    # Com o teto de paginacao a contagem e um piso: dizer "2400" seria mentira
+    # pequena, e o motivo e a unica prova que a pagina oferece.
+    tx_txt = f"{tx}+" if p.get("tx_truncado") else str(tx)
     holders = p.get("holders") or 0
     site = p.get("site_ok")
     blackholed = p.get("blackholed")
@@ -320,21 +351,21 @@ def classificar(p: dict) -> tuple[str, str]:
         return "morto", f"Sem nenhuma transacao ha {dias} dias."
 
     if site is False and tx < LIMIARES["tx_minimo"]:
-        return "morto", f"Site fora do ar e so {tx} transacoes em 30 dias."
+        return "morto", f"Site fora do ar e so {tx_txt} transacoes em 30 dias."
 
     if dias > LIMIARES["dias_parado"] or tx < LIMIARES["tx_minimo"]:
-        return "parado", f"Ultima atividade ha {dias} dias; {tx} transacoes em 30 dias."
+        return "parado", f"Ultima atividade ha {dias} dias; {tx_txt} transacoes em 30 dias."
 
     if tx < LIMIARES["tx_ativo"] or site is False:
-        motivo = f"{tx} transacoes em 30 dias"
+        motivo = f"{tx_txt} transacoes em 30 dias"
         if site is False:
             motivo += "; site fora do ar"
         return "morrendo", motivo + "."
 
     if dias <= LIMIARES["dias_ativo"]:
-        return "ativo", f"{tx} transacoes em 30 dias; ultima ha {dias} dias."
+        return "ativo", f"{tx_txt} transacoes em 30 dias; ultima " + ("hoje." if dias == 0 else f"ha {dias} dias.")
 
-    return "morrendo", f"{tx} transacoes em 30 dias, mas nada nos ultimos {dias} dias."
+    return "morrendo", f"{tx_txt} transacoes em 30 dias, mas nada nos ultimos {dias} dias."
 
 
 # --------------------------------------------------------------------------
@@ -349,6 +380,7 @@ def salvar_snapshot(projetos: list[dict]) -> None:
         p.get("emissor") or p["nome"]: {
             "holders": p.get("holders"),
             "tx_janela": p.get("tx_janela"),
+            "tx_truncado": p.get("tx_truncado"),
         }
         for p in projetos
     }
@@ -404,9 +436,12 @@ def coletar(limite: int) -> list[dict]:
             time.sleep(PAUSA_ENTRE_CHAMADAS)
             sinais = atividade_da_conta(p["emissor"])
             p["tx_janela"] = sinais["tx_janela"]
+            p["tx_truncado"] = bool(sinais.get("truncado"))
             ultima = sinais["ultima_atividade"]
             p["ultima_atividade"] = ultima
-            p["dias_sem_atividade"] = (agora - ultima) // 86400 if ultima else None
+            # max(0,...): a coleta demora minutos e "agora" foi lido no inicio;
+            # uma transacao recem-confirmada dava "ha -1 dias" na pagina.
+            p["dias_sem_atividade"] = max(0, (agora - ultima) // 86400) if ultima else None
             time.sleep(PAUSA_ENTRE_CHAMADAS)
         else:
             p.setdefault("dias_sem_atividade", None)

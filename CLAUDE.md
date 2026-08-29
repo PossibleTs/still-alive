@@ -49,7 +49,7 @@ Fluxo: `coletor.py` → `dados.json` → `gerar_site.py` → `site/index.html` �
 ## Comandos
 
 ```bash
-python teste_local.py && python gerar_site.py    # logica + visual, sem rede
+python teste_local.py && python gerar_site.py dados_teste.json   # logica + visual, sem rede
 python teste_corporativo.py                       # classificacao corporativa
 python coletor.py --limite 60                     # coleta real, ~5 min
 python coletor.py --no-rede                       # so reclassifica o que ja tem

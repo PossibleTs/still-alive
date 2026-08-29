@@ -1,54 +1,67 @@
 {
  "rsoLo2S1kiGeCcn6hCUXVrCpGMWLrRrLZz": {
-  "holders": 215909,
-  "tx_janela": 2400
+  "holders": 215908,
+  "tx_janela": 2400,
+  "tx_truncado": true
  },
  "rHXuEaRYnnJHbDeuBH5w8yPh5uwNVh5zAg": {
   "holders": 84045,
-  "tx_janela": 2378
+  "tx_janela": 2378,
+  "tx_truncado": false
  },
  "rMxCKbEDwqr76QuheSUMdEGf4B9xJ8m5De": {
-  "holders": 72146,
-  "tx_janela": 2400
+  "holders": 72144,
+  "tx_janela": 2400,
+  "tx_truncado": true
  },
  "rcoreNywaoz2ZCQ8Lg2EbSLnGuRBmun6D": {
-  "holders": 62738,
-  "tx_janela": 2400
+  "holders": 62737,
+  "tx_janela": 2400,
+  "tx_truncado": true
  },
  "rhcyBrowwApgNonehKBj8Po5z4gTyRknaU": {
   "holders": 41845,
-  "tx_janela": 2400
+  "tx_janela": 2400,
+  "tx_truncado": true
  },
  "Bithomp": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "XRPSCAN": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "Xaman": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "GemWallet": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "XRP Toolkit": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "xrp.cafe": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "OnTheDex": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  },
  "XRPL Meta": {
   "holders": null,
-  "tx_janela": null
+  "tx_janela": null,
+  "tx_truncado": null
  }
 }

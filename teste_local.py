@@ -84,10 +84,11 @@ def main() -> None:
         "projetos": projetos,
         "AVISO": "DADOS SINTETICOS DE TESTE - nao sao medicoes reais da rede",
     }
-    with open("dados.json", "w", encoding="utf-8") as f:
+    # Arquivo proprio: escrever em dados.json apagaria a ultima coleta real.
+    with open("dados_teste.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
     print("\nContagem:", dados["contagem"])
-    print("dados.json de teste escrito.")
+    print("dados_teste.json escrito (veja com: python gerar_site.py dados_teste.json).")
 
 
 if __name__ == "__main__":
