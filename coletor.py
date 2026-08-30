@@ -402,8 +402,13 @@ def normalizar_nomes(projetos: list[dict]) -> None:
             p["nome"] = nome_da_moeda(nome)
 
 
-def descobrir_tokens(limite: int) -> list[dict]:
+def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
+    if offset:
+        # Os 300 primeiros por detentores sao os sobreviventes. O cemiterio
+        # que a pagina promete datar comeca bem depois - em offset=1000 o
+        # topo ja tem 544 detentores.
+        url += f"&offset={offset}"
     try:
         # Esta chamada e a unica insubstituivel: sem ela nao ha coleta.
         # Vale insistir mais do que nas outras.
@@ -440,6 +445,11 @@ def descobrir_tokens(limite: int) -> list[dict]:
                     _cava(t, "metrics.exchanges_24h", "metrics.exchanges24h"),
                     padrao=None,
                 ),
+                # 7 dias e a janela que sustenta acusacao. Um dia quieto e
+                # rotina ate para token vivo de projeto pequeno; uma semana
+                # inteira sem ninguem negociar ja diz alguma coisa.
+                "trocas_7d": _num(_cava(t, "metrics.exchanges_7d"), padrao=None),
+                "volume_7d": _num(_cava(t, "metrics.volume_7d"), padrao=None),
             }
         )
     return saida
@@ -467,7 +477,15 @@ def classificar(p: dict) -> tuple[str, str]:
     dias = p.get("dias_sem_atividade")
     tx = p.get("tx_janela") or 0
     # None = nao sabemos; 0 = sabemos que nao houve. So o segundo acusa.
-    trocas = p.get("trocas_24h")
+    # A janela de 7 dias e a que vale: acusar um projeto por um unico dia
+    # quieto e barulho, e a pagina paga o preco de cada acusacao errada.
+    # O numero de 24h fica no dado bruto para quem quiser olhar.
+    trocas = p.get("trocas_7d")
+    if trocas is None:
+        trocas = p.get("trocas_24h")
+        janela_trocas = "nas ultimas 24h"
+    else:
+        janela_trocas = "nos ultimos 7 dias"
     sem_negociacao = trocas == 0
     negociou = isinstance(trocas, (int, float)) and trocas > 0
     # Com o teto de paginacao a contagem e um piso: dizer "2400" seria mentira
@@ -502,18 +520,21 @@ def classificar(p: dict) -> tuple[str, str]:
     # detentores, nao pela conta emissora. Julga-se pelo token, nao pela conta.
     if blackholed:
         if holders >= LIMIARES["holders_minimo"] and negociou:
-            return "ativo", f"Emissor blackholed (boa pratica); {holders} detentores e negociacao nas ultimas 24h."
+            return "ativo", f"Emissor blackholed (boa pratica); {holders} detentores e negociacao {janela_trocas}."
         if holders >= LIMIARES["holders_minimo"]:
             if not sem_negociacao:  # nao sabemos se negociou
                 return "indeterminado", (
                     f"Emissor blackholed com {holders} detentores, mas o catalogo "
                     "nao informou negociacao - sem dado para julgar."
                 )
-            return "morrendo", f"Emissor blackholed; {holders} detentores, mas sem negociacao nas ultimas 24h."
+            return "morrendo", f"Emissor blackholed; {holders} detentores, mas sem negociacao {janela_trocas}."
         return "parado", f"Emissor blackholed e apenas {holders} detentores."
 
     if dias > LIMIARES["dias_morto"]:
         return "morto", f"Sem nenhuma transacao ha {dias} dias."
+
+    if site is False and tx < LIMIARES["tx_minimo"]:
+        return "morto", f"Site fora do ar e so {tx_txt} transacoes em 30 dias."
 
     # Conta movimentada por estranhos, emissor calado. Nao e morte - o token
     # circula -, mas dizer "ativo" aqui seria creditar ao projeto o movimento
@@ -522,8 +543,8 @@ def classificar(p: dict) -> tuple[str, str]:
         desde = f"ha {dias_calado} dias" if dias_calado else "na janela medida"
         if negociou:
             return "ativo", (
-                f"Token negociado nas ultimas 24h e {tx_txt} transacoes na conta, "
-                f"mas nenhuma assinada pelo emissor {desde}."
+                f"Token negociado {janela_trocas} e {tx_txt} transacoes na "
+                f"conta, mas nenhuma assinada pelo emissor {desde}."
             )
         if not sem_negociacao:
             return "indeterminado", (
@@ -533,11 +554,9 @@ def classificar(p: dict) -> tuple[str, str]:
             )
         return "morrendo", (
             f"As {tx_txt} transacoes da conta sao todas de terceiros; o emissor "
-            f"nao assina nada {desde}, e nao houve negociacao nas ultimas 24h."
+            f"nao assina nada {desde}, e nao houve negociacao {janela_trocas}."
         )
 
-    if site is False and tx < LIMIARES["tx_minimo"]:
-        return "morto", f"Site fora do ar e so {tx_txt} transacoes em 30 dias."
 
     if dias > LIMIARES["dias_parado"] or tx < LIMIARES["tx_minimo"]:
         return "parado", f"Ultima atividade ha {dias} dias; {tx_txt} transacoes em 30 dias."
@@ -611,8 +630,8 @@ def aplicar_tendencia(projetos: list[dict]) -> None:
 # --------------------------------------------------------------------------
 
 
-def coletar(limite: int) -> list[dict]:
-    projetos = descobrir_tokens(limite)
+def coletar(limite: int, offset: int = 0) -> list[dict]:
+    projetos = descobrir_tokens(limite, offset)
     projetos += [dict(p) for p in PROJETOS_SEM_TOKEN]
     agora = int(time.time())
 
@@ -665,6 +684,7 @@ def _medir(p: dict, agora: int) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limite", type=int, default=40, help="quantos tokens buscar")
+    ap.add_argument("--offset", type=int, default=0, help="pula os N primeiros do catalogo")
     ap.add_argument("--no-rede", action="store_true", help="so reclassifica o dados.json existente")
     args = ap.parse_args()
 
@@ -675,7 +695,7 @@ def main() -> None:
         for p in projetos:
             p["situacao"], p["motivo"] = classificar(p)
     else:
-        projetos = coletar(args.limite)
+        projetos = coletar(args.limite, args.offset)
         # Sem tokens a pagina inteira perde o sentido. Melhor abortar e manter
         # o dados.json anterior do que publicar em silencio uma lista vazia.
         if args.limite > 0 and not any(p.get("categoria") == "Token" for p in projetos):
