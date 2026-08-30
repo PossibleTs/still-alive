@@ -37,6 +37,8 @@ coletor.py            projetos COM token
                       descobre no XRPL Meta -> mede na rede -> dados.json
 descoberta.py         projetos SEM token
                       xrp-ledger.toml + tipos de objeto + validadores
+revalidar.py          atende pedido de remedicao vindo de issue no GitHub
+                      (os freios de abuso ficam AQUI, nao no YAML)
 institucional.py      descoberta continua de atores institucionais
                       ouve o fluxo de transacoes (WebSocket proprio, stdlib)
                       -> candidatos.json, para revisao humana
@@ -54,7 +56,10 @@ Fluxo: `coletor.py` → `dados.json` → `gerar_site.py` → `site/index.html` �
 ```bash
 python teste_local.py && python gerar_site.py dados_teste.json   # logica + visual, sem rede
 python teste_corporativo.py                       # classificacao corporativa
-python coletor.py --limite 60                     # coleta real, ~5 min
+python coletor.py                                 # a fatia do dia (topo + cauda)
+python coletor.py --fatia 3                       # forca uma fatia do ciclo
+python coletor.py --limite 60                     # modo avulso, ignora o ciclo
+python teste_revalidar.py                         # freios do botao de revalidar
 python coletor.py --no-rede                       # so reclassifica o que ja tem
 python descoberta.py bithomp.com                  # inspeciona um dominio
 python gerar_site.py
@@ -100,6 +105,12 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
 
 - Mudou limiar de classificação? Rode os dois testes e cole o antes/depois.
 - Nada de "melhorar" o HTML gerado com biblioteca de template.
+- **Cadência:** o topo (`TOPO_DIARIO`) é medido em toda corrida; a cauda
+  (`CAUDA_TOTAL`) é dividida em `CICLO_DIAS` fatias, uma por dia, derivadas do
+  calendário — sem estado entre corridas. Por isso a coleta **mescla** com o
+  `dados.json` anterior em vez de sobrescrever, e cada projeto carrega
+  `medido_em`. Nunca troque a mesclagem por sobrescrita: apagaria catorze
+  quinze avos da página.
 - `historico/` é sagrado: é o que permite mostrar tendência. Nunca limpe.
 - Antes de publicar qualquer lista pública, leia a seção "Antes de publicar" do
   README. A parte reputacional é mais arriscada que a técnica.
