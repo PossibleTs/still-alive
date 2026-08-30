@@ -68,20 +68,31 @@ PROJETOS_SEM_TOKEN = [
 # --------------------------------------------------------------------------
 
 
-def _get_json(url: str) -> Any:
-    """GET com retentativa. O XRPL Meta pendura a conexao de vez em quando
-    (medido: ~1 em 3 chamadas). Sem retentativa a coleta diaria as vezes sai
-    sem token nenhum e ninguem percebe."""
+def _get_json(url: str, tentativas: int = 3) -> Any:
+    """
+    GET com retentativa e espera crescente.
+
+    O XRPL Meta pendura a conexao com frequencia, e em rajadas: medido em
+    30/08/2026, cinco chamadas seguidas deram timeout de 45s e a sexta
+    respondeu em 6s - sem relacao com o tamanho do pedido. Tres tentativas
+    nao cobrem uma rajada dessas; a coleta diaria abortava por causa disso.
+    """
     req = urllib.request.Request(url, headers={"User-Agent": AGENTE})
-    for tentativa in range(3):
+    espera = 2.0
+    for tentativa in range(tentativas):
         try:
             with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
                 return json.loads(r.read().decode("utf-8"))
         except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
-            if tentativa == 2:
+            if tentativa == tentativas - 1:
                 raise
-            print(f"    . {url} falhou ({e}); tentando de novo", file=sys.stderr)
-            time.sleep(2.0 * (tentativa + 1))
+            print(
+                f"    . {url} falhou ({e}); tentativa {tentativa + 2} de {tentativas} "
+                f"em {espera:.0f}s",
+                file=sys.stderr,
+            )
+            time.sleep(espera)
+            espera = min(espera * 2, 30.0)
 
 
 def _rpc(metodo: str, params: dict) -> dict:
@@ -388,7 +399,9 @@ def normalizar_nomes(projetos: list[dict]) -> None:
 def descobrir_tokens(limite: int) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     try:
-        bruto = _get_json(url)
+        # Esta chamada e a unica insubstituivel: sem ela nao ha coleta.
+        # Vale insistir mais do que nas outras.
+        bruto = _get_json(url, tentativas=6)
     except Exception as e:
         print(f"! nao consegui falar com o XRPL Meta: {e}", file=sys.stderr)
         return []
