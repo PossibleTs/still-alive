@@ -126,9 +126,12 @@ def _rpc(metodo: str, params: dict) -> dict:
         except FALHAS_DE_REDE as e:
             if tentativa == 2:
                 print(f"    ! rpc {metodo} falhou: {e}", file=sys.stderr)
-                return {}
+                # Marcado, e nao {} vazio: "a rede falhou" e "a conta nao tem
+                # nada" davam o mesmo resultado, e dez projetos de 208 foram
+                # dados como nao medidos quando o problema era nosso.
+                return {"erro_rede": str(e)}
             time.sleep(1.5 * (tentativa + 1))
-    return {}
+    return {"erro_rede": "tentativas esgotadas"}
 
 
 # Hospedeiros que servem SO o xrp-ledger.toml. Quem registra token pela
@@ -260,7 +263,7 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
         res = _rpc("account_tx", params)
         txs = res.get("transactions") or []
         if not txs and paginas == 0:
-            return _saida(erro=res.get("error"))
+            return _saida(erro=res.get("error") or res.get("erro_rede"))
 
         for t in txs:
             quando = _data_da_transacao(t)
@@ -422,6 +425,12 @@ def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
     for t in tokens:
         emissor = _cava(t, "issuer")
         if not emissor:
+            continue
+        # Token de pool de AMM (codigo comecando em 0x03) nao e projeto de
+        # ninguem: e um recibo de liquidez. Listar isso como projeto - e pior,
+        # acusar de moribundo - so mostra que o robo nao sabe o que esta lendo.
+        moeda_hex = str(_cava(t, "currency") or "")
+        if moeda_hex.startswith("03") and len(moeda_hex) == 40:
             continue
         saida.append(
             {
@@ -647,6 +656,20 @@ def coletar(limite: int, offset: int = 0) -> list[dict]:
             p["erro_medicao"] = f"{type(e).__name__}: {e}"
             p.setdefault("dias_sem_atividade", None)
 
+    # Segunda passada: quem nao respondeu por falha de rede merece outra
+    # chance antes de virar "nao foi possivel medir" na pagina.
+    repetir = [p for p in projetos if p.get("erro_leitura") or p.get("erro_medicao")]
+    if repetir:
+        print(f"\nsegunda passada em {len(repetir)} projetos que falharam")
+        for i, p in enumerate(repetir, 1):
+            print(f"[{i}/{len(repetir)}] {p['nome']}")
+            p.pop("erro_medicao", None)
+            try:
+                _medir(p, agora)
+            except Exception as e:
+                print(f"    ! {p['nome']}: {type(e).__name__}: {e}", file=sys.stderr)
+                p["erro_medicao"] = f"{type(e).__name__}: {e}"
+
     aplicar_tendencia(projetos)
 
     for p in projetos:
@@ -663,6 +686,7 @@ def _medir(p: dict, agora: int) -> None:
         p["blackholed"] = conta_esta_blackholed(p["emissor"])
         time.sleep(PAUSA_ENTRE_CHAMADAS)
         sinais = atividade_da_conta(p["emissor"])
+        p["erro_leitura"] = sinais.get("erro")
         p["tx_janela"] = sinais["tx_janela"]
         p["tx_emissor"] = sinais.get("tx_emissor")
         p["tx_truncado"] = bool(sinais.get("truncado"))
