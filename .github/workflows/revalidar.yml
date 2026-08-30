@@ -1,0 +1,70 @@
+name: Revalidar a pedido
+
+# Atende a issue de revalidacao: mede o projeto de novo e responde ali mesmo.
+# Os freios de abuso estao no revalidar.py, nao aqui - YAML e pessimo lugar
+# para regra que precisa de teste.
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+# Divide a fila com a coleta diaria: as duas escrevem no dados.json e dao push.
+concurrency:
+  group: dados
+  cancel-in-progress: false
+
+jobs:
+  medir:
+    if: contains(github.event.issue.labels.*.name, 'revalidar')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Ler o projeto pedido
+        id: pedido
+        env:
+          CORPO: ${{ github.event.issue.body }}
+          TITULO: ${{ github.event.issue.title }}
+        run: |
+          python - <<'PY' >> "$GITHUB_OUTPUT"
+          import os, re
+          corpo = os.environ.get("CORPO") or ""
+          # O formulario vira "### Projeto\n\nVALOR" no corpo da issue.
+          m = re.search(r"###\s*Projeto\s*\n+([^\n]+)", corpo)
+          nome = (m.group(1) if m else "").strip()
+          if not nome or nome.startswith("_No response_"):
+              nome = os.environ.get("TITULO", "").split(":", 1)[-1].strip()
+          # Nome de projeto nao tem quebra de linha nem 200 caracteres.
+          nome = nome.replace("`", "").replace("\n", " ")[:80]
+          print(f"projeto={nome}")
+          PY
+
+      - name: Medir
+        id: medir
+        run: |
+          python revalidar.py \
+            --projeto "${{ steps.pedido.outputs.projeto }}" \
+            --autor "${{ github.event.issue.user.login }}" > resposta.md
+          cat resposta.md
+
+      - name: Responder na issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment "${{ github.event.issue.number }}" --body-file resposta.md
+
+      - name: Guardar o resultado
+        run: |
+          git config user.name "robo"
+          git config user.email "robo@users.noreply.github.com"
+          git add dados.json revalidacoes.json
+          git diff --staged --quiet || git commit -m "revalidacao: ${{ steps.pedido.outputs.projeto }}"
+          git pull --rebase --autostash || true
+          git push

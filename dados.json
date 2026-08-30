@@ -3741,7 +3741,9 @@
    "site_ok": true,
    "variacao_holders": -91.9,
    "situacao": "morrendo",
-   "motivo": "As 4 transacoes da conta sao todas de terceiros; o emissor nao assina nada na janela medida, e nao houve negociacao nos ultimos 7 dias."
+   "motivo": "As 4 transacoes da conta sao todas de terceiros; o emissor nao assina nada na janela medida, e nao houve negociacao nos ultimos 7 dias.",
+   "erro_leitura": null,
+   "medido_em": "2026-08-30T23:28:02+00:00"
   },
   {
    "nome": "XRSaga",
@@ -3791,7 +3793,9 @@
    "dias_sem_atividade": 1,
    "site_ok": null,
    "situacao": "morrendo",
-   "motivo": "As 7 transacoes da conta sao todas de terceiros; o emissor nao assina nada na janela medida, e nao houve negociacao nos ultimos 7 dias."
+   "motivo": "As 7 transacoes da conta sao todas de terceiros; o emissor nao assina nada na janela medida, e nao houve negociacao nos ultimos 7 dias.",
+   "erro_leitura": null,
+   "medido_em": "2026-08-30T23:28:12+00:00"
   },
   {
    "nome": "HadaNFT",

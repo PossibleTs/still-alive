@@ -639,10 +639,30 @@ def aplicar_tendencia(projetos: list[dict]) -> None:
 # --------------------------------------------------------------------------
 
 
-def coletar(limite: int, offset: int = 0) -> list[dict]:
-    projetos = descobrir_tokens(limite, offset)
-    projetos += [dict(p) for p in PROJETOS_SEM_TOKEN]
+def chave_do_projeto(p: dict) -> str:
+    """Identidade estavel de um projeto entre coletas."""
+    if p.get("emissor"):
+        return f"{p['emissor']}:{p.get('moeda_hex') or p.get('moeda') or ''}"
+    return f"site:{p.get('site') or p.get('nome')}"
+
+
+def mesclar(antigos: list[dict], novos: list[dict]) -> list[dict]:
+    """
+    Junta a medicao de hoje com o que ja se sabia.
+
+    O ciclo mede uma fatia do catalogo por dia; sem mesclar, cada corrida
+    apagaria os outros catorze quinze avos da pagina. Projeto nao medido hoje
+    permanece com o que tinha, e o carimbo `medido_em` diz de quando e o dado.
+    """
+    por_chave = {chave_do_projeto(p): p for p in antigos}
+    for novo in novos:
+        por_chave[chave_do_projeto(novo)] = novo
+    return list(por_chave.values())
+
+
+def coletar(projetos: list[dict]) -> list[dict]:
     agora = int(time.time())
+    carimbo = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
 
     for i, p in enumerate(projetos, 1):
         print(f"[{i}/{len(projetos)}] {p['nome']}")
@@ -673,6 +693,7 @@ def coletar(limite: int, offset: int = 0) -> list[dict]:
     aplicar_tendencia(projetos)
 
     for p in projetos:
+        p["medido_em"] = carimbo
         situacao, motivo = classificar(p)
         p["situacao"] = situacao
         p["motivo"] = motivo
@@ -705,36 +726,94 @@ def _medir(p: dict, agora: int) -> None:
     p["site_ok"] = site_responde(p.get("site", ""))
 
 
+# O topo se mexe todo dia e e o que as pessoas conferem; a cauda nao muda de
+# terca para quarta - morte e lenta. Medir tudo todo dia seriam ~4h30 de
+# chamadas ao no publico para descobrir quase nada de novo.
+TOPO_DIARIO = 300     # medidos em toda corrida
+CAUDA_TOTAL = 1300    # o resto do universo, dividido pelo ciclo
+CICLO_DIAS = 15       # cada fatia da cauda e remedida a cada 15 dias
+
+
+def carregar_projetos(arquivo: str = "dados.json") -> list[dict]:
+    if not os.path.exists(arquivo):
+        return []
+    try:
+        with open(arquivo, encoding="utf-8") as f:
+            return json.load(f).get("projetos") or []
+    except (json.JSONDecodeError, OSError):
+        return []
+
+
+def fatia_do_dia(dia: dt.date | None = None) -> int:
+    """Qual pedaco da cauda toca hoje. Deriva da data para nao precisar
+    guardar estado nenhum entre corridas."""
+    dia = dia or dt.date.today()
+    return dia.toordinal() % CICLO_DIAS
+
+
+def alvos_do_dia(fatia: int) -> list[dict]:
+    """Descobre o topo (sempre) mais a fatia da cauda que cabe hoje."""
+    tamanho = -(-CAUDA_TOTAL // CICLO_DIAS)  # divisao para cima
+    offset = TOPO_DIARIO + fatia * tamanho
+    print(
+        f"fatia {fatia + 1}/{CICLO_DIAS}: topo {TOPO_DIARIO} + cauda "
+        f"{tamanho} a partir de {offset}"
+    )
+    alvos = descobrir_tokens(TOPO_DIARIO)
+    alvos += descobrir_tokens(tamanho, offset)
+    alvos += [dict(p) for p in PROJETOS_SEM_TOKEN]
+    return alvos
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--limite", type=int, default=40, help="quantos tokens buscar")
+    ap.add_argument("--limite", type=int, default=0,
+                    help="modo avulso: quantos tokens buscar (ignora o ciclo)")
     ap.add_argument("--offset", type=int, default=0, help="pula os N primeiros do catalogo")
+    ap.add_argument("--fatia", type=int, default=None,
+                    help=f"forca uma fatia do ciclo de {CICLO_DIAS} dias")
     ap.add_argument("--no-rede", action="store_true", help="so reclassifica o dados.json existente")
     args = ap.parse_args()
 
     if args.no_rede:
-        with open("dados.json", encoding="utf-8") as f:
-            projetos = json.load(f)["projetos"]
+        projetos = carregar_projetos()
         normalizar_nomes(projetos)
         for p in projetos:
             p["situacao"], p["motivo"] = classificar(p)
     else:
-        projetos = coletar(args.limite, args.offset)
+        if args.limite:
+            alvos = descobrir_tokens(args.limite, args.offset)
+            alvos += [dict(p) for p in PROJETOS_SEM_TOKEN]
+        else:
+            alvos = alvos_do_dia(
+                args.fatia if args.fatia is not None else fatia_do_dia()
+            )
+
         # Sem tokens a pagina inteira perde o sentido. Melhor abortar e manter
         # o dados.json anterior do que publicar em silencio uma lista vazia.
-        if args.limite > 0 and not any(p.get("categoria") == "Token" for p in projetos):
+        if not any(p.get("categoria") == "Token" for p in alvos):
             print(
                 "! nenhum token veio do XRPL Meta - dados.json NAO foi alterado.",
                 file=sys.stderr,
             )
             sys.exit(1)
+
+        medidos = coletar(alvos)
+        projetos = mesclar(carregar_projetos(), medidos)
+        # Reclassifica tudo: os limiares podem ter mudado desde a ultima
+        # medicao de quem nao foi medido hoje.
+        for p in projetos:
+            p["situacao"], p["motivo"] = classificar(p)
         salvar_snapshot(projetos)
 
     ordem = {"ativo": 0, "morrendo": 1, "parado": 2, "morto": 3, "indeterminado": 4}
     projetos.sort(key=lambda p: (ordem.get(p["situacao"], 9), -(p.get("holders") or 0)))
 
+    medidos_em = sorted(p["medido_em"] for p in projetos if p.get("medido_em"))
     saida = {
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
+        "medicao_mais_antiga": medidos_em[0] if medidos_em else None,
+        "ciclo_dias": CICLO_DIAS,
         "limiares": LIMIARES,
         "total": len(projetos),
         "contagem": {

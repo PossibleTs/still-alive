@@ -1,0 +1,30 @@
+name: Revalidar um projeto
+description: Discorda da classificacao? Peca uma medicao nova, agora.
+title: "Revalidar: "
+labels: ["revalidar"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A maior parte da lista e remedida em rodizio, entao o numero que voce
+        viu pode ter ate duas semanas. Aqui voce pede uma medicao nova na hora.
+
+        O robo mede e responde nesta mesma issue. Ele nao decide se o criterio
+        e justo - isso e conversa, e voce pode puxar aqui embaixo.
+
+        Limites: um projeto e remedido no maximo a cada 12h, e cada pessoa pode
+        pedir 3 por dia. Nao e desconfianca de voce - o no publico da XRPL e de
+        graca por gentileza, e a gentileza acaba se a gente abusar.
+  - type: input
+    id: projeto
+    attributes:
+      label: Projeto
+      description: O nome como aparece na pagina, ou o endereco do emissor.
+      placeholder: SOLO
+    validations:
+      required: true
+  - type: textarea
+    id: porque
+    attributes:
+      label: Por que voce acha que esta errado
+      description: Opcional, mas ajuda. Se voce e do projeto, diga.

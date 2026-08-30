@@ -16,6 +16,7 @@ import html
 import json
 import os
 import sys
+import urllib.parse
 
 # Endereco do repositorio, usado no canal de contestacao da pagina.
 REPO = os.environ.get("XRPLVIVO_REPO", "")
@@ -121,9 +122,30 @@ def card(p: dict) -> str:
         classe = "sobe" if v >= 0 else "desce"
         metricas.append(f'<span class="{classe}">{v:+.1f}% detentores</span>')
 
+    medido = (p.get("medido_em") or "")[:10]
+    if medido:
+        dias = None
+        try:
+            dias = (dt.date.today() - dt.date.fromisoformat(medido)).days
+        except ValueError:
+            pass
+        if dias is not None:
+            quando = "medido hoje" if dias == 0 else (
+                "medido ontem" if dias == 1 else f"medido ha {dias} dias"
+            )
+            metricas.append(f'<span class="quando">{quando}</span>')
+
+    pedir = ""
+    if REPO:
+        alvo = urllib.parse.quote(str(p.get("nome", "")))
+        pedir = (
+            f'<a class="pedir" href="{html.escape(REPO)}/issues/new?'
+            f'template=revalidar.yml&title=Revalidar:+{alvo}">medir de novo</a>'
+        )
+
     return f"""      <article class="card {e(p.get('situacao','indeterminado'))}">
         <div class="nome">{titulo}<span class="cat">{e(str(p.get('categoria','')))}</span></div>
-        <div class="motivo">{e(str(p.get('motivo','')))}</div>
+        <div class="motivo">{e(str(p.get('motivo','')))}{pedir}</div>
         <div class="metricas">{' · '.join(metricas) if metricas else '&nbsp;'}</div>
       </article>"""
 
@@ -158,6 +180,7 @@ def gerar(dados: dict) -> str:
         )
 
     lim = dados.get("limiares", {})
+    ciclo = dados.get("ciclo_dias", 15)
 
     # Canal de contestacao. Chamar projeto dos outros de morto sem oferecer
     # como reclamar e o jeito mais rapido de perder a comunidade. Preencha
@@ -181,7 +204,9 @@ def gerar(dados: dict) -> str:
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
-<style>{CSS}</style>
+<style>{CSS}
+.quando{{opacity:.65;font-style:italic}}
+.pedir{{margin-left:.5em;font-size:.85em;opacity:.6}}</style>
 </head>
 <body>
 <div class="page">
@@ -189,7 +214,8 @@ def gerar(dados: dict) -> str:
     <div class="eyebrow">Atualizado em {html.escape(quando)}</div>
     <h1>Quem ainda esta vivo na XRPL</h1>
     <p class="dek">Diretorio nenhum diz quais projetos morreram. Esta pagina mede
-    a atividade real de cada um na rede, todo dia, e mostra a conta.</p>
+    a atividade real de cada um na rede e mostra a conta. Cada cartao diz de
+    quando e a sua medicao.</p>
   </header>
 
   <div class="placar">{placar}</div>
@@ -216,6 +242,14 @@ def gerar(dados: dict) -> str:
       {lim.get('tx_ativo','?')} transacoes no mes e movimento nos ultimos
       {lim.get('dias_ativo','?')} dias. Sao escolhas discutiveis, e de proposito
       estao expostas aqui.</p>
+      <p>Discorda de alguma classificacao? Cada cartao tem um "medir de novo"
+      que roda a medicao na hora e responde com o numero. Ele nao decide se o
+      corte e justo - isso e conversa, e da para puxar no mesmo lugar.</p>
+      <p>Os projetos mais movimentados sao remedidos todo dia; o restante entra
+      num rodizio de {ciclo} dias, porque morte e lenta e medir tudo diariamente
+      seria castigar o no publico da rede para descobrir quase nada. Por isso
+      cada cartao carrega a data da propria medicao, em vez de a pagina fingir
+      que viu tudo hoje.</p>
       <p>A contagem de transacoes tem teto: acima de 2400 no mes ela aparece com
       um <code>+</code>, porque a leitura para ali. E um piso, nao um total.</p>
       <p>Nada disto e conselho de investimento, e um projeto quieto na rede pode
