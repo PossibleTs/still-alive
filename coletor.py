@@ -211,19 +211,21 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
     """
     Mede a atividade da conta em DUAS medidas, que sao coisas diferentes:
 
-      tx_janela / ultima_atividade  - tudo que tocou a conta na janela.
+      tx_janela / ultima_atividade   - tudo que tocou a conta na janela.
       tx_emissor / ultima_do_emissor - so o que a propria conta ASSINOU.
 
     A distincao e o coracao da medicao. O account_tx devolve toda transacao que
     afeta a conta, e a maioria e de estranho: gente abrindo trustline, bot
     mandando poeira, oferta batendo no livro. Um emissor abandonado ha meses
-    parece movimentado por causa disso - foi o que escondeu os mortos na
-    primeira coleta de 300. Quem assinou responde "a equipe ainda esta ai?";
-    o total responde "o token ainda circula?". Sao perguntas distintas e a
-    pagina precisa das duas para nao chamar de vivo quem so tem visita.
+    parece movimentado por causa disso. Quem assinou responde "a equipe ainda
+    esta ai?"; o total responde "o token ainda circula?".
 
-    Pagina para tras e para assim que passa do corte, em vez de tentar
-    adivinhar um ledger_index inicial.
+    Le para tras ate CRUZAR o corte da janela, e para ali. Cruzar o corte e o
+    que torna as contagens exatas; se paramos antes, por bater no teto de
+    paginas, elas viram piso e `truncado` diz isso. Nao vale a pena seguir
+    lendo historico antigo so para achar a ultima assinatura do emissor: sao
+    doze chamadas por conta e a resposta que importa - "assinou algo no mes?" -
+    ja esta dada.
     """
     corte = int(time.time()) - dias * 86400
     ultima: int | None = None
@@ -232,7 +234,7 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
     total_emissor = 0
     marker = None
     paginas = 0
-    truncado = False
+    janela_completa = False
 
     def _saida(erro=None) -> dict:
         return {
@@ -240,7 +242,7 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
             "ultima_do_emissor": ultima_emissor,
             "tx_janela": total,
             "tx_emissor": total_emissor,
-            "truncado": truncado,
+            "truncado": not janela_completa,
             "erro": erro,
         }
 
@@ -264,41 +266,30 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
             quando = _data_da_transacao(t)
             if quando is None:
                 continue
-            tx = t.get("tx_json") or t.get("tx") or {}
-            foi_o_emissor = tx.get("Account") == endereco
+            if quando < corte:
+                janela_completa = True
+                break
 
+            tx = t.get("tx_json") or t.get("tx") or {}
             if ultima is None:
                 ultima = quando
-            if foi_o_emissor and ultima_emissor is None:
-                ultima_emissor = quando
+            total += 1
+            if tx.get("Account") == endereco:
+                total_emissor += 1
+                if ultima_emissor is None:
+                    ultima_emissor = quando
 
-            if quando >= corte:
-                total += 1
-                if foi_o_emissor:
-                    total_emissor += 1
-            else:
-                # Passou do corte: a janela acabou. Mas seguimos so ate achar a
-                # ultima assinatura do emissor, que pode ser bem mais antiga -
-                # sem ela nao da para dizer "a equipe sumiu ha N dias".
-                if ultima_emissor is not None:
-                    return _saida()
-                break
-        else:
-            marker = res.get("marker")
-            paginas += 1
-            if not marker:
-                break
-            time.sleep(PAUSA_ENTRE_CHAMADAS)
-            continue
+        if janela_completa:
+            break
 
-        # Saiu do laco pelo break: janela encerrada, ainda procurando o emissor.
         marker = res.get("marker")
         paginas += 1
         if not marker:
+            # Acabou o historico da conta: a janela esta coberta por inteiro.
+            janela_completa = True
             break
         time.sleep(PAUSA_ENTRE_CHAMADAS)
 
-    truncado = paginas >= 12
     return _saida()
 
 
