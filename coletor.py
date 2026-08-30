@@ -183,15 +183,40 @@ def _data_da_transacao(t: dict) -> int | None:
 
 def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
     """
-    Mede a atividade da conta: quando foi a ultima transacao e quantas
-    aconteceram na janela. Pagina para tras e para assim que passa do corte,
-    em vez de tentar adivinhar um ledger_index inicial.
+    Mede a atividade da conta em DUAS medidas, que sao coisas diferentes:
+
+      tx_janela / ultima_atividade  - tudo que tocou a conta na janela.
+      tx_emissor / ultima_do_emissor - so o que a propria conta ASSINOU.
+
+    A distincao e o coracao da medicao. O account_tx devolve toda transacao que
+    afeta a conta, e a maioria e de estranho: gente abrindo trustline, bot
+    mandando poeira, oferta batendo no livro. Um emissor abandonado ha meses
+    parece movimentado por causa disso - foi o que escondeu os mortos na
+    primeira coleta de 300. Quem assinou responde "a equipe ainda esta ai?";
+    o total responde "o token ainda circula?". Sao perguntas distintas e a
+    pagina precisa das duas para nao chamar de vivo quem so tem visita.
+
+    Pagina para tras e para assim que passa do corte, em vez de tentar
+    adivinhar um ledger_index inicial.
     """
     corte = int(time.time()) - dias * 86400
     ultima: int | None = None
+    ultima_emissor: int | None = None
     total = 0
+    total_emissor = 0
     marker = None
     paginas = 0
+    truncado = False
+
+    def _saida(erro=None) -> dict:
+        return {
+            "ultima_atividade": ultima,
+            "ultima_do_emissor": ultima_emissor,
+            "tx_janela": total,
+            "tx_emissor": total_emissor,
+            "truncado": truncado,
+            "erro": erro,
+        }
 
     while paginas < 12:  # teto de seguranca: 12 x 200 = 2400 transacoes
         params = {
@@ -207,26 +232,48 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
         res = _rpc("account_tx", params)
         txs = res.get("transactions") or []
         if not txs and paginas == 0:
-            return {"ultima_atividade": None, "tx_janela": 0, "erro": res.get("error")}
+            return _saida(erro=res.get("error"))
 
         for t in txs:
             quando = _data_da_transacao(t)
             if quando is None:
                 continue
+            tx = t.get("tx_json") or t.get("tx") or {}
+            foi_o_emissor = tx.get("Account") == endereco
+
             if ultima is None:
                 ultima = quando
+            if foi_o_emissor and ultima_emissor is None:
+                ultima_emissor = quando
+
             if quando >= corte:
                 total += 1
+                if foi_o_emissor:
+                    total_emissor += 1
             else:
-                return {"ultima_atividade": ultima, "tx_janela": total, "erro": None}
+                # Passou do corte: a janela acabou. Mas seguimos so ate achar a
+                # ultima assinatura do emissor, que pode ser bem mais antiga -
+                # sem ela nao da para dizer "a equipe sumiu ha N dias".
+                if ultima_emissor is not None:
+                    return _saida()
+                break
+        else:
+            marker = res.get("marker")
+            paginas += 1
+            if not marker:
+                break
+            time.sleep(PAUSA_ENTRE_CHAMADAS)
+            continue
 
+        # Saiu do laco pelo break: janela encerrada, ainda procurando o emissor.
         marker = res.get("marker")
         paginas += 1
         if not marker:
             break
         time.sleep(PAUSA_ENTRE_CHAMADAS)
 
-    return {"ultima_atividade": ultima, "tx_janela": total, "erro": None, "truncado": True}
+    truncado = paginas >= 12
+    return _saida()
 
 
 # Endereco "buraco negro" canonico da XRPL: chave publica de valor zero, sem
@@ -395,6 +442,17 @@ def classificar(p: dict) -> tuple[str, str]:
     # Com o teto de paginacao a contagem e um piso: dizer "2400" seria mentira
     # pequena, e o motivo e a unica prova que a pagina oferece.
     tx_txt = f"{tx}+" if p.get("tx_truncado") else str(tx)
+
+    # Quase toda transacao que aparece no account_tx e de terceiro abrindo
+    # trustline ou mandando poeira. So podemos afirmar que a equipe sumiu
+    # quando a leitura NAO foi truncada - com teto de paginacao, nao ter visto
+    # o emissor assinar nao prova que ele nao assinou.
+    tx_emissor = p.get("tx_emissor")
+    leitura_completa = not p.get("tx_truncado")
+    emissor_calado = (
+        leitura_completa and tx_emissor == 0 and p["categoria"] == "Token"
+    )
+    dias_calado = p.get("dias_sem_emissor")
     holders = p.get("holders") or 0
     site = p.get("site_ok")
     blackholed = p.get("blackholed")
@@ -420,6 +478,21 @@ def classificar(p: dict) -> tuple[str, str]:
 
     if dias > LIMIARES["dias_morto"]:
         return "morto", f"Sem nenhuma transacao ha {dias} dias."
+
+    # Conta movimentada por estranhos, emissor calado. Nao e morte - o token
+    # circula -, mas dizer "ativo" aqui seria creditar ao projeto o movimento
+    # que os outros fazem.
+    if emissor_calado:
+        desde = f"ha {dias_calado} dias" if dias_calado else "na janela medida"
+        if (p.get("trocas_24h") or 0) > 0:
+            return "ativo", (
+                f"Token negociado nas ultimas 24h e {tx_txt} transacoes na conta, "
+                f"mas nenhuma assinada pelo emissor {desde}."
+            )
+        return "morrendo", (
+            f"As {tx_txt} transacoes da conta sao todas de terceiros; o emissor "
+            f"nao assina nada {desde}, e nao houve negociacao nas ultimas 24h."
+        )
 
     if site is False and tx < LIMIARES["tx_minimo"]:
         return "morto", f"Site fora do ar e so {tx_txt} transacoes em 30 dias."
@@ -451,6 +524,8 @@ def salvar_snapshot(projetos: list[dict]) -> None:
         p.get("emissor") or p["nome"]: {
             "holders": p.get("holders"),
             "tx_janela": p.get("tx_janela"),
+            "tx_emissor": p.get("tx_emissor"),
+            "dias_sem_emissor": p.get("dias_sem_emissor"),
             "tx_truncado": p.get("tx_truncado"),
         }
         for p in projetos
@@ -507,7 +582,11 @@ def coletar(limite: int) -> list[dict]:
             time.sleep(PAUSA_ENTRE_CHAMADAS)
             sinais = atividade_da_conta(p["emissor"])
             p["tx_janela"] = sinais["tx_janela"]
+            p["tx_emissor"] = sinais.get("tx_emissor")
             p["tx_truncado"] = bool(sinais.get("truncado"))
+            ue = sinais.get("ultima_do_emissor")
+            p["ultima_do_emissor"] = ue
+            p["dias_sem_emissor"] = max(0, (agora - ue) // 86400) if ue else None
             ultima = sinais["ultima_atividade"]
             p["ultima_atividade"] = ultima
             # max(0,...): a coleta demora minutos e "agora" foi lido no inicio;
