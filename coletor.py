@@ -19,6 +19,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import http.client
 import json
 import os
 import sys
@@ -68,6 +69,20 @@ PROJETOS_SEM_TOKEN = [
 # --------------------------------------------------------------------------
 
 
+# Tudo que uma leitura de rede pode jogar. IncompleteRead entrou na lista
+# depois de derrubar uma coleta de duas horas no token 190 de 308: o no
+# publico fechou a conexao no meio da resposta, e HTTPException nao e
+# URLError - passava direto pelo except e matava o processo inteiro.
+FALHAS_DE_REDE = (
+    urllib.error.URLError,
+    http.client.HTTPException,
+    TimeoutError,
+    ConnectionError,
+    json.JSONDecodeError,
+    OSError,
+)
+
+
 def _get_json(url: str, tentativas: int = 3) -> Any:
     """
     GET com retentativa e espera crescente.
@@ -83,7 +98,7 @@ def _get_json(url: str, tentativas: int = 3) -> Any:
         try:
             with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
                 return json.loads(r.read().decode("utf-8"))
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+        except FALHAS_DE_REDE as e:
             if tentativa == tentativas - 1:
                 raise
             print(
@@ -108,7 +123,7 @@ def _rpc(metodo: str, params: dict) -> dict:
             with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
                 resposta = json.loads(r.read().decode("utf-8"))
             return resposta.get("result", {}) or {}
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError) as e:
+        except FALHAS_DE_REDE as e:
             if tentativa == 2:
                 print(f"    ! rpc {metodo} falhou: {e}", file=sys.stderr)
                 return {}
@@ -612,27 +627,15 @@ def coletar(limite: int) -> list[dict]:
 
     for i, p in enumerate(projetos, 1):
         print(f"[{i}/{len(projetos)}] {p['nome']}")
-
-        if p.get("emissor"):
-            p["blackholed"] = conta_esta_blackholed(p["emissor"])
-            time.sleep(PAUSA_ENTRE_CHAMADAS)
-            sinais = atividade_da_conta(p["emissor"])
-            p["tx_janela"] = sinais["tx_janela"]
-            p["tx_emissor"] = sinais.get("tx_emissor")
-            p["tx_truncado"] = bool(sinais.get("truncado"))
-            ue = sinais.get("ultima_do_emissor")
-            p["ultima_do_emissor"] = ue
-            p["dias_sem_emissor"] = max(0, (agora - ue) // 86400) if ue else None
-            ultima = sinais["ultima_atividade"]
-            p["ultima_atividade"] = ultima
-            # max(0,...): a coleta demora minutos e "agora" foi lido no inicio;
-            # uma transacao recem-confirmada dava "ha -1 dias" na pagina.
-            p["dias_sem_atividade"] = max(0, (agora - ultima) // 86400) if ultima else None
-            time.sleep(PAUSA_ENTRE_CHAMADAS)
-        else:
+        try:
+            _medir(p, agora)
+        except Exception as e:
+            # Uma coleta de 300 leva horas. Deixar um projeto estranho derrubar
+            # o lote inteiro ja custou duas horas uma vez; melhor marcar este
+            # como nao medido e seguir.
+            print(f"    ! {p['nome']}: {type(e).__name__}: {e}", file=sys.stderr)
+            p["erro_medicao"] = f"{type(e).__name__}: {e}"
             p.setdefault("dias_sem_atividade", None)
-
-        p["site_ok"] = site_responde(p.get("site", ""))
 
     aplicar_tendencia(projetos)
 
@@ -642,6 +645,30 @@ def coletar(limite: int) -> list[dict]:
         p["motivo"] = motivo
 
     return projetos
+
+
+def _medir(p: dict, agora: int) -> None:
+    """Mede um projeto. Separado para o laco poder seguir se este falhar."""
+    if p.get("emissor"):
+        p["blackholed"] = conta_esta_blackholed(p["emissor"])
+        time.sleep(PAUSA_ENTRE_CHAMADAS)
+        sinais = atividade_da_conta(p["emissor"])
+        p["tx_janela"] = sinais["tx_janela"]
+        p["tx_emissor"] = sinais.get("tx_emissor")
+        p["tx_truncado"] = bool(sinais.get("truncado"))
+        ue = sinais.get("ultima_do_emissor")
+        p["ultima_do_emissor"] = ue
+        p["dias_sem_emissor"] = max(0, (agora - ue) // 86400) if ue else None
+        ultima = sinais["ultima_atividade"]
+        p["ultima_atividade"] = ultima
+        # max(0,...): a coleta demora minutos e "agora" foi lido no inicio;
+        # uma transacao recem-confirmada dava "ha -1 dias" na pagina.
+        p["dias_sem_atividade"] = max(0, (agora - ultima) // 86400) if ultima else None
+        time.sleep(PAUSA_ENTRE_CHAMADAS)
+    else:
+        p.setdefault("dias_sem_atividade", None)
+
+    p["site_ok"] = site_responde(p.get("site", ""))
 
 
 def main() -> None:
