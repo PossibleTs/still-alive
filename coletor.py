@@ -422,10 +422,18 @@ def descobrir_tokens(limite: int) -> list[dict]:
                 "moeda": nome_da_moeda(_cava(t, "currency")),
                 "moeda_hex": _cava(t, "currency"),
                 "site": _cava(t, "meta.issuer.domain", "meta.token.domain", padrao=""),
-                "holders": _num(_cava(t, "metrics.holders")),
-                "trustlines": _num(_cava(t, "metrics.trustlines")),
-                "volume_24h": _num(_cava(t, "metrics.volume_24h")),
-                "trocas_24h": _num(_cava(t, "metrics.exchanges_24h", "metrics.exchanges24h")),
+                # padrao=None de proposito: campo AUSENTE nao e o mesmo que
+                # zero. Se o XRPL Meta mudar o esquema ou responder pela
+                # metade, zero viraria "sem negociacao nas ultimas 24h" - a
+                # pagina acusaria de moribundo o catalogo inteiro por causa de
+                # um defeito nosso.
+                "holders": _num(_cava(t, "metrics.holders"), padrao=None),
+                "trustlines": _num(_cava(t, "metrics.trustlines"), padrao=None),
+                "volume_24h": _num(_cava(t, "metrics.volume_24h"), padrao=None),
+                "trocas_24h": _num(
+                    _cava(t, "metrics.exchanges_24h", "metrics.exchanges24h"),
+                    padrao=None,
+                ),
             }
         )
     return saida
@@ -452,6 +460,10 @@ def classificar(p: dict) -> tuple[str, str]:
     classificacao vira acusacao sem prova."""
     dias = p.get("dias_sem_atividade")
     tx = p.get("tx_janela") or 0
+    # None = nao sabemos; 0 = sabemos que nao houve. So o segundo acusa.
+    trocas = p.get("trocas_24h")
+    sem_negociacao = trocas == 0
+    negociou = isinstance(trocas, (int, float)) and trocas > 0
     # Com o teto de paginacao a contagem e um piso: dizer "2400" seria mentira
     # pequena, e o motivo e a unica prova que a pagina oferece.
     tx_txt = f"{tx}+" if p.get("tx_truncado") else str(tx)
@@ -466,7 +478,7 @@ def classificar(p: dict) -> tuple[str, str]:
         leitura_completa and tx_emissor == 0 and p["categoria"] == "Token"
     )
     dias_calado = p.get("dias_sem_emissor")
-    holders = p.get("holders") or 0
+    holders = p.get("holders") or 0  # None vira 0 so para comparar, nao para acusar
     site = p.get("site_ok")
     blackholed = p.get("blackholed")
 
@@ -483,9 +495,14 @@ def classificar(p: dict) -> tuple[str, str]:
     # Emissor blackholed e desenho intencional: a atividade acontece entre os
     # detentores, nao pela conta emissora. Julga-se pelo token, nao pela conta.
     if blackholed:
-        if holders >= LIMIARES["holders_minimo"] and (p.get("trocas_24h") or 0) > 0:
+        if holders >= LIMIARES["holders_minimo"] and negociou:
             return "ativo", f"Emissor blackholed (boa pratica); {holders} detentores e negociacao nas ultimas 24h."
         if holders >= LIMIARES["holders_minimo"]:
+            if not sem_negociacao:  # nao sabemos se negociou
+                return "indeterminado", (
+                    f"Emissor blackholed com {holders} detentores, mas o catalogo "
+                    "nao informou negociacao - sem dado para julgar."
+                )
             return "morrendo", f"Emissor blackholed; {holders} detentores, mas sem negociacao nas ultimas 24h."
         return "parado", f"Emissor blackholed e apenas {holders} detentores."
 
@@ -497,10 +514,16 @@ def classificar(p: dict) -> tuple[str, str]:
     # que os outros fazem.
     if emissor_calado:
         desde = f"ha {dias_calado} dias" if dias_calado else "na janela medida"
-        if (p.get("trocas_24h") or 0) > 0:
+        if negociou:
             return "ativo", (
                 f"Token negociado nas ultimas 24h e {tx_txt} transacoes na conta, "
                 f"mas nenhuma assinada pelo emissor {desde}."
+            )
+        if not sem_negociacao:
+            return "indeterminado", (
+                f"As {tx_txt} transacoes da conta sao todas de terceiros e o "
+                f"emissor nao assina nada {desde}; sem dado de negociacao para "
+                "concluir."
             )
         return "morrendo", (
             f"As {tx_txt} transacoes da conta sao todas de terceiros; o emissor "
