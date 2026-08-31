@@ -134,19 +134,46 @@ def main() -> None:
 
     # Movimento de detentores: a outra fonte de assunto, e a que aparece antes
     # de a situacao mudar.
-    quedas = []
-    for chave, reg in novo.items():
-        a = (velho.get(chave) or {}).get("holders")
-        b = reg.get("holders")
-        if isinstance(a, int) and isinstance(b, int) and a >= 500:
-            var = (b - a) / a * 100
-            if abs(var) >= 5:
-                quedas.append((var, chave, reg, a, b))
-    if quedas:
-        quedas.sort(key=lambda q: q[0])
+    #
+    # Isto NAO compara os dois snapshots escolhidos acima. O topo e medido
+    # todo dia e a cauda a cada 15 - comparar os dois contra a mesma data de
+    # calendario faz a cauda ficar "parada" por duas semanas e depois dar um
+    # salto que parece um movimento brusco, quando e so o acumulado de 15 dias
+    # aparecendo de uma vez no dia do rodizio. Le direto o dados.json ATUAL,
+    # usa a janela real de cada projeto (a sua propria medicao anterior, nao
+    # um calendario compartilhado) e ordena por TAXA (%/dia), nao pela
+    # porcentagem bruta - senao um projeto quieto ha duas semanas sempre
+    # ganharia de um que se moveu rapido ontem.
+    achados = []
+    if os.path.exists("dados.json"):
+        with open("dados.json", encoding="utf-8") as f:
+            atuais = json.load(f).get("projetos") or []
+        corte = dt.date.today() - dt.timedelta(days=args.dias)
+        for p in atuais:
+            var, janela, medido, h = (
+                p.get("variacao_holders"), p.get("dias_variacao"),
+                p.get("medido_em"), p.get("holders"),
+            )
+            if not (isinstance(var, (int, float)) and isinstance(janela, int) and medido):
+                continue
+            try:
+                if dt.date.fromisoformat(medido[:10]) < corte:
+                    continue  # medicao velha demais para esta janela
+            except ValueError:
+                continue
+            if not (isinstance(h, int) and h >= 500) or abs(var) < 5:
+                continue
+            achados.append((var / janela, var, janela, p.get("nome"), h))
+
+    if achados:
+        achados.sort(key=lambda a: a[0])
         print("\n## Biggest holder swings (>=5%, projects above 500 holders)\n")
-        for var, chave, reg, a, b in quedas[:10]:
-            print(f"  {var:+6.1f}%  {nome(chave, reg):22} {a:,} -> {b:,}")
+        print("(sorted by rate, %/day - not by raw %, so a project that has\n"
+              " not been re-measured in two weeks does not out-rank one that\n"
+              " moved fast yesterday)\n")
+        for taxa, var, janela, nome_p, h in achados[:10]:
+            print(f"  {var:+6.1f}% over {janela:>2}d  ({taxa:+.2f}%/day)  "
+                  f"{nome_p:22} {h:,} holders")
 
     print("\n## Contagem por situacao\n")
     for k in ESCALA + ["indeterminado"]:

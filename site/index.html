@@ -139,7 +139,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
 <body>
 <div class="page">
   <header>
-    <div class="eyebrow">Updated 31/08/2026 as 15:54 UTC</div>
+    <div class="eyebrow">Updated 31/08/2026 as 19:41 UTC</div>
     <h1>Still Alive</h1>
     <p class="sub">Which projects on the XRP Ledger are still running.</p>
     <p class="dek">No directory tells you which projects died. This page measures
@@ -4279,9 +4279,16 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       signer list is <em>not</em> blackholed — it transacts normally and is
       measured like any other.</p>
       <p><strong>What <code>% holders</code> means.</strong> The change in the
-      number of holders since the previous measurement of that same project —
-      the only trend line here, and it only exists from the second measurement
-      onwards. Below 0.1% we do not show it: that is noise, not a trend.</p>
+      number of holders since this project's own previous measurement — never
+      a fixed calendar window shared with other rows. That distinction matters
+      because coverage runs on two different clocks: the busiest projects are
+      re-measured daily, the rest on a 15-day rotation. A dormant project
+      can sit unchanged in the data for two weeks and then show its whole
+      accumulated drift the day its turn comes up — printed here as
+      "over 14d", not a sudden weekly move. Always read the window before the
+      percentage. It is the only trend line here, and it only exists from a
+      project's second measurement onwards. Below 0.1% we do not show it: that
+      is noise, not a trend.</p>
       <p><strong>The cut-offs.</strong> Dead above 180
       days with no transaction; dormant above 90 days
       or fewer than 10 transactions in the month; alive

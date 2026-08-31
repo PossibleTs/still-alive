@@ -327,9 +327,17 @@ def linha(p: dict, repetidos: set = frozenset()) -> str:
     v = p.get("variacao_holders")
     if isinstance(v, (int, float)) and abs(v) >= 0.1:
         classe = "sobe" if v >= 0 else "desce"
+        janela = p.get("dias_variacao")
+        # A janela vai no proprio texto, nao so no title: um numero sem ela e
+        # enganoso quando dois projetos de cadencia diferente aparecem lado a
+        # lado (topo medido todo dia, cauda a cada 15) - sem isso, +18% de um
+        # projeto quieto ha duas semanas parece o mesmo tipo de movimento que
+        # +2% de um projeto medido ontem.
+        sufixo = f' over {janela}d' if isinstance(janela, int) else ''
         metricas.append(
-            f'<span class="{classe}" title="Change in the number of holders '
-            f'since the previous measurement of this project">{v:+.1f}% holders</span>'
+            f'<span class="{classe}" title="Change in holders since this '
+            f'project\'s own previous measurement, not a fixed calendar week">'
+            f'{v:+.1f}% holders{sufixo}</span>'
         )
 
     medido = (p.get("medido_em") or "")[:10]
@@ -526,9 +534,16 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       signer list is <em>not</em> blackholed — it transacts normally and is
       measured like any other.</p>
       <p><strong>What <code>% holders</code> means.</strong> The change in the
-      number of holders since the previous measurement of that same project —
-      the only trend line here, and it only exists from the second measurement
-      onwards. Below 0.1% we do not show it: that is noise, not a trend.</p>
+      number of holders since this project's own previous measurement — never
+      a fixed calendar window shared with other rows. That distinction matters
+      because coverage runs on two different clocks: the busiest projects are
+      re-measured daily, the rest on a {ciclo}-day rotation. A dormant project
+      can sit unchanged in the data for two weeks and then show its whole
+      accumulated drift the day its turn comes up — printed here as
+      "over 14d", not a sudden weekly move. Always read the window before the
+      percentage. It is the only trend line here, and it only exists from a
+      project's second measurement onwards. Below 0.1% we do not show it: that
+      is noise, not a trend.</p>
       <p><strong>The cut-offs.</strong> Dead above {lim.get('dias_morto','?')}
       days with no transaction; dormant above {lim.get('dias_parado','?')} days
       or fewer than {lim.get('tx_minimo','?')} transactions in the month; alive

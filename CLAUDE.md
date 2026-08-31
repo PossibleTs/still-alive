@@ -124,6 +124,16 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
   `dados.json` anterior em vez de sobrescrever, e cada projeto carrega
   `medido_em`. Nunca troque a mesclagem por sobrescrita: apagaria catorze
   quinze avos da página.
+- **Tendência (`% holders`):** por causa da cadência de dois relógios acima,
+  `variacao_holders` NUNCA compara contra uma data de calendário comum a todos
+  — compararia o topo (medido todo dia) e a cauda (medida a cada 15) de forma
+  desigual, e faria a cauda parecer "parada" por duas semanas e depois dar um
+  salto brusco no dia do rodízio. `mesclar()` grava `holders_anterior` e
+  `medido_em_anterior` a cada remedição; `aplicar_tendencia()` calcula a
+  variação e `dias_variacao` a partir DESSE par, por projeto. A página sempre
+  mostra a janela junto do número (`+12.3% over 14d`), nunca a porcentagem
+  sozinha. `mudancas.py` rankeia por taxa (%/dia), não pela porcentagem bruta,
+  pelo mesmo motivo.
 - `historico/` é sagrado: é o que permite mostrar tendência. Nunca limpe.
 - Antes de publicar qualquer lista pública, leia a seção "Antes de publicar" do
   README. A parte reputacional é mais arriscada que a técnica.

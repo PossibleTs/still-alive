@@ -674,32 +674,32 @@ def salvar_snapshot(projetos: list[dict]) -> None:
 
 
 def aplicar_tendencia(projetos: list[dict]) -> None:
-    """Compara com o snapshot mais antigo disponivel dentro de ~35 dias."""
-    if not os.path.isdir("historico"):
-        return
-    arquivos = sorted(os.listdir("historico"))
-    if len(arquivos) < 2:
-        return
+    """
+    Calcula variacao_holders e dias_variacao a partir da PROPRIA medicao
+    anterior de cada projeto (holders_anterior/medido_em_anterior, gravados
+    por mesclar() na hora da remedicao) - nunca de um snapshot de calendario
+    comum a todos.
 
-    limite = dt.date.today() - dt.timedelta(days=35)
-    antigo = None
-    for nome in arquivos:
-        try:
-            data = dt.date.fromisoformat(nome.removesuffix(".json"))
-        except ValueError:
-            continue
-        if data >= limite:
-            with open(f"historico/{nome}", encoding="utf-8") as f:
-                antigo = json.load(f)
-            break
-    if not antigo:
-        return
-
+    O motivo: o topo e medido todo dia e a cauda a cada 15. Comparar os dois
+    contra a mesma data faz a cauda ficar "parada" por duas semanas e depois
+    dar um salto que parece um movimento brusco, quando e so o acumulado de
+    15 dias aparecendo de uma vez. dias_variacao vai junto do numero para a
+    pagina nunca mostrar uma porcentagem sem dizer sobre que janela ela e.
+    """
     for p in projetos:
-        antes = (antigo.get(chave_do_projeto(p)) or {}).get("holders")
+        antes = p.get("holders_anterior")
         agora = p.get("holders")
-        if isinstance(antes, int) and isinstance(agora, int) and antes > 0:
-            p["variacao_holders"] = round((agora - antes) / antes * 100, 1)
+        if not (isinstance(antes, int) and isinstance(agora, int) and antes > 0):
+            continue
+        p["variacao_holders"] = round((agora - antes) / antes * 100, 1)
+        antes_em, agora_em = p.get("medido_em_anterior"), p.get("medido_em")
+        if antes_em and agora_em:
+            try:
+                d1 = dt.datetime.fromisoformat(antes_em)
+                d2 = dt.datetime.fromisoformat(agora_em)
+                p["dias_variacao"] = max(1, round((d2 - d1).total_seconds() / 86400))
+            except ValueError:
+                pass
 
 
 # --------------------------------------------------------------------------
@@ -721,10 +721,21 @@ def mesclar(antigos: list[dict], novos: list[dict]) -> list[dict]:
     O ciclo mede uma fatia do catalogo por dia; sem mesclar, cada corrida
     apagaria os outros catorze quinze avos da pagina. Projeto nao medido hoje
     permanece com o que tinha, e o carimbo `medido_em` diz de quando e o dado.
+
+    Ao SUBSTITUIR um projeto por uma medicao nova, guarda o holders/medido_em
+    de antes em holders_anterior/medido_em_anterior. E o que permite calcular
+    tendencia comparando cada projeto com a SUA PROPRIA medicao anterior, no
+    intervalo real entre as duas - nao com um snapshot de calendario que serve
+    o topo (medido todo dia) e a cauda (medida a cada 15 dias) igualmente mal.
     """
     por_chave = {chave_do_projeto(p): p for p in antigos}
     for novo in novos:
-        por_chave[chave_do_projeto(novo)] = novo
+        chave = chave_do_projeto(novo)
+        anterior = por_chave.get(chave)
+        if anterior and isinstance(anterior.get("holders"), int) and anterior.get("medido_em"):
+            novo["holders_anterior"] = anterior["holders"]
+            novo["medido_em_anterior"] = anterior["medido_em"]
+        por_chave[chave] = novo
     return list(por_chave.values())
 
 
