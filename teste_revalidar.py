@@ -16,6 +16,7 @@ from revalidar import (
     TETO_DIARIO,
     achar,
     avaliar_limites,
+    candidatos,
 )
 
 FALHAS = []
@@ -46,6 +47,33 @@ def main() -> None:
     checa("acha pelo nome, sem ligar para caixa", achar(lista, "alpha") is not None)
     checa("acha pelo emissor", achar(lista, "rBBB") is not None)
     checa("nao inventa projeto que nao existe", achar(lista, "rZZZ") is None)
+
+    print("\nAmbiguidade: nome nao identifica projeto")
+    # A ordem imita a lista real: ela chega ordenada por situacao e detentores,
+    # entao o homonimo saudavel vem primeiro. Devolver "o primeiro" media o
+    # projeto errado e respondia com o nome pedido.
+    homonimos = [
+        {"nome": "GCB", "emissor": "rVIVO", "moeda_hex": "GCB", "situacao": "ativo"},
+        {"nome": "GCB", "emissor": "rMORTO", "moeda_hex": "GCB", "situacao": "morto"},
+    ]
+    checa("nao escolhe entre dois nomes iguais", achar(homonimos, "GCB") is None)
+    checa("mostra os dois candidatos", len(candidatos(homonimos, "GCB")) == 2)
+    checa(
+        "a chave completa desempata",
+        (achar(homonimos, "rMORTO:GCB") or {}).get("emissor") == "rMORTO",
+    )
+
+    # Mesmo emissor, duas moedas: e o caso da Bitstamp (US Dollar e Euro).
+    duas_moedas = [
+        {"nome": "US Dollar", "emissor": "rHUB", "moeda_hex": "USD"},
+        {"nome": "Euro", "emissor": "rHUB", "moeda_hex": "EUR"},
+    ]
+    checa("emissor com duas moedas nao identifica", achar(duas_moedas, "rHUB") is None)
+    checa(
+        "emissor:moeda identifica",
+        (achar(duas_moedas, "rHUB:EUR") or {}).get("nome") == "Euro",
+    )
+    checa("nome unico ainda funciona", achar(duas_moedas, "euro") is not None)
 
     print("\nEspera entre medicoes do mesmo projeto")
     recente = {"nome": "Alpha", "medido_em": agora_menos(1)}

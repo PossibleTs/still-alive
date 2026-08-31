@@ -81,17 +81,42 @@ def _horas_desde(iso: str | None) -> float | None:
     return (_agora() - quando).total_seconds() / 3600
 
 
-def achar(projetos: list[dict], nome: str) -> dict | None:
-    """Procura por nome, emissor ou chave. Nome bate sem diferenciar caixa."""
+def candidatos(projetos: list[dict], nome: str) -> list[dict]:
+    """
+    Todos os projetos que casam com o texto pedido, do mais preciso ao menos.
+
+    Nome NAO identifica projeto nesta lista. Medido em 31/08/2026: 14 nomes
+    repetidos cobrindo 38 projetos - oito "GCB", quatro "RippleFox", tres "Mr.
+    Exchange", tres "Bitcoin", dois "US Dollar". Endereco de emissor tambem
+    nao: 12 emissores emitem mais de uma moeda (a Bitstamp emite US Dollar E
+    Euro pela mesma conta). So `emissor:moeda` identifica.
+
+    Isso importa porque a lista chega aqui ordenada por (situacao, -detentores):
+    devolver o primeiro que casa devolvia sempre o homonimo mais saudavel. Um
+    pedido para remedir o GCB morto media o GCB vivo, e a resposta imprimia so
+    o nome - nem quem pediu tinha como notar que mediram outro projeto.
+    """
     alvo = nome.strip().lower()
-    for p in projetos:
-        if alvo in (
-            str(p.get("nome", "")).lower(),
-            str(p.get("emissor", "")).lower(),
-            chave_do_projeto(p).lower(),
-        ):
-            return p
-    return None
+    exato = [p for p in projetos if chave_do_projeto(p).lower() == alvo]
+    if exato:
+        return exato[:1]
+    por_emissor = [p for p in projetos if str(p.get("emissor", "")).lower() == alvo]
+    if por_emissor:
+        return por_emissor
+    return [p for p in projetos if str(p.get("nome", "")).lower() == alvo]
+
+
+def achar(projetos: list[dict], nome: str) -> dict | None:
+    """O projeto pedido, ou None se nao existe OU se o texto casa com mais de
+    um. Ambiguidade nao se resolve por sorteio: quem chama pergunta de novo."""
+    achados = candidatos(projetos, nome)
+    return achados[0] if len(achados) == 1 else None
+
+
+def como_identificar(p: dict) -> str:
+    """Um projeto desta lista, dito de forma que nao caiba outro."""
+    moeda = p.get("moeda") or p.get("moeda_hex") or ""
+    return f"{p.get('nome')} ({moeda}) - `{chave_do_projeto(p)}`"
 
 
 def avaliar_limites(projeto: dict, autor: str, pedidos: list[dict]) -> str | None:
@@ -133,7 +158,22 @@ def main() -> None:
         print("Could not read the project list. Nothing was measured.")
         return
 
-    alvo = achar(projetos, args.projeto)
+    achados = candidatos(projetos, args.projeto)
+    if len(achados) > 1:
+        # Nome repetido, ou emissor que emite mais de uma moeda. Medir "o
+        # primeiro" seria medir outro projeto e responder com o nome pedido.
+        lista = "\n".join(f"- {como_identificar(p)}" for p in achados[:10])
+        resto = "" if len(achados) <= 10 else f"\n- ...and {len(achados) - 10} more"
+        print(
+            f"**{args.projeto}** matches {len(achados)} entries on the page, and "
+            "they are different tokens - a name can be copied, an issuer can "
+            "mint several currencies. Tell me which one and I will measure it: "
+            "open a new recheck with the code in backticks below (issuer:currency).\n\n"
+            f"{lista}{resto}"
+        )
+        return
+
+    alvo = achados[0] if achados else None
     if alvo is None:
         print(
             f"I could not find **{args.projeto}** in the list. This page only "
@@ -165,6 +205,9 @@ def main() -> None:
             "quando": _agora().isoformat(timespec="seconds"),
             "autor": args.autor,
             "projeto": alvo.get("nome"),
+            # A chave, porque o nome nao distingue os homonimos e o registro
+            # existe para dizer QUAL projeto foi remedido.
+            "chave": chave_do_projeto(alvo),
         }
     )
     _gravar_registro(pedidos)
@@ -182,7 +225,9 @@ def main() -> None:
 
     mudou = "" if antes == alvo["situacao"] else f" (was: **{antes}**)"
     print(
-        f"Measured just now: **{alvo['nome']}** is **{alvo['situacao']}**{mudou}.\n\n"
+        f"Measured just now: **{alvo['nome']}** "
+        f"({alvo.get('moeda') or alvo.get('moeda_hex') or ''}, "
+        f"`{chave_do_projeto(alvo)}`) is **{alvo['situacao']}**{mudou}.\n\n"
         f"> {alvo['motivo']}\n\n"
         "The page updates on the next publication. If you disagree with the "
         "criteria rather than the numbers, reply here - the cut-offs are "
