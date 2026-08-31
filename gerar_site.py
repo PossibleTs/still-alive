@@ -199,6 +199,9 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
   grid-column:1;overflow-wrap:anywhere}
 .linha .metricas{font-family:var(--mono);font-size:.7rem;color:var(--muted);
   font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:.6rem;grid-column:2}
+.colisao{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--amber);border:1px solid var(--amber);
+  border-radius:2px;padding:0 .3em;white-space:nowrap;cursor:help}
 .cat{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;
   letter-spacing:.06em;white-space:nowrap}
 .sobe{color:var(--accent)}.desce{color:var(--red)}
@@ -247,7 +250,25 @@ def _chave_alfabetica(nome) -> tuple:
     return (1 if limpo[:1].isdigit() else 0, limpo)
 
 
-def linha(p: dict) -> str:
+def codigos_repetidos(projetos: list[dict]) -> set:
+    """Codigos de moeda usados por MAIS DE UM emissor.
+
+    Isto e uma questao de seguranca, nao de estetica. Ha dois RLUSD nesta
+    lista: o da Ripple, com 72 mil detentores, e outro com 241, de emissor
+    diferente. Uma pagina que diz "alive" ao lado de um nome desses pode ser
+    lida como aval - e emprestar credibilidade a uma imitacao de stablecoin
+    machuca quem le, nao o projeto listado.
+    """
+    por_codigo = {}
+    for p in projetos:
+        codigo = (p.get("moeda") or "").upper()
+        if not codigo or not p.get("emissor"):
+            continue
+        por_codigo.setdefault(codigo, set()).add(p["emissor"])
+    return {c for c, emissores in por_codigo.items() if len(emissores) > 1}
+
+
+def linha(p: dict, repetidos: set = frozenset()) -> str:
     e = html.escape
     nome = e(str(p.get("nome", "?")))
     site = p.get("site") or ""
@@ -342,9 +363,18 @@ def linha(p: dict) -> str:
         if x
     )
 
+    codigo = (p.get("moeda") or "").upper()
+    aviso = ""
+    if codigo in repetidos:
+        aviso = (
+            f' <span class="colisao" title="More than one issuer uses the code '
+            f'{e(codigo)}. Check the address before trusting the name.">'
+            f'shared code</span>'
+        )
+
     situacao = e(p.get("situacao", "indeterminado"))
     return f"""      <article class="linha {situacao}" data-s="{situacao}" data-b="{e(busca)}">
-        <div class="nome"><span class="ponto"></span>{titulo}</div>
+        <div class="nome"><span class="ponto"></span>{titulo}{aviso}</div>
         <div class="motivo">{e(str(p.get('motivo','')))}{pedir}</div>
         <div class="id">{' · '.join(ident) if ident else '&nbsp;'}</div>
         <div class="metricas">{' · '.join(metricas) if metricas else '&nbsp;'}<span class="cat">{e(str(p.get('categoria','')))}</span></div>
@@ -367,6 +397,8 @@ def gerar(dados: dict) -> str:
         if contagem.get(k)
     )
 
+    repetidos = codigos_repetidos(dados["projetos"])
+
     grupos = []
     for chave in ("ativo", "morrendo", "parado", "morto", "indeterminado"):
         do_grupo = [p for p in dados["projetos"] if p.get("situacao") == chave]
@@ -381,7 +413,7 @@ def gerar(dados: dict) -> str:
             f"""    <section class="grupo" data-grupo="{chave}">
       <div class="cabeca"><h2>{titulo} <span class="conta" data-conta="{chave}">({len(do_grupo)})</span></h2><p>{sub}</p></div>
       <div class="lista">
-{chr(10).join(linha(p) for p in do_grupo)}
+{chr(10).join(linha(p, repetidos) for p in do_grupo)}
       </div>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>"""
@@ -557,6 +589,13 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       answer, on the date printed on that row. Teams change direction, migrate
       chains, hand a token over, or deliberately stop issuing — none of that is
       wrongdoing, and none of it is implied here.</p>
+      <p><b>Names can be copied; addresses cannot.</b> Anyone may issue a token
+      with any three-letter code or label, including one that impersonates a
+      well-known one. Where more than one issuer uses the same code, the row is
+      marked <span class="colisao">shared code</span> — but the only thing that
+      identifies an issuer is its address, which is why every row shows it.
+      Never trust a name on this page, or anywhere else, without checking the
+      address.</p>
       <p><b>Absence is not an accusation.</b> The scope is stated at the top; a
       project that is not on this list simply was not measured.</p>
       <p>The data comes from public sources that can be wrong, stale or briefly
