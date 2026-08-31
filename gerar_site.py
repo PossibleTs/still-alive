@@ -149,7 +149,8 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
   cursor:pointer;user-select:none}
 .selo:hover{border-color:var(--muted)}
 .selo[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
-.selo b{font-weight:600;color:inherit}
+.selo b{font-weight:600;color:inherit;font-variant-numeric:tabular-nums}
+.selo[aria-pressed="true"] .ponto{box-shadow:0 0 0 1px var(--ground)}
 .selo .ponto{display:inline-block;width:.5em;height:.5em;border-radius:50%;
   margin-right:.4em;vertical-align:.05em}
 #busca{flex:1;min-width:12rem;font-family:var(--mono);font-size:.8rem;
@@ -175,11 +176,15 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
 .linha.indeterminado{border-left-color:var(--violeta)}
 .linha .nome{font-weight:600;font-size:.95rem;display:flex;align-items:baseline;gap:.4rem}
 .linha .nome .ponto{flex:none;width:.5em;height:.5em;border-radius:50%}
-.ativo .ponto{background:var(--accent)}
-.morrendo .ponto{background:var(--amber)}
-.parado .ponto{background:var(--slate)}
-.morto .ponto{background:var(--red)}
-.indeterminado .ponto{background:var(--violeta)}
+/* Duas formas de marcar a cor: na linha o ponto herda do <article class="linha
+   ativo"> (descendente); no contador do topo a propria bolinha carrega a classe
+   (.ponto.ativo). So o descendente estava escrito, e por isso as bolinhas dos
+   contadores saiam sem cor nenhuma - um vao em branco antes do numero. */
+.ativo .ponto,.ponto.ativo{background:var(--accent)}
+.morrendo .ponto,.ponto.morrendo{background:var(--amber)}
+.parado .ponto,.ponto.parado{background:var(--slate)}
+.morto .ponto,.ponto.morto{background:var(--red)}
+.indeterminado .ponto,.ponto.indeterminado{background:var(--violeta)}
 /* O motivo sai da linha e aparece no hover, no foco do teclado ou no toque.
    A pagina fica com um terco da altura; a prova continua a um gesto. */
 .linha .motivo{font-size:.83rem;color:var(--muted);grid-column:1/-1;
