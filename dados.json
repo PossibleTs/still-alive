@@ -1,7 +1,8 @@
 {
- "gerado_em": "2026-08-31T15:54:27+00:00",
+ "gerado_em": "2026-08-31T19:15:09+00:00",
  "medicao_mais_antiga": "2026-08-30T23:28:02+00:00",
  "ciclo_dias": 15,
+ "piso_pretendido": 100,
  "limiares": {
   "dias_morto": 180,
   "dias_parado": 90,

@@ -37,6 +37,7 @@ jobs:
           python teste_local.py
           python teste_corporativo.py
           python teste_revalidar.py
+          python teste_chave.py
 
       # Sem --limite: o coletor decide sozinho a fatia do dia (topo fixo +
       # um quinze avos da cauda), derivando do calendario. Ver coletor.py.

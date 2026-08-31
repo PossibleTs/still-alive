@@ -421,6 +421,44 @@ def _perfil_no_x(t: dict) -> str:
     return ""
 
 
+def moeda_canonica(codigo: str | None) -> str:
+    """
+    Normaliza um codigo de moeda para a forma que identifica o valor
+    on-ledger, nao a forma que uma API decidiu devolver hoje.
+
+    A raiz do problema: um codigo padrao de 3 letras (USD, EUR...) tem DUAS
+    serializacoes validas para o MESMO valor de 160 bits - "USD" curto, ou o
+    hex de 40 caracteres com 12 bytes zero, o codigo nos bytes 12-14, e mais 5
+    bytes zero. O proprio rippled e deterministico e sempre devolve a forma
+    curta (confirmado batendo book_offers direto no no publico); o risco e
+    XRPL Meta nao aplicar a mesma regra em toda chamada, ou trocar de forma
+    entre a versao do endpoint hoje ativa e a v2 para a qual vao migrar.
+
+    Sem isto, chave_do_projeto() muda de baixo do projeto se isso acontecer, e
+    a mesclagem trata o mesmo token como um projeto novo - perde historico e
+    ele reaparece como "medido pela primeira vez".
+
+    Codigo de mais de 3 letras (SOLO, RLUSD, X) nao tem essa ambiguidade: so
+    existe a forma de 40 caracteres, e ela e devolvida como esta.
+    """
+    if not codigo:
+        return ""
+    codigo = str(codigo)
+    if len(codigo) != 40:
+        return codigo.upper()
+    try:
+        cru = bytes.fromhex(codigo)
+    except ValueError:
+        return codigo
+    if (
+        cru[:12] == b"\x00" * 12
+        and cru[15:20] == b"\x00" * 5
+        and all(32 <= b < 127 for b in cru[12:15])
+    ):
+        return cru[12:15].decode("ascii").upper()
+    return codigo
+
+
 def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     if offset:
@@ -672,7 +710,7 @@ def aplicar_tendencia(projetos: list[dict]) -> None:
 def chave_do_projeto(p: dict) -> str:
     """Identidade estavel de um projeto entre coletas."""
     if p.get("emissor"):
-        return f"{p['emissor']}:{p.get('moeda_hex') or p.get('moeda') or ''}"
+        return f"{p['emissor']}:{moeda_canonica(p.get('moeda_hex') or p.get('moeda'))}"
     return f"site:{p.get('site') or p.get('nome')}"
 
 

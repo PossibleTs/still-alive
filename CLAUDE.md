@@ -63,6 +63,7 @@ python coletor.py                                 # a fatia do dia (topo + cauda
 python coletor.py --fatia 3                       # forca uma fatia do ciclo
 python coletor.py --limite 60                     # modo avulso, ignora o ciclo
 python teste_revalidar.py                         # freios do botao de revalidar
+python teste_chave.py                             # identidade do projeto entre coletas
 python coletor.py --no-rede                       # so reclassifica o que ja tem
 python descoberta.py bithomp.com                  # inspeciona um dominio
 python gerar_site.py
