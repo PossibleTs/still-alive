@@ -28,6 +28,13 @@ jobs:
         with:
           python-version: "3.12"
 
+      # O texto daqui para baixo foi escrito por um estranho na internet. Ele
+      # nunca entra em uma linha de shell por interpolacao do ${{ }}: entra por
+      # variavel de ambiente, sempre. A interpolacao direta colocava o corpo da
+      # issue dentro de `python ... --projeto "..."` e de `git commit -m "..."`,
+      # e um `$(...)` ali executa no runner - que tem contents:write e o token
+      # do repositorio. O label vem do formulario (labels: [revalidar]), ou
+      # seja: qualquer pessoa dispara este workflow.
       - name: Ler o projeto pedido
         id: pedido
         env:
@@ -37,22 +44,28 @@ jobs:
           python - <<'PY' >> "$GITHUB_OUTPUT"
           import os, re
           corpo = os.environ.get("CORPO") or ""
-          # O formulario vira "### Projeto\n\nVALOR" no corpo da issue.
-          m = re.search(r"###\s*Projeto\s*\n+([^\n]+)", corpo)
+          # O formulario rotula o campo em ingles ("### Project"); aceitar os
+          # dois evita cair sempre no titulo por causa do idioma do rotulo.
+          m = re.search(r"###\s*(?:Project|Projeto)\s*\n+([^\n]+)", corpo)
           nome = (m.group(1) if m else "").strip()
           if not nome or nome.startswith("_No response_"):
               nome = os.environ.get("TITULO", "").split(":", 1)[-1].strip()
-          # Nome de projeto nao tem quebra de linha nem 200 caracteres.
-          nome = nome.replace("`", "").replace("\n", " ")[:80]
+          # Segunda camada, nao a primeira: nenhum nome do catalogo usa esses
+          # caracteres (conferido nos 678), e todos servem para brincar com
+          # shell ou com o $GITHUB_OUTPUT. # $ ( ) ? sobrevivem porque existem
+          # em nome de token de verdade ($xLEMUR, "Got Jed?").
+          nome = "".join(c for c in nome if c.isprintable() and c not in '`"\\;|<>{}&')
+          nome = nome.replace("\n", " ").strip()[:80]
           print(f"projeto={nome}")
           PY
 
       - name: Medir
         id: medir
+        env:
+          PROJETO: ${{ steps.pedido.outputs.projeto }}
+          AUTOR: ${{ github.event.issue.user.login }}
         run: |
-          python revalidar.py \
-            --projeto "${{ steps.pedido.outputs.projeto }}" \
-            --autor "${{ github.event.issue.user.login }}" > resposta.md
+          python revalidar.py --projeto "$PROJETO" --autor "$AUTOR" > resposta.md
           cat resposta.md
 
       - name: Responder na issue
@@ -61,11 +74,13 @@ jobs:
         run: gh issue comment "${{ github.event.issue.number }}" --body-file resposta.md
 
       - name: Guardar o resultado
+        env:
+          PROJETO: ${{ steps.pedido.outputs.projeto }}
         run: |
           git config user.name "robo"
           git config user.email "robo@users.noreply.github.com"
           git add dados.json revalidacoes.json
-          git diff --staged --quiet || git commit -m "revalidacao: ${{ steps.pedido.outputs.projeto }}"
+          git diff --staged --quiet || git commit -m "revalidacao: $PROJETO"
           git pull --rebase --autostash || true
           git push
 
