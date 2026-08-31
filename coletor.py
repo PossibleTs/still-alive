@@ -608,10 +608,22 @@ def classificar(p: dict) -> tuple[str, str]:
 def salvar_snapshot(projetos: list[dict]) -> None:
     os.makedirs("historico", exist_ok=True)
     hoje = dt.date.today().isoformat()
+    # nome e situacao entram aqui de proposito: sem eles o historico serve para
+    # tendencia de detentores e para nada mais. Comparar dois snapshots e o que
+    # permite dizer "3 projetos cruzaram para dormant nesta semana" - e essa
+    # frase e o unico material recorrente que a pagina produz sozinha.
     resumo = {
-        p.get("emissor") or p["nome"]: {
+        # chave_do_projeto, nao o emissor sozinho: 12 emissores nesta lista
+        # emitem mais de uma moeda (a Bitstamp emite US Dollar E Euro), e a
+        # chave curta fazia os dois colidirem - o ultimo escrito apagava o
+        # outro, e a tendencia de detentores saia comparando token diferente.
+        # Foi assim que apareceram quedas de -97% de um dia para o outro.
+        chave_do_projeto(p): {
+            "nome": p.get("nome"),
+            "situacao": p.get("situacao"),
+            "motivo": p.get("motivo"),
+            "medido_em": p.get("medido_em"),
             "holders": p.get("holders"),
-            "x": p.get("x"),
             "tx_janela": p.get("tx_janela"),
             "tx_emissor": p.get("tx_emissor"),
             "dias_sem_emissor": p.get("dias_sem_emissor"),
@@ -646,8 +658,7 @@ def aplicar_tendencia(projetos: list[dict]) -> None:
         return
 
     for p in projetos:
-        chave = p.get("emissor") or p["nome"]
-        antes = (antigo.get(chave) or {}).get("holders")
+        antes = (antigo.get(chave_do_projeto(p)) or {}).get("holders")
         agora = p.get("holders")
         if isinstance(antes, int) and isinstance(agora, int) and antes > 0:
             p["variacao_holders"] = round((agora - antes) / antes * 100, 1)

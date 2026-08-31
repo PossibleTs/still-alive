@@ -37,6 +37,9 @@ coletor.py            projetos COM token
                       descobre no XRPL Meta -> mede na rede -> dados.json
 descoberta.py         projetos SEM token
                       xrp-ledger.toml + tipos de objeto + validadores
+mudancas.py           compara dois snapshots de historico/ e gera o material
+                      recorrente para post (mudanca de situacao, quedas de
+                      detentores). A pagina e estatica; a MUDANCA e o assunto.
 revalidar.py          atende pedido de remedicao vindo de issue no GitHub
                       (os freios de abuso ficam AQUI, nao no YAML)
 institucional.py      descoberta continua de atores institucionais
@@ -64,6 +67,8 @@ python coletor.py --no-rede                       # so reclassifica o que ja tem
 python descoberta.py bithomp.com                  # inspeciona um dominio
 python gerar_site.py
 python institucional.py --minutos 10            # ouve a rede, junta candidatos
+python mudancas.py                              # o que mudou, pronto para post
+python mudancas.py --dias 1                     # so o dia anterior
 ```
 
 Antes de publicar, defina `STILLALIVE_REPO` (ou `REPO` em `gerar_site.py`) com o
