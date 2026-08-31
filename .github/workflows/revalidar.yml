@@ -68,3 +68,6 @@ jobs:
           git diff --staged --quiet || git commit -m "revalidacao: ${{ steps.pedido.outputs.projeto }}"
           git pull --rebase --autostash || true
           git push
+
+# Indexado junto com o outro workflow: sem um push que toque o arquivo, o
+# GitHub so o descobriria na primeira issue com o label revalidar.
