@@ -22,6 +22,10 @@ import urllib.parse
 # Endereco do repositorio, usado no canal de contestacao da pagina.
 REPO = os.environ.get("STILLALIVE_REPO", "")
 
+# Explorador para onde os enderecos apontam. O da XRPL Foundation e o unico
+# neutro: os outros grandes sao projetos que esta pagina classifica.
+EXPLORADOR = "https://livenet.xrpl.org/accounts/"
+
 SITUACOES = {
     "ativo": ("Alive", "Transacting on the ledger right now."),
     "morrendo": ("Fading", "Still breathing, but the movement dropped off."),
@@ -248,7 +252,15 @@ def linha(p: dict) -> str:
     # endereco.
     ident = []
     if p.get("emissor"):
-        ident.append(e(p["emissor"]))
+        # O endereco vira link para o explorador da propria XRPL Foundation.
+        # Escolha deliberada: Bithomp e XRPSCAN sao os exploradores mais usados,
+        # mas os dois ESTAO nesta lista sendo julgados - mandar trafego para um
+        # deles pareceria favor, e favor de quem julga e pior que jargao.
+        ident.append(
+            f'<a href="{EXPLORADOR}{e(p["emissor"])}" rel="nofollow noopener" '
+            f'title="Open this account on the XRPL Foundation explorer">'
+            f'{e(p["emissor"])}</a>'
+        )
     dominio = (p.get("site") or "").replace("https://", "").replace("http://", "").strip("/")
     if dominio and dominio.lower() not in nome.lower():
         ident.append(e(dominio))
@@ -452,6 +464,12 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       movement in the last {lim.get('dias_ativo','?')} days. Accusing a project
       of being quiet takes a whole week without trading, never a single quiet
       day. These are arguable choices, and they are printed here on purpose.</p>
+      <p><strong>Checking it yourself.</strong> Every issuer address links to
+      that account on <code>livenet.xrpl.org</code>, the XRPL Foundation's
+      explorer, where you can see the same transactions this page counted. The
+      choice of explorer is deliberate: the most popular ones are also
+      <em>in this list being judged</em>, and sending them traffic would look
+      like a favour from the referee.</p>
       <p><strong>The X link.</strong> When a project published its own X profile
       in its ledger metadata, the row links straight to it. When it did not, the
       row offers a search instead. We never guess a handle: the wrong profile
