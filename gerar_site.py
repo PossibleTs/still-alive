@@ -107,25 +107,20 @@ JS = """
 
 CSS = """
 :root{
-  /* Escuro e o padrao. Quem olha esta pagina olha terminal e explorador de
-     blocos o dia inteiro; e tambem onde as cinco cores de situacao ficam mais
-     separadas umas das outras. */
+  /* Escuro sempre. Quem olha esta pagina olha terminal e explorador de blocos
+     o dia inteiro, e e onde as cinco cores de situacao ficam mais separadas.
+     color-scheme:dark faz o navegador desenhar o campo de busca e a barra de
+     rolagem escuros tambem - sem isso o input sai branco no meio da barra. */
+  color-scheme:dark;
   --ground:#0B1113;--surface:#131B1D;--sunken:#0E1517;--ink:#E6EDEB;--muted:#93A4A3;
   --rule:#25302F;--accent:#5CC9AA;--amber:#DCA65C;--red:#E58472;--slate:#8D9C9E;
   --violeta:#AC9DDB;
   --serif:"Fraunces",Georgia,serif;--sans:"Source Sans 3",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
-@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
-  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
-  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
-  --violeta:#5B4B8A;
-}}
-:root[data-theme="light"]{
-  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
-  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
-  --violeta:#5B4B8A;
-}
+/* Sem variante clara: antes havia um @media prefers-color-scheme:light que
+   sobrescrevia tudo, e em sistema no modo claro - a maioria - a pagina saia
+   clara. A pagina e escura, ponto. */
 *{box-sizing:border-box}
 /* SEM ISTO A BUSCA NAO ESCONDE NADA: .linha usa display:grid e .grupo usa
    display:flex, e regra de classe ganha do [hidden] da folha do navegador.
