@@ -253,6 +253,23 @@ def linha(p: dict) -> str:
     if dominio and dominio.lower() not in nome.lower():
         ident.append(e(dominio))
 
+    # X: link direto quando o projeto publicou o perfil no proprio cadastro da
+    # rede; busca quando nao publicou. Nunca um palpite de handle - perfil
+    # errado ao lado de um projeto marcado como morto e pior que nenhum.
+    perfil = p.get("x") or ""
+    if perfil:
+        arroba = perfil.rstrip("/").rsplit("/", 1)[-1]
+        ident.append(
+            f'<a href="{e(perfil)}" rel="nofollow noopener" '
+            f'title="Profile the project itself published">@{e(arroba)}</a>'
+        )
+    else:
+        termo = urllib.parse.quote(f'{p.get("nome","")} XRPL')
+        ident.append(
+            f'<a href="https://x.com/search?q={termo}" rel="nofollow noopener" '
+            f'title="No profile published - search X for this name">search X</a>'
+        )
+
     metricas = []
     if p.get("holders"):
         metricas.append(f'{_fmt(p["holders"])} holders')
@@ -435,6 +452,12 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       movement in the last {lim.get('dias_ativo','?')} days. Accusing a project
       of being quiet takes a whole week without trading, never a single quiet
       day. These are arguable choices, and they are printed here on purpose.</p>
+      <p><strong>The X link.</strong> When a project published its own X profile
+      in its ledger metadata, the row links straight to it. When it did not, the
+      row offers a search instead. We never guess a handle: the wrong profile
+      next to a project marked dead is worse than no profile at all. Note that
+      what happens on X is not measured here and never changes a
+      classification — this page only counts what the ledger can prove.</p>
       <p><strong>Finding a project.</strong> Every row shows the issuer address,
       and the search box takes a name, a currency code, an address or a domain
       (press <code>/</code> to jump to it). Half the tokens on the XRP Ledger

@@ -405,6 +405,22 @@ def normalizar_nomes(projetos: list[dict]) -> None:
             p["nome"] = nome_da_moeda(nome)
 
 
+def _perfil_no_x(t: dict) -> str:
+    """Link do projeto no X, quando ele mesmo publicou.
+
+    O XRPL Meta guarda as urls declaradas com um tipo ("website", "social").
+    Cerca de um em cada cinco tokens publica o X ali. Nao ha adivinhacao aqui:
+    perfil errado ao lado de um projeto acusado de morto e pior que perfil
+    nenhum.
+    """
+    for onde in ("token", "issuer"):
+        for u in (_cava(t, f"meta.{onde}.urls") or []):
+            url = str(u.get("url") or "")
+            if "x.com/" in url or "twitter.com/" in url:
+                return url
+    return ""
+
+
 def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     if offset:
@@ -439,6 +455,7 @@ def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
                 or "(sem nome)",
                 "categoria": "Token",
                 "emissor": emissor,
+                "x": _perfil_no_x(t),
                 "moeda": nome_da_moeda(_cava(t, "currency")),
                 "moeda_hex": _cava(t, "currency"),
                 "site": _cava(t, "meta.issuer.domain", "meta.token.domain", padrao=""),
@@ -594,6 +611,7 @@ def salvar_snapshot(projetos: list[dict]) -> None:
     resumo = {
         p.get("emissor") or p["nome"]: {
             "holders": p.get("holders"),
+            "x": p.get("x"),
             "tx_janela": p.get("tx_janela"),
             "tx_emissor": p.get("tx_emissor"),
             "dias_sem_emissor": p.get("dias_sem_emissor"),
