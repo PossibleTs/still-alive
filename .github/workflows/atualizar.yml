@@ -45,6 +45,11 @@ jobs:
         run: python coletor.py
 
       - name: Gerar a pagina
+        # O endereco do repositorio vira o canal de contestacao da pagina.
+        # Derivado do proprio contexto: nada para configurar, e nao quebra se
+        # o repositorio for renomeado ou movido de conta.
+        env:
+          STILLALIVE_REPO: ${{ github.server_url }}/${{ github.repository }}
         run: python gerar_site.py
 
       # O historico e o que permite mostrar tendencia (queda de detentores).
