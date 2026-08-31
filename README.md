@@ -159,7 +159,10 @@ opinião editorial, vão ser questionados, e é bom que sejam fáceis de discuti
 
 ## Antes de publicar
 
-Chamar o projeto de alguém de morto em público tem consequência. Duas defesas,
+Chamar o projeto de alguém de morto em público tem consequência. **Há uma seção
+`Disclaimer` na própria página** cobrindo o que "alive" não significa — não é
+aval, não é conselho financeiro, e ausência da lista não é acusação. Não a
+remova: ela é a defesa contra o uso da página como referência de qualidade. Duas defesas,
 ambas já no código: cada classificação vem com o motivo e os números que a
 sustentam, e a página diz que um projeto quieto na rede pode estar vivo fora
 dela. Deixe um canal de contestação bem visível e responda rápido — a primeira

@@ -111,6 +111,12 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
 .linha a:hover{border-bottom-color:currentColor}
 a:focus-visible,#busca:focus-visible,.selo:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .vazio{color:var(--muted);font-size:.9rem;padding:.6rem 0}
+.aviso{background:var(--sunken);border:1px solid var(--rule);
+  border-left:3px solid var(--amber);border-radius:3px;
+  padding:1.1rem 1.3rem;font-size:.86rem}
+.aviso p{margin:0 0 .6rem;color:var(--muted);max-width:44rem}
+.aviso p:last-child{margin-bottom:0}
+.aviso b{color:var(--ink);font-weight:600}
 .metodo{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
   padding:1.1rem 1.3rem;font-size:.9rem}
 .metodo p{margin:0 0 .6rem;color:var(--muted);max-width:44rem}
@@ -4311,14 +4317,41 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       <p>The transaction count has a ceiling: above 2400 in the month it shows a
       <code>+</code>, because the reading stops there. It is a floor, not a
       total.</p>
-      <p>None of this is investment advice, and a project that is quiet on the
-      ledger may be very much alive off it. <strong>Found a mistake?
-      <a href="https://github.com/PossibleTs/still-alive/issues/new">Open an issue</a> and tell me.</strong> A live project marked dead gets fixed the same
-      day.</p>
+      <p>A project that is quiet on the ledger may be very much alive off it.
+      <strong>Found a mistake? <a href="https://github.com/PossibleTs/still-alive/issues/new">Open an issue</a> and tell me.</strong> A live project marked dead
+      gets fixed the same day.</p>
+    </div>
+  </section>
+
+  <section class="grupo">
+    <h2>Disclaimer</h2>
+    <div class="aviso">
+      <p><b>This is not financial advice, and it is not an endorsement.</b>
+      Nothing here is a recommendation to buy, sell or hold anything.</p>
+      <p><b>"Alive" is not a seal of approval.</b> It means one thing only:
+      transactions were happening on the ledger within the measured window. It
+      says nothing about whether a project is legitimate, competent, solvent,
+      compliant or safe. A token can be busily traded and still be a scam — an
+      active market is exactly what a pump needs. Read "alive" as a pulse, never
+      as a reference.</p>
+      <p><b>"Dead" is a statement about measurements, not about people.</b> It
+      means the ledger showed no meaningful activity and the website did not
+      answer, on the date printed on that row. Teams change direction, migrate
+      chains, hand a token over, or deliberately stop issuing — none of that is
+      wrongdoing, and none of it is implied here.</p>
+      <p><b>Absence is not an accusation.</b> The scope is stated at the top; a
+      project that is not on this list simply was not measured.</p>
+      <p>The data comes from public sources that can be wrong, stale or briefly
+      unreachable, and the cut-offs are one person's editorial judgement, printed
+      above so you can disagree with them. Verify anything that matters to you
+      on the ledger yourself — every address here links to an explorer for
+      exactly that reason. Do your own research.</p>
     </div>
   </section>
 
   <footer>
+    Not financial advice · not an endorsement · "alive" measures on-ledger
+    activity only<br>
     678 projects observed · raw data in
     <a href="dados.json">dados.json</a> · <a href="https://github.com/PossibleTs/still-alive/issues">dispute a call</a> · made by a human
     with a robot
