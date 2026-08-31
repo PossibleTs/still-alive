@@ -1,4 +1,4 @@
-# RWAlive — quem ainda está vivo na XRPL
+# Still Alive — quem ainda está vivo na XRPL
 
 Diretório nenhum diz quais projetos morreram. Este mede a atividade real de cada
 um na rede, todo dia, e mostra a conta.

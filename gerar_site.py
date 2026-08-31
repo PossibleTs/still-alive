@@ -19,7 +19,7 @@ import sys
 import urllib.parse
 
 # Endereco do repositorio, usado no canal de contestacao da pagina.
-REPO = os.environ.get("RWALIVE_REPO", "")
+REPO = os.environ.get("STILLALIVE_REPO", "")
 
 SITUACOES = {
     "ativo": ("Ativo", "Transacionando na rede agora."),
@@ -184,7 +184,7 @@ def gerar(dados: dict) -> str:
 
     # Canal de contestacao. Chamar projeto dos outros de morto sem oferecer
     # como reclamar e o jeito mais rapido de perder a comunidade. Preencha
-    # REPO (ou a variavel de ambiente RWALIVE_REPO) antes de publicar.
+    # REPO (ou a variavel de ambiente STILLALIVE_REPO) antes de publicar.
     if REPO:
         contestacao = (
             f'<a href="{html.escape(REPO)}/issues/new">Abra uma issue</a> e me diga.'
@@ -199,7 +199,7 @@ def gerar(dados: dict) -> str:
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>RWAlive — quem ainda esta vivo na XRPL</title>
+<title>Still Alive — quem ainda esta vivo na XRPL</title>
 <meta name="description" content="Situacao real dos projetos da XRP Ledger, medida na rede e atualizada todo dia.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -213,7 +213,7 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
 <div class="page">
   <header>
     <div class="eyebrow">Atualizado em {html.escape(quando)}</div>
-    <h1>RWAlive</h1>
+    <h1>Still Alive</h1>
     <p class="sub">Quem ainda esta vivo na XRP Ledger.</p>
     <p class="dek">Diretorio nenhum diz quais projetos morreram. Esta pagina mede
     a atividade real de cada um na rede e mostra a conta. Cada cartao diz de
@@ -275,7 +275,7 @@ def main() -> None:
     if not REPO:
         print(
             "! REPO vazio: a pagina sai sem canal de contestacao. Defina REPO em "
-            "gerar_site.py ou RWALIVE_REPO no ambiente antes de publicar.",
+            "gerar_site.py ou STILLALIVE_REPO no ambiente antes de publicar.",
             file=sys.stderr,
         )
     # Argumento opcional para inspecionar dados de teste sem tocar na coleta real.

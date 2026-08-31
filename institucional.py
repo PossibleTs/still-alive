@@ -83,7 +83,7 @@ class WebSocketMinimo:
             "Connection: Upgrade\r\n"
             f"Sec-WebSocket-Key: {chave}\r\n"
             "Sec-WebSocket-Version: 13\r\n"
-            "User-Agent: rwalive/1.0\r\n\r\n"
+            "User-Agent: still-alive/1.0\r\n\r\n"
         )
         self.sock.sendall(pedido.encode())
 

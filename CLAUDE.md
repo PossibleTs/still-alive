@@ -66,7 +66,7 @@ python gerar_site.py
 python institucional.py --minutos 10            # ouve a rede, junta candidatos
 ```
 
-Antes de publicar, defina `RWALIVE_REPO` (ou `REPO` em `gerar_site.py`) com o
+Antes de publicar, defina `STILLALIVE_REPO` (ou `REPO` em `gerar_site.py`) com o
 endereço do repositório: é o canal de contestação da página. Sem ele o gerador
 avisa e a página sai sem para onde reclamar.
 
