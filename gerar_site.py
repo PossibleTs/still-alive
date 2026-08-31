@@ -136,6 +136,9 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);
   line-height:1.1;letter-spacing:-.015em;margin:.4rem 0 0}
 header .sub{margin:.15rem 0 0;font-size:1rem;color:var(--muted)}
 .dek{color:var(--muted);max-width:38rem;margin:.5rem 0 0;font-size:.95rem}
+.escopo{color:var(--muted);max-width:44rem;margin:.7rem 0 0;font-size:.85rem;
+  border-left:2px solid var(--rule);padding-left:.8rem}
+.escopo b{color:var(--ink);font-weight:600}
 h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
 
 /* Barra que acompanha a rolagem: contadores e busca sempre a mao. Numa lista
@@ -379,6 +382,36 @@ def gerar(dados: dict) -> str:
         )
 
     total = dados.get("total", 0)
+
+    # O escopo sai do proprio dado, nunca de um numero escrito a mao: enquanto o
+    # rodizio nao cobre a cauda inteira, o piso real e mais alto que a meta, e
+    # anunciar a meta como se fosse o presente seria prometer cobertura que a
+    # pagina nao tem. Quem procura um projeto e nao acha precisa saber se ele
+    # esta fora do recorte ou se o robo nao chegou nele ainda.
+    detentores = [
+        p["holders"] for p in dados["projetos"]
+        if p.get("categoria") == "Token" and isinstance(p.get("holders"), int)
+    ]
+    piso_real = min(detentores) if detentores else 0
+    meta = dados.get("piso_pretendido", 100)
+    sem_token = sum(1 for p in dados["projetos"] if p.get("categoria") != "Token")
+    escopo = (
+        f"Scope: the {len(detentores)} XRP Ledger tokens with the most holders — "
+        f"today everything above <b>{piso_real:,} holders</b>"
+    )
+    if piso_real > meta:
+        escopo += (
+            f", on the way to <b>{meta}</b> as the rotation reaches further down "
+            "the catalogue"
+        )
+    escopo += (
+        f" — plus {sem_token} wallets, explorers and tools that issue no token. "
+        "Below a hundred holders the catalogue is mostly dust and abandoned "
+        "tests that were never anyone's project, and calling those dead informs "
+        "nobody. <b>A project missing from this list is not a project we called "
+        "dead.</b>"
+    )
+
     lim = dados.get("limiares", {})
     ciclo = dados.get("ciclo_dias", 15)
 
@@ -418,6 +451,7 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     <p class="dek">No directory tells you which projects died. This page measures
     each one's real activity on the ledger and shows the arithmetic. Every row
     carries the date of its own measurement.</p>
+    <p class="escopo">{escopo}</p>
   </header>
 
   <div class="barra">

@@ -749,8 +749,14 @@ def _medir(p: dict, agora: int) -> None:
 # terca para quarta - morte e lenta. Medir tudo todo dia seriam ~4h30 de
 # chamadas ao no publico para descobrir quase nada de novo.
 TOPO_DIARIO = 300     # medidos em toda corrida
-CAUDA_TOTAL = 1300    # o resto do universo, dividido pelo ciclo
+# O universo e definido por um piso de detentores, nao por um numero redondo:
+# medido em 31/08/2026, a posicao 2000 do catalogo tem 150 detentores e a 3000
+# tem 83. Cobrir tudo acima de ~100 detentores quer dizer ir ate a posicao
+# ~2700 - dai o 2400 de cauda somado aos 300 do topo. Alem disso mora poeira:
+# na posicao 8000 o token do topo tem 17 detentores e nunca foi projeto.
+CAUDA_TOTAL = 2400
 CICLO_DIAS = 15       # cada fatia da cauda e remedida a cada 15 dias
+PISO_PRETENDIDO = 100  # detentores; so para a pagina poder declarar a meta
 
 
 def carregar_projetos(arquivo: str = "dados.json") -> list[dict]:
@@ -833,6 +839,7 @@ def main() -> None:
         "gerado_em": dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds"),
         "medicao_mais_antiga": medidos_em[0] if medidos_em else None,
         "ciclo_dias": CICLO_DIAS,
+        "piso_pretendido": PISO_PRETENDIDO,
         "limiares": LIMIARES,
         "total": len(projetos),
         "contagem": {

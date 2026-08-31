@@ -105,6 +105,13 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
 
 - Mudou limiar de classificação? Rode os dois testes e cole o antes/depois.
 - Nada de "melhorar" o HTML gerado com biblioteca de template.
+- **Escopo:** o universo é definido por um **piso de detentores**
+  (`PISO_PRETENDIDO`, hoje 100), não por um número redondo de projetos. Medido em
+  31/08/2026: posição 2000 do catálogo = 150 detentores, posição 3000 = 83; daí
+  `CAUDA_TOTAL` ir até a posição ~2700. Abaixo disso é poeira que nunca foi
+  projeto. A página **declara o piso real medido**, não a meta — enquanto o
+  rodízio não cobre a cauda inteira, os dois números diferem, e anunciar a meta
+  seria prometer cobertura inexistente.
 - **Cadência:** o topo (`TOPO_DIARIO`) é medido em toda corrida; a cauda
   (`CAUDA_TOTAL`) é dividida em `CICLO_DIAS` fatias, uma por dia, derivadas do
   calendário — sem estado entre corridas. Por isso a coleta **mescla** com o
