@@ -99,24 +99,25 @@ def avaliar_limites(projeto: dict, autor: str, pedidos: list[dict]) -> str | Non
     horas = _horas_desde(projeto.get("medido_em"))
     if horas is not None and horas < ESPERA_HORAS:
         return (
-            f"Este projeto foi medido ha {horas:.0f}h. So remedimos depois de "
-            f"{ESPERA_HORAS}h - abaixo disso o resultado seria o mesmo e a "
-            "chamada seria desperdicio no no publico da rede."
+            f"This project was measured {horas:.0f}h ago. We only recheck after "
+            f"{ESPERA_HORAS}h - below that the result would be the same and the "
+            "call would be wasted on the network's public node."
         )
 
     hoje = _agora().date().isoformat()
     do_dia = [p for p in pedidos if p.get("quando", "")[:10] == hoje]
     if len(do_dia) >= TETO_DIARIO:
         return (
-            f"Ja fizemos {TETO_DIARIO} remedicoes hoje, que e o teto do dia. "
-            "Tente amanha - ou espere a vez deste projeto no rodizio."
+            f"We have already done {TETO_DIARIO} rechecks today, which is the "
+            "daily cap. Try tomorrow - or wait for this project's turn in the "
+            "rotation."
         )
 
     do_autor = [p for p in do_dia if p.get("autor") == autor]
     if len(do_autor) >= POR_PESSOA_DIA:
         return (
-            f"Voce ja pediu {len(do_autor)} remedicoes hoje, e o limite por "
-            f"pessoa e {POR_PESSOA_DIA} por dia."
+            f"You have already asked for {len(do_autor)} rechecks today, and the "
+            f"per-person limit is {POR_PESSOA_DIA} per day."
         )
     return None
 
@@ -129,16 +130,16 @@ def main() -> None:
 
     projetos = carregar_projetos()
     if not projetos:
-        print("Nao consegui ler a lista de projetos. Nada foi medido.")
+        print("Could not read the project list. Nothing was measured.")
         return
 
     alvo = achar(projetos, args.projeto)
     if alvo is None:
         print(
-            f"Nao encontrei **{args.projeto}** na lista. Esta pagina so remede "
-            "o que ja acompanha - nao consulta endereco avulso da rede. Se o "
-            "projeto deveria estar aqui e nao esta, diga qual e o emissor e a "
-            "gente avalia incluir."
+            f"I could not find **{args.projeto}** in the list. This page only "
+            "rechecks what it already tracks - it does not look up arbitrary "
+            "addresses on the ledger. If the project should be here and is not, "
+            "tell me the issuer address and we will consider adding it."
         )
         return
 
@@ -153,7 +154,7 @@ def main() -> None:
     try:
         _medir(alvo, agora_ts)
     except Exception as e:  # rede pode falhar; o pedido nao pode explodir
-        print(f"A medicao falhou agora ({type(e).__name__}). Tente mais tarde.")
+        print(f"The measurement failed just now ({type(e).__name__}). Try later.")
         return
 
     alvo["medido_em"] = _agora().isoformat(timespec="seconds")
@@ -179,13 +180,13 @@ def main() -> None:
     with open("dados.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
 
-    mudou = "" if antes == alvo["situacao"] else f" (antes: **{antes}**)"
+    mudou = "" if antes == alvo["situacao"] else f" (was: **{antes}**)"
     print(
-        f"Medido agora: **{alvo['nome']}** esta **{alvo['situacao']}**{mudou}.\n\n"
+        f"Measured just now: **{alvo['nome']}** is **{alvo['situacao']}**{mudou}.\n\n"
         f"> {alvo['motivo']}\n\n"
-        "A pagina e atualizada na proxima publicacao. Se voce discorda do "
-        "criterio, e nao do numero, responda aqui - os cortes sao discutiveis "
-        "de proposito."
+        "The page updates on the next publication. If you disagree with the "
+        "criteria rather than the numbers, reply here - the cut-offs are "
+        "arguable on purpose."
     )
 
 

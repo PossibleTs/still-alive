@@ -492,9 +492,9 @@ def classificar(p: dict) -> tuple[str, str]:
     trocas = p.get("trocas_7d")
     if trocas is None:
         trocas = p.get("trocas_24h")
-        janela_trocas = "nas ultimas 24h"
+        janela_trocas = "in the last 24h"
     else:
-        janela_trocas = "nos ultimos 7 dias"
+        janela_trocas = "in the last 7 days"
     sem_negociacao = trocas == 0
     negociou = isinstance(trocas, (int, float)) and trocas > 0
     # Com o teto de paginacao a contagem e um piso: dizer "2400" seria mentira
@@ -517,69 +517,70 @@ def classificar(p: dict) -> tuple[str, str]:
 
     if dias is None and p["categoria"] != "Token":
         if site is True:
-            return "ativo", "Site no ar; projeto sem token para medir na rede."
+            return "ativo", "Website up; no token to measure on-ledger."
         if site is False:
-            return "morto", "Site fora do ar e sem atividade mensuravel na rede."
-        return "indeterminado", "Nao foi possivel medir."
+            return "morto", "Website down and no measurable on-ledger activity."
+        return "indeterminado", "Could not measure."
 
     if dias is None:
-        return "indeterminado", "Conta do emissor nao respondeu."
+        return "indeterminado", "The issuer account did not respond."
 
     # Emissor blackholed e desenho intencional: a atividade acontece entre os
     # detentores, nao pela conta emissora. Julga-se pelo token, nao pela conta.
     if blackholed:
         if holders >= LIMIARES["holders_minimo"] and negociou:
-            return "ativo", f"Emissor blackholed (boa pratica); {holders} detentores e negociacao {janela_trocas}."
+            return "ativo", f"Issuer blackholed (good practice); {holders} holders and trading {janela_trocas}."
         if holders >= LIMIARES["holders_minimo"]:
             if not sem_negociacao:  # nao sabemos se negociou
                 return "indeterminado", (
-                    f"Emissor blackholed com {holders} detentores, mas o catalogo "
-                    "nao informou negociacao - sem dado para julgar."
+                    f"Issuer blackholed with {holders} holders, but the catalogue "
+                    "reported no trading data - nothing to judge on."
                 )
-            return "morrendo", f"Emissor blackholed; {holders} detentores, mas sem negociacao {janela_trocas}."
-        return "parado", f"Emissor blackholed e apenas {holders} detentores."
+            return "morrendo", f"Issuer blackholed; {holders} holders, but no trading {janela_trocas}."
+        return "parado", f"Issuer blackholed and only {holders} holders."
 
     if dias > LIMIARES["dias_morto"]:
-        return "morto", f"Sem nenhuma transacao ha {dias} dias."
+        return "morto", f"No transaction at all for {dias} days."
 
     if site is False and tx < LIMIARES["tx_minimo"]:
-        return "morto", f"Site fora do ar e so {tx_txt} transacoes em 30 dias."
+        return "morto", f"Website down and only {tx_txt} transactions in 30 days."
 
     # Conta movimentada por estranhos, emissor calado. Nao e morte - o token
     # circula -, mas dizer "ativo" aqui seria creditar ao projeto o movimento
     # que os outros fazem.
     if emissor_calado:
-        desde = f"ha {dias_calado} dias" if dias_calado else "na janela medida"
+        desde = f"for {dias_calado} days" if dias_calado else "within the measured window"
         if negociou:
             return "ativo", (
-                f"Token negociado {janela_trocas} e {tx_txt} transacoes na "
-                f"conta, mas nenhuma assinada pelo emissor {desde}."
+                f"Token traded {janela_trocas} and {tx_txt} transactions on the "
+                f"account, but none signed by the issuer {desde}."
             )
         if not sem_negociacao:
             return "indeterminado", (
-                f"As {tx_txt} transacoes da conta sao todas de terceiros e o "
-                f"emissor nao assina nada {desde}; sem dado de negociacao para "
-                "concluir."
+                f"All {tx_txt} transactions on the account come from third "
+                f"parties and the issuer has signed nothing {desde}; no trading "
+                "data to conclude."
             )
         return "morrendo", (
-            f"As {tx_txt} transacoes da conta sao todas de terceiros; o emissor "
-            f"nao assina nada {desde}, e nao houve negociacao {janela_trocas}."
+            f"All {tx_txt} transactions on the account come from third parties; "
+            f"the issuer has signed nothing {desde}, and there was no trading "
+            f"{janela_trocas}."
         )
 
 
     if dias > LIMIARES["dias_parado"] or tx < LIMIARES["tx_minimo"]:
-        return "parado", f"Ultima atividade ha {dias} dias; {tx_txt} transacoes em 30 dias."
+        return "parado", f"Last activity {dias} days ago; {tx_txt} transactions in 30 days."
 
     if tx < LIMIARES["tx_ativo"] or site is False:
-        motivo = f"{tx_txt} transacoes em 30 dias"
+        motivo = f"{tx_txt} transactions in 30 days"
         if site is False:
-            motivo += "; site fora do ar"
+            motivo += "; website down"
         return "morrendo", motivo + "."
 
     if dias <= LIMIARES["dias_ativo"]:
-        return "ativo", f"{tx_txt} transacoes em 30 dias; ultima " + ("hoje." if dias == 0 else f"ha {dias} dias.")
+        return "ativo", f"{tx_txt} transactions in 30 days; last one " + ("today." if dias == 0 else f"{dias} days ago.")
 
-    return "morrendo", f"{tx_txt} transacoes em 30 dias, mas nada nos ultimos {dias} dias."
+    return "morrendo", f"{tx_txt} transactions in 30 days, but nothing in the last {dias} days."
 
 
 # --------------------------------------------------------------------------

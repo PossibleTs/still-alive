@@ -1,30 +1,31 @@
-name: Revalidar um projeto
-description: Discorda da classificacao? Peca uma medicao nova, agora.
-title: "Revalidar: "
+name: Recheck a project
+description: Disagree with a call? Ask for a fresh measurement, right now.
+title: "Recheck: "
 labels: ["revalidar"]
 body:
   - type: markdown
     attributes:
       value: |
-        A maior parte da lista e remedida em rodizio, entao o numero que voce
-        viu pode ter ate duas semanas. Aqui voce pede uma medicao nova na hora.
+        Most of the list is re-measured on a rotation, so the number you saw may
+        be up to two weeks old. This asks for a fresh measurement now.
 
-        O robo mede e responde nesta mesma issue. Ele nao decide se o criterio
-        e justo - isso e conversa, e voce pode puxar aqui embaixo.
+        The robot measures and answers in this same issue. It does not decide
+        whether the criteria are fair — that is a conversation, and you can
+        start it right below.
 
-        Limites: um projeto e remedido no maximo a cada 12h, e cada pessoa pode
-        pedir 3 por dia. Nao e desconfianca de voce - o no publico da XRPL e de
-        graca por gentileza, e a gentileza acaba se a gente abusar.
+        Limits: a project is re-measured at most once every 12h, and each person
+        can ask for 3 per day. It is not distrust of you — the public XRPL node
+        is free out of courtesy, and courtesy runs out if we abuse it.
   - type: input
     id: projeto
     attributes:
-      label: Projeto
-      description: O nome como aparece na pagina, ou o endereco do emissor.
+      label: Project
+      description: The name as it appears on the page, or the issuer address.
       placeholder: SOLO
     validations:
       required: true
   - type: textarea
     id: porque
     attributes:
-      label: Por que voce acha que esta errado
-      description: Opcional, mas ajuda. Se voce e do projeto, diga.
+      label: Why you think the call is wrong
+      description: Optional, but it helps. If you are from the project, say so.

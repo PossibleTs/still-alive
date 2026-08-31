@@ -23,11 +23,11 @@ import urllib.parse
 REPO = os.environ.get("STILLALIVE_REPO", "")
 
 SITUACOES = {
-    "ativo": ("Ativo", "Transacionando na rede agora."),
-    "morrendo": ("Morrendo", "Ainda respira, mas o movimento caiu."),
-    "parado": ("Parado", "Sem atividade relevante ha meses."),
-    "morto": ("Morto", "Sem sinal de vida e sem site no ar."),
-    "indeterminado": ("Indeterminado", "Nao foi possivel medir com confianca."),
+    "ativo": ("Alive", "Transacting on the ledger right now."),
+    "morrendo": ("Fading", "Still breathing, but the movement dropped off."),
+    "parado": ("Dormant", "No meaningful activity for months."),
+    "morto": ("Dead", "No sign of life and no website up."),
+    "indeterminado": ("Unknown", "Could not be measured with confidence."),
 }
 
 JS = """
@@ -65,8 +65,17 @@ JS = """
       g.hidden = (n === 0 && (termo || algumFiltro));
       if (vazio) vazio.hidden = true;
     });
-    conta.textContent = visiveis + (visiveis === 1 ? ' projeto' : ' projetos');
+    conta.textContent = visiveis + (visiveis === 1 ? ' project' : ' projects');
   }
+
+  // Toque nao tem hover: um toque na linha abre o motivo. Clique em link
+  // dentro dela segue sendo clique no link.
+  linhas.forEach(function(el){
+    el.addEventListener('click', function(ev){
+      if (ev.target.closest('a')) return;
+      el.classList.toggle('aberta');
+    });
+  });
 
   busca.addEventListener('input', aplicar);
   busca.addEventListener('search', aplicar);
@@ -94,23 +103,30 @@ JS = """
 
 CSS = """
 :root{
-  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
-  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
-  --violeta:#5B4B8A;
+  /* Escuro e o padrao. Quem olha esta pagina olha terminal e explorador de
+     blocos o dia inteiro; e tambem onde as cinco cores de situacao ficam mais
+     separadas umas das outras. */
+  --ground:#0B1113;--surface:#131B1D;--sunken:#0E1517;--ink:#E6EDEB;--muted:#93A4A3;
+  --rule:#25302F;--accent:#5CC9AA;--amber:#DCA65C;--red:#E58472;--slate:#8D9C9E;
+  --violeta:#AC9DDB;
   --serif:"Fraunces",Georgia,serif;--sans:"Source Sans 3",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
-  --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
-  --violeta:#A99BD6;
+@media (prefers-color-scheme:light){:root:not([data-theme="dark"]){
+  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
+  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
+  --violeta:#5B4B8A;
 }}
-:root[data-theme="dark"]{
-  --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
-  --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
-  --violeta:#A99BD6;
+:root[data-theme="light"]{
+  --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
+  --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
+  --violeta:#5B4B8A;
 }
 *{box-sizing:border-box}
+/* SEM ISTO A BUSCA NAO ESCONDE NADA: .linha usa display:grid e .grupo usa
+   display:flex, e regra de classe ganha do [hidden] da folha do navegador.
+   O JS marcava el.hidden e a linha continuava na tela. */
+[hidden]{display:none!important}
 body{background:var(--ground);color:var(--ink);font-family:var(--sans);
   font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
 .page{max-width:72rem;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(.7rem,3vw,1.5rem) 4rem;
@@ -165,7 +181,13 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
 .parado .ponto{background:var(--slate)}
 .morto .ponto{background:var(--red)}
 .indeterminado .ponto{background:var(--violeta)}
-.linha .motivo{font-size:.83rem;color:var(--muted);grid-column:2}
+/* O motivo sai da linha e aparece no hover, no foco do teclado ou no toque.
+   A pagina fica com um terco da altura; a prova continua a um gesto. */
+.linha .motivo{font-size:.83rem;color:var(--muted);grid-column:1/-1;
+  display:none;padding-top:.15rem;border-top:1px dashed var(--rule);margin-top:.2rem}
+.linha:hover .motivo,.linha:focus-within .motivo,.linha.aberta .motivo{display:block}
+.linha{cursor:default}
+.linha:hover{border-color:var(--muted)}
 .linha .id{font-family:var(--mono);font-size:.68rem;color:var(--muted);
   grid-column:1;overflow-wrap:anywhere}
 .linha .metricas{font-family:var(--mono);font-size:.7rem;color:var(--muted);
@@ -233,7 +255,7 @@ def linha(p: dict) -> str:
 
     metricas = []
     if p.get("holders"):
-        metricas.append(f'{_fmt(p["holders"])} detentores')
+        metricas.append(f'{_fmt(p["holders"])} holders')
     if p.get("tx_janela") is not None:
         # Com o teto de paginacao a contagem e um piso, nao um total.
         mais = "+" if p.get("tx_truncado") else ""
@@ -242,11 +264,14 @@ def linha(p: dict) -> str:
     # "0d parado" num projeto ativo era leitura confusa, e "parado" colide com
     # o nome de uma das situacoes. So vale dizer quando ha silencio de fato.
     if isinstance(dias_quieto, int) and dias_quieto >= 1:
-        metricas.append(f'quieto ha {dias_quieto}d')
+        metricas.append(f'quiet {dias_quieto}d')
     v = p.get("variacao_holders")
     if isinstance(v, (int, float)) and abs(v) >= 0.1:
         classe = "sobe" if v >= 0 else "desce"
-        metricas.append(f'<span class="{classe}">{v:+.1f}% detentores</span>')
+        metricas.append(
+            f'<span class="{classe}" title="Change in the number of holders '
+            f'since the previous measurement of this project">{v:+.1f}% holders</span>'
+        )
 
     medido = (p.get("medido_em") or "")[:10]
     if medido:
@@ -255,8 +280,8 @@ def linha(p: dict) -> str:
         except ValueError:
             dias = None
         if dias is not None:
-            quando = "medido hoje" if dias == 0 else (
-                "medido ontem" if dias == 1 else f"medido ha {dias} dias"
+            quando = "measured today" if dias == 0 else (
+                "measured yesterday" if dias == 1 else f"measured {dias}d ago"
             )
             metricas.append(f'<span class="quando">{quando}</span>')
 
@@ -265,7 +290,7 @@ def linha(p: dict) -> str:
         alvo = urllib.parse.quote(str(p.get("nome", "")))
         pedir = (
             f' <a class="pedir" href="{html.escape(REPO)}/issues/new?'
-            f'template=revalidar.yml&title=Revalidar:+{alvo}">medir de novo</a>'
+            f'template=revalidar.yml&title=Recheck:+{alvo}">recheck</a>'
         )
 
     # Tudo que a busca deve encontrar, num atributo so: nome, codigo, endereco,
@@ -320,7 +345,7 @@ def gerar(dados: dict) -> str:
       <div class="lista">
 {chr(10).join(linha(p) for p in do_grupo)}
       </div>
-      <p class="vazio" hidden>Nenhum projeto deste grupo bate com a busca.</p>
+      <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>"""
         )
 
@@ -333,20 +358,20 @@ def gerar(dados: dict) -> str:
     # REPO (ou a variavel de ambiente STILLALIVE_REPO) antes de publicar.
     if REPO:
         contestacao = (
-            f'<a href="{html.escape(REPO)}/issues/new">Abra uma issue</a> e me diga.'
+            f'<a href="{html.escape(REPO)}/issues/new">Open an issue</a> and tell me.'
         )
-        contestacao_curta = f'<a href="{html.escape(REPO)}/issues">contestar</a>'
+        contestacao_curta = f'<a href="{html.escape(REPO)}/issues">dispute a call</a>'
     else:
-        contestacao = "Abra uma issue no repositorio."
-        contestacao_curta = "sem canal de contestacao configurado"
+        contestacao = "Open an issue in the repository."
+        contestacao_curta = "no dispute channel configured"
 
     return f"""<!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Still Alive — quem ainda esta vivo na XRPL</title>
-<meta name="description" content="Situacao real dos projetos da XRP Ledger, medida na rede e atualizada todo dia.">
+<title>Still Alive — which XRPL projects are still running</title>
+<meta name="description" content="The real state of XRP Ledger projects, measured on-ledger and updated daily.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
@@ -358,69 +383,88 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
 <body>
 <div class="page">
   <header>
-    <div class="eyebrow">Atualizado em {html.escape(quando)}</div>
+    <div class="eyebrow">Updated {html.escape(quando)}</div>
     <h1>Still Alive</h1>
-    <p class="sub">Quem ainda esta vivo na XRP Ledger.</p>
-    <p class="dek">Diretorio nenhum diz quais projetos morreram. Esta pagina mede
-    a atividade real de cada um na rede e mostra a conta. Cada cartao diz de
-    quando e a sua medicao.</p>
+    <p class="sub">Which projects on the XRP Ledger are still running.</p>
+    <p class="dek">No directory tells you which projects died. This page measures
+    each one's real activity on the ledger and shows the arithmetic. Every row
+    carries the date of its own measurement.</p>
   </header>
 
   <div class="barra">
     <div class="placar">{placar}</div>
     <input id="busca" type="search" autocomplete="off" spellcheck="false"
-      placeholder="buscar por nome, codigo, endereco do emissor ou dominio">
-    <span class="conta" id="conta">{total} projetos</span>
+      placeholder="search by name, currency code, issuer address or domain">
+    <span class="conta" id="conta">{total} projects</span>
   </div>
 
 {chr(10).join(grupos)}
 
   <section class="grupo">
-    <h2>Como isto e medido</h2>
+    <h2>How this is measured</h2>
     <div class="metodo">
-      <p>Para cada projeto com token, o robo consulta a conta do emissor num no
-      publico da XRPL e mede duas coisas: quando foi a ultima transacao e quantas
-      aconteceram nos ultimos 30 dias. Junta a isso o numero de detentores e o
-      volume negociado, e checa se o site do projeto ainda responde.</p>
-      <p>Emissor <code>blackholed</code> — aquele em que ninguem consegue mais
-      assinar: chave mestra desabilitada, sem chave regular e sem lista de
-      signatarios — nao conta como abandono. E boa pratica de seguranca, e nesse
-      caso a vida do projeto e julgada pelo token, detentores e negociacao, nao
-      pela conta emissora. Conta com a mestra desabilitada mas ainda operada por
-      lista de signatarios <em>nao</em> entra aqui: essa transaciona normalmente
-      e e medida como qualquer outra.</p>
-      <p>Os cortes usados: morto acima de {lim.get('dias_morto','?')} dias sem
-      transacao, parado acima de {lim.get('dias_parado','?')} dias ou menos de
-      {lim.get('tx_minimo','?')} transacoes no mes, ativo com pelo menos
-      {lim.get('tx_ativo','?')} transacoes no mes e movimento nos ultimos
-      {lim.get('dias_ativo','?')} dias. Sao escolhas discutiveis, e de proposito
-      estao expostas aqui.</p>
-      <p>Cada linha mostra o endereco do emissor, e a busca no alto aceita nome,
-      codigo da moeda, endereco ou dominio (a tecla <code>/</code> pula para
-      ela). Isso porque metade dos tokens da XRP Ledger nao publica nome nenhum
-      e aparece aqui pelo codigo da moeda, que ninguem reconhece - o endereco e
-      o unico identificador que nao depende de o projeto ter se cadastrado em
-      algum lugar. Os contadores no alto tambem filtram: clique num deles.</p>
-      <p>Discorda de alguma classificacao? Cada cartao tem um "medir de novo"
-      que roda a medicao na hora e responde com o numero. Ele nao decide se o
-      corte e justo - isso e conversa, e da para puxar no mesmo lugar.</p>
-      <p>Os projetos mais movimentados sao remedidos todo dia; o restante entra
-      num rodizio de {ciclo} dias, porque morte e lenta e medir tudo diariamente
-      seria castigar o no publico da rede para descobrir quase nada. Por isso
-      cada cartao carrega a data da propria medicao, em vez de a pagina fingir
-      que viu tudo hoje.</p>
-      <p>A contagem de transacoes tem teto: acima de 2400 no mes ela aparece com
-      um <code>+</code>, porque a leitura para ali. E um piso, nao um total.</p>
-      <p>Nada disto e conselho de investimento, e um projeto quieto na rede pode
-      estar muito vivo fora dela. <strong>Achou um erro? {contestacao}</strong>
-      Correcao de projeto vivo marcado como morto entra no mesmo dia.</p>
+      <p>For every project with a token, the robot queries the issuer account on
+      a public XRPL node and measures two things: when the last transaction
+      happened, and how many happened in the last 30 days. It adds the holder
+      count and traded volume, and checks whether the project's website still
+      answers.</p>
+      <p><strong>Two different questions.</strong> A node returns every
+      transaction that <em>touches</em> an account, and most of them are
+      strangers: someone opening a trust line, a bot sending dust, an offer
+      crossing the book. So we count them separately. The total answers "is the
+      token still circulating?"; the subset actually <em>signed by the issuer</em>
+      answers "is the team still there?". An abandoned project keeps receiving
+      visitors, and the visits are not its own pulse.</p>
+      <p><strong>What <code>blackholed</code> means.</strong> An issuer account
+      nobody can sign for any more: the master key is disabled, there is no
+      regular key, and there is no signer list. On the XRP Ledger this is good
+      security practice, not abandonment — it is how an issuer proves it can
+      never mint more of the token. So it never counts as death: for these, life
+      is judged by the token itself, holders and trading, not by the account.
+      An account with the master key disabled but still operated through a
+      signer list is <em>not</em> blackholed — it transacts normally and is
+      measured like any other.</p>
+      <p><strong>What <code>% holders</code> means.</strong> The change in the
+      number of holders since the previous measurement of that same project —
+      the only trend line here, and it only exists from the second measurement
+      onwards. Below 0.1% we do not show it: that is noise, not a trend.</p>
+      <p><strong>The cut-offs.</strong> Dead above {lim.get('dias_morto','?')}
+      days with no transaction; dormant above {lim.get('dias_parado','?')} days
+      or fewer than {lim.get('tx_minimo','?')} transactions in the month; alive
+      with at least {lim.get('tx_ativo','?')} transactions in the month and
+      movement in the last {lim.get('dias_ativo','?')} days. Accusing a project
+      of being quiet takes a whole week without trading, never a single quiet
+      day. These are arguable choices, and they are printed here on purpose.</p>
+      <p><strong>Finding a project.</strong> Every row shows the issuer address,
+      and the search box takes a name, a currency code, an address or a domain
+      (press <code>/</code> to jump to it). Half the tokens on the XRP Ledger
+      publish no name at all and show up here by their currency code, which
+      nobody recognises — the address is the only identifier that does not
+      depend on the project having registered somewhere. The counters at the top
+      are filters too: click one. Hover a row, or tap it, to see the reasoning.</p>
+      <p><strong>Disagree?</strong> Every row has a "recheck" link that runs the
+      measurement right now and answers with the numbers. It does not decide
+      whether the cut-off is fair — that is a conversation, and you can start it
+      in the same place.</p>
+      <p>The busiest projects are re-measured every day; the rest rotate on a
+      {ciclo}-day cycle, because death is slow and measuring everything daily
+      would punish the network's public node to discover almost nothing. That is
+      why each row carries the date of its own measurement, instead of the page
+      pretending it saw everything today.</p>
+      <p>The transaction count has a ceiling: above 2400 in the month it shows a
+      <code>+</code>, because the reading stops there. It is a floor, not a
+      total.</p>
+      <p>None of this is investment advice, and a project that is quiet on the
+      ledger may be very much alive off it. <strong>Found a mistake?
+      {contestacao}</strong> A live project marked dead gets fixed the same
+      day.</p>
     </div>
   </section>
 
   <footer>
-    {dados.get('total', 0)} projetos observados · dados brutos em
-    <a href="dados.json">dados.json</a> · {contestacao_curta} · feito por um
-    humano com um robo
+    {dados.get('total', 0)} projects observed · raw data in
+    <a href="dados.json">dados.json</a> · {contestacao_curta} · made by a human
+    with a robot
   </footer>
 </div>
 {JS}
