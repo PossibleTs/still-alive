@@ -58,7 +58,11 @@ jobs:
         run: |
           git config user.name "robo"
           git config user.email "robo@users.noreply.github.com"
-          git add historico dados.json revalidacoes.json
+          git add historico dados.json
+          # revalidacoes.json so passa a existir depois da primeira revalidacao
+          # a pedido. Sem a guarda, o git add aborta e derruba a corrida inteira
+          # depois da coleta ja ter rodado.
+          if [ -f revalidacoes.json ]; then git add revalidacoes.json; fi
           git diff --staged --quiet || git commit -m "dados: $(date -u +%F)"
           git push
 
