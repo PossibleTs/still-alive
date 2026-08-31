@@ -16,6 +16,7 @@ import html
 import json
 import os
 import sys
+import unicodedata
 import urllib.parse
 
 # Endereco do repositorio, usado no canal de contestacao da pagina.
@@ -29,64 +30,166 @@ SITUACOES = {
     "indeterminado": ("Indeterminado", "Nao foi possivel medir com confianca."),
 }
 
+JS = """
+<script>
+// Busca e filtro no proprio navegador. Nao ha servidor para consultar, e a
+// pagina inteira ja esta aqui - filtrar e esconder linha, nao pedir dados.
+(function(){
+  var busca = document.getElementById('busca');
+  var conta = document.getElementById('conta');
+  var linhas = Array.prototype.slice.call(document.querySelectorAll('.linha'));
+  var selos = Array.prototype.slice.call(document.querySelectorAll('.selo'));
+  var grupos = Array.prototype.slice.call(document.querySelectorAll('.grupo'));
+  var filtros = {};
+
+  function aplicar(){
+    var termo = (busca.value || '').trim().toLowerCase();
+    var algumFiltro = Object.keys(filtros).some(function(k){ return filtros[k]; });
+    var visiveis = 0;
+    linhas.forEach(function(el){
+      var passaTermo = !termo || el.dataset.b.indexOf(termo) !== -1;
+      var passaFiltro = !algumFiltro || filtros[el.dataset.s];
+      var mostra = passaTermo && passaFiltro;
+      el.hidden = !mostra;
+      if (mostra) visiveis++;
+    });
+    grupos.forEach(function(g){
+      var doGrupo = g.querySelectorAll('.linha');
+      var n = 0;
+      Array.prototype.forEach.call(doGrupo, function(el){ if (!el.hidden) n++; });
+      var rotulo = g.querySelector('[data-conta]');
+      if (rotulo) rotulo.textContent = '(' + n + ')';
+      var vazio = g.querySelector('.vazio');
+      // O grupo inteiro sai de cena quando nenhum item dele sobrou, para a
+      // pagina nao virar uma sequencia de cabecalhos vazios.
+      g.hidden = (n === 0 && (termo || algumFiltro));
+      if (vazio) vazio.hidden = true;
+    });
+    conta.textContent = visiveis + (visiveis === 1 ? ' projeto' : ' projetos');
+  }
+
+  busca.addEventListener('input', aplicar);
+  busca.addEventListener('search', aplicar);
+  selos.forEach(function(b){
+    b.addEventListener('click', function(){
+      var k = b.dataset.f;
+      filtros[k] = !filtros[k];
+      b.setAttribute('aria-pressed', filtros[k] ? 'true' : 'false');
+      aplicar();
+    });
+  });
+  // "/" cai na busca, como em quase todo lugar que tem lista longa.
+  document.addEventListener('keydown', function(ev){
+    if (ev.key === '/' && document.activeElement !== busca){
+      ev.preventDefault(); busca.focus();
+    }
+    if (ev.key === 'Escape' && document.activeElement === busca){
+      busca.value = ''; aplicar(); busca.blur();
+    }
+  });
+})();
+</script>
+"""
+
+
 CSS = """
 :root{
   --ground:#F1F4F3;--surface:#FFF;--sunken:#E7ECEA;--ink:#121A1C;--muted:#59696B;
   --rule:#D3DBD9;--accent:#0F6E5C;--amber:#96601A;--red:#9B3A2E;--slate:#6B7A7C;
+  --violeta:#5B4B8A;
   --serif:"Fraunces",Georgia,serif;--sans:"Source Sans 3",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
   --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
   --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
+  --violeta:#A99BD6;
 }}
 :root[data-theme="dark"]{
   --ground:#0D1416;--surface:#141D1F;--sunken:#101819;--ink:#E4EBE9;--muted:#93A4A3;
   --rule:#263133;--accent:#58C3A6;--amber:#D6A660;--red:#E0806F;--slate:#8D9C9E;
+  --violeta:#A99BD6;
 }
 *{box-sizing:border-box}
 body{background:var(--ground);color:var(--ink);font-family:var(--sans);
-  font-size:17px;line-height:1.6;margin:0;-webkit-font-smoothing:antialiased}
-.page{max-width:56rem;margin:0 auto;padding:clamp(2rem,5vw,4rem) clamp(1rem,4vw,2rem) 5rem;
-  display:flex;flex-direction:column;gap:2.5rem}
-.eyebrow{font-family:var(--mono);font-size:.7rem;letter-spacing:.13em;
+  font-size:16px;line-height:1.5;margin:0;-webkit-font-smoothing:antialiased}
+.page{max-width:72rem;margin:0 auto;padding:clamp(1.5rem,4vw,3rem) clamp(.7rem,3vw,1.5rem) 4rem;
+  display:flex;flex-direction:column;gap:1.5rem}
+.eyebrow{font-family:var(--mono);font-size:.68rem;letter-spacing:.13em;
   text-transform:uppercase;color:var(--muted)}
-h1{font-family:var(--serif);font-weight:600;font-size:clamp(2rem,5vw,2.9rem);
-  line-height:1.1;letter-spacing:-.015em;margin:.6rem 0 0;text-wrap:balance}
-.dek{color:var(--muted);max-width:34rem;margin:.8rem 0 0;font-size:1.1rem}
-h2{font-family:var(--serif);font-weight:600;font-size:1.4rem;margin:0;
-  padding-top:1.2rem;border-top:1px solid var(--rule)}
-.placar{display:flex;flex-wrap:wrap;gap:.5rem}
-.selo{font-family:var(--mono);font-size:.75rem;padding:.35rem .7rem;border-radius:2px;
-  border:1px solid var(--rule);background:var(--surface)}
-.selo b{font-weight:500}
-.grupo{display:flex;flex-direction:column;gap:1rem}
-.cabeca{display:flex;align-items:baseline;gap:.7rem;flex-wrap:wrap}
-.cabeca p{margin:0;color:var(--muted);font-size:.92rem}
-.lista{display:grid;gap:.6rem;grid-template-columns:repeat(auto-fill,minmax(19rem,1fr))}
-.card{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--slate);
-  border-radius:3px;padding:.9rem 1rem;display:flex;flex-direction:column;gap:.3rem}
-.card.ativo{border-left-color:var(--accent)}
-.card.morrendo{border-left-color:var(--amber)}
-.card.parado{border-left-color:var(--slate)}
-.card.morto{border-left-color:var(--red)}
-.nome{font-weight:600;display:flex;justify-content:space-between;gap:.6rem;align-items:baseline}
-.cat{font-family:var(--mono);font-size:.68rem;color:var(--muted);text-transform:uppercase;
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);
+  line-height:1.1;letter-spacing:-.015em;margin:.4rem 0 0}
+header .sub{margin:.15rem 0 0;font-size:1rem;color:var(--muted)}
+.dek{color:var(--muted);max-width:38rem;margin:.5rem 0 0;font-size:.95rem}
+h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
+
+/* Barra que acompanha a rolagem: contadores e busca sempre a mao. Numa lista
+   de centenas de linhas, procurar um nome e a acao mais comum. */
+.barra{position:sticky;top:0;z-index:5;background:var(--ground);
+  border-bottom:1px solid var(--rule);padding:.6rem 0;margin-bottom:-.5rem;
+  display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.placar{display:flex;flex-wrap:wrap;gap:.35rem}
+.selo{font-family:var(--mono);font-size:.72rem;padding:.3rem .55rem;border-radius:2px;
+  border:1px solid var(--rule);background:var(--surface);color:var(--muted);
+  cursor:pointer;user-select:none}
+.selo:hover{border-color:var(--muted)}
+.selo[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+.selo b{font-weight:600;color:inherit}
+.selo .ponto{display:inline-block;width:.5em;height:.5em;border-radius:50%;
+  margin-right:.4em;vertical-align:.05em}
+#busca{flex:1;min-width:12rem;font-family:var(--mono);font-size:.8rem;
+  padding:.35rem .6rem;border:1px solid var(--rule);border-radius:2px;
+  background:var(--surface);color:var(--ink)}
+#busca::placeholder{color:var(--muted)}
+.conta{font-family:var(--mono);font-size:.72rem;color:var(--muted);white-space:nowrap}
+
+.grupo{display:flex;flex-direction:column;gap:.15rem}
+.cabeca{display:flex;align-items:baseline;gap:.6rem;flex-wrap:wrap;
+  padding-top:.9rem;border-top:1px solid var(--rule);margin-bottom:.3rem}
+.cabeca p{margin:0;color:var(--muted);font-size:.85rem}
+
+/* Uma linha por projeto. Cartao gastava tres vezes a altura para dizer o
+   mesmo, e a pagina inteira nao cabia em rolagem nenhuma. */
+.linha{background:var(--surface);border:1px solid var(--rule);border-left:3px solid var(--slate);
+  border-radius:2px;padding:.4rem .7rem;display:grid;gap:.1rem .8rem;
+  grid-template-columns:minmax(9rem,14rem) 1fr}
+.linha.ativo{border-left-color:var(--accent)}
+.linha.morrendo{border-left-color:var(--amber)}
+.linha.parado{border-left-color:var(--slate)}
+.linha.morto{border-left-color:var(--red)}
+.linha.indeterminado{border-left-color:var(--violeta)}
+.linha .nome{font-weight:600;font-size:.95rem;display:flex;align-items:baseline;gap:.4rem}
+.linha .nome .ponto{flex:none;width:.5em;height:.5em;border-radius:50%}
+.ativo .ponto{background:var(--accent)}
+.morrendo .ponto{background:var(--amber)}
+.parado .ponto{background:var(--slate)}
+.morto .ponto{background:var(--red)}
+.indeterminado .ponto{background:var(--violeta)}
+.linha .motivo{font-size:.83rem;color:var(--muted);grid-column:2}
+.linha .id{font-family:var(--mono);font-size:.68rem;color:var(--muted);
+  grid-column:1;overflow-wrap:anywhere}
+.linha .metricas{font-family:var(--mono);font-size:.7rem;color:var(--muted);
+  font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:.6rem;grid-column:2}
+.cat{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;
   letter-spacing:.06em;white-space:nowrap}
-.motivo{font-size:.88rem;color:var(--muted)}
-.metricas{font-family:var(--mono);font-size:.74rem;color:var(--muted);
-  font-variant-numeric:tabular-nums;display:flex;flex-wrap:wrap;gap:.7rem;margin-top:.15rem}
 .sobe{color:var(--accent)}.desce{color:var(--red)}
-.card a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
-.card a:hover{border-bottom-color:currentColor}
-a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.quando{opacity:.7;font-style:italic}
+.pedir{margin-left:.5em;font-size:.95em;opacity:.6}
+.linha a{color:inherit;text-decoration:none;border-bottom:1px solid var(--rule)}
+.linha a:hover{border-bottom-color:currentColor}
+a:focus-visible,#busca:focus-visible,.selo:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.vazio{color:var(--muted);font-size:.9rem;padding:.6rem 0}
 .metodo{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
-  padding:1.2rem 1.4rem;font-size:.93rem}
-.metodo p{margin:0 0 .7rem;color:var(--muted);max-width:44rem}
+  padding:1.1rem 1.3rem;font-size:.9rem}
+.metodo p{margin:0 0 .6rem;color:var(--muted);max-width:44rem}
 .metodo p:last-child{margin-bottom:0}
 .metodo code{font-family:var(--mono);font-size:.85em;background:var(--sunken);
   padding:.1em .35em;border-radius:2px}
-footer{border-top:1px solid var(--rule);padding-top:1.2rem;font-size:.85rem;color:var(--muted)}
+footer{border-top:1px solid var(--rule);padding-top:1rem;font-size:.82rem;color:var(--muted)}
+@media (max-width:38rem){
+  .linha{grid-template-columns:1fr}
+  .linha .motivo,.linha .metricas,.linha .id{grid-column:1}
+}
 """
 
 
@@ -100,13 +203,33 @@ def _fmt(n) -> str:
     return str(int(n))
 
 
-def card(p: dict) -> str:
+def _chave_alfabetica(nome) -> tuple:
+    """Ordena como um humano procura: sem caixa, sem acento e ignorando
+    pontuacao inicial ($TOKEN fica junto de TOKEN)."""
+    texto = unicodedata.normalize("NFKD", str(nome or "")).encode("ascii", "ignore")
+    limpo = texto.decode().lower().lstrip("$#@._- ")
+    # Nome que comeca com digito vai para o fim, como em indice de livro.
+    return (1 if limpo[:1].isdigit() else 0, limpo)
+
+
+def linha(p: dict) -> str:
     e = html.escape
     nome = e(str(p.get("nome", "?")))
     site = p.get("site") or ""
     if site and not site.startswith("http"):
         site = "https://" + site
     titulo = f'<a href="{e(site)}" rel="nofollow noopener">{nome}</a>' if site else nome
+
+    # Identificacao. O endereco do emissor e o unico nome que nao mente: metade
+    # dos tokens da XRPL nao publica nome nenhum e aparece aqui pelo codigo da
+    # moeda, que ninguem reconhece. Quem procura o proprio projeto procura pelo
+    # endereco.
+    ident = []
+    if p.get("emissor"):
+        ident.append(e(p["emissor"]))
+    dominio = (p.get("site") or "").replace("https://", "").replace("http://", "").strip("/")
+    if dominio and dominio.lower() not in nome.lower():
+        ident.append(e(dominio))
 
     metricas = []
     if p.get("holders"):
@@ -115,20 +238,22 @@ def card(p: dict) -> str:
         # Com o teto de paginacao a contagem e um piso, nao um total.
         mais = "+" if p.get("tx_truncado") else ""
         metricas.append(f'{_fmt(p["tx_janela"])}{mais} tx/30d')
-    if isinstance(p.get("dias_sem_atividade"), int):
-        metricas.append(f'{p["dias_sem_atividade"]}d parado')
+    dias_quieto = p.get("dias_sem_atividade")
+    # "0d parado" num projeto ativo era leitura confusa, e "parado" colide com
+    # o nome de uma das situacoes. So vale dizer quando ha silencio de fato.
+    if isinstance(dias_quieto, int) and dias_quieto >= 1:
+        metricas.append(f'quieto ha {dias_quieto}d')
     v = p.get("variacao_holders")
-    if isinstance(v, (int, float)):
+    if isinstance(v, (int, float)) and abs(v) >= 0.1:
         classe = "sobe" if v >= 0 else "desce"
         metricas.append(f'<span class="{classe}">{v:+.1f}% detentores</span>')
 
     medido = (p.get("medido_em") or "")[:10]
     if medido:
-        dias = None
         try:
             dias = (dt.date.today() - dt.date.fromisoformat(medido)).days
         except ValueError:
-            pass
+            dias = None
         if dias is not None:
             quando = "medido hoje" if dias == 0 else (
                 "medido ontem" if dias == 1 else f"medido ha {dias} dias"
@@ -139,14 +264,27 @@ def card(p: dict) -> str:
     if REPO:
         alvo = urllib.parse.quote(str(p.get("nome", "")))
         pedir = (
-            f'<a class="pedir" href="{html.escape(REPO)}/issues/new?'
+            f' <a class="pedir" href="{html.escape(REPO)}/issues/new?'
             f'template=revalidar.yml&title=Revalidar:+{alvo}">medir de novo</a>'
         )
 
-    return f"""      <article class="card {e(p.get('situacao','indeterminado'))}">
-        <div class="nome">{titulo}<span class="cat">{e(str(p.get('categoria','')))}</span></div>
+    # Tudo que a busca deve encontrar, num atributo so: nome, codigo, endereco,
+    # dominio e categoria.
+    busca = " ".join(
+        str(x).lower()
+        for x in (
+            p.get("nome"), p.get("moeda"), p.get("moeda_hex"), p.get("emissor"),
+            dominio, p.get("categoria"),
+        )
+        if x
+    )
+
+    situacao = e(p.get("situacao", "indeterminado"))
+    return f"""      <article class="linha {situacao}" data-s="{situacao}" data-b="{e(busca)}">
+        <div class="nome"><span class="ponto"></span>{titulo}</div>
         <div class="motivo">{e(str(p.get('motivo','')))}{pedir}</div>
-        <div class="metricas">{' · '.join(metricas) if metricas else '&nbsp;'}</div>
+        <div class="id">{' · '.join(ident) if ident else '&nbsp;'}</div>
+        <div class="metricas">{' · '.join(metricas) if metricas else '&nbsp;'}<span class="cat">{e(str(p.get('categoria','')))}</span></div>
       </article>"""
 
 
@@ -159,7 +297,9 @@ def gerar(dados: dict) -> str:
 
     contagem = dados.get("contagem", {})
     placar = "".join(
-        f'<span class="selo"><b>{contagem.get(k,0)}</b> {SITUACOES[k][0].lower()}</span>'
+        f'<button class="selo" data-f="{k}" aria-pressed="false">'
+        f'<span class="ponto {k}"></span><b>{contagem.get(k,0)}</b> '
+        f'{SITUACOES[k][0].lower()}</button>'
         for k in ("ativo", "morrendo", "parado", "morto", "indeterminado")
         if contagem.get(k)
     )
@@ -169,16 +309,22 @@ def gerar(dados: dict) -> str:
         do_grupo = [p for p in dados["projetos"] if p.get("situacao") == chave]
         if not do_grupo:
             continue
+        # Alfabetica, nao por detentores: quem abre a pagina esta procurando um
+        # nome, nao conferindo um ranking. Sem acento e sem caixa para o "$" e o
+        # "x" minusculo nao caIrem longe de onde o olho procura.
+        do_grupo.sort(key=lambda p: _chave_alfabetica(p.get("nome")))
         titulo, sub = SITUACOES[chave]
         grupos.append(
-            f"""    <section class="grupo">
-      <div class="cabeca"><h2>{titulo} ({len(do_grupo)})</h2><p>{sub}</p></div>
+            f"""    <section class="grupo" data-grupo="{chave}">
+      <div class="cabeca"><h2>{titulo} <span class="conta" data-conta="{chave}">({len(do_grupo)})</span></h2><p>{sub}</p></div>
       <div class="lista">
-{chr(10).join(card(p) for p in do_grupo)}
+{chr(10).join(linha(p) for p in do_grupo)}
       </div>
+      <p class="vazio" hidden>Nenhum projeto deste grupo bate com a busca.</p>
     </section>"""
         )
 
+    total = dados.get("total", 0)
     lim = dados.get("limiares", {})
     ciclo = dados.get("ciclo_dias", 15)
 
@@ -220,7 +366,12 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     quando e a sua medicao.</p>
   </header>
 
-  <div class="placar">{placar}</div>
+  <div class="barra">
+    <div class="placar">{placar}</div>
+    <input id="busca" type="search" autocomplete="off" spellcheck="false"
+      placeholder="buscar por nome, codigo, endereco do emissor ou dominio">
+    <span class="conta" id="conta">{total} projetos</span>
+  </div>
 
 {chr(10).join(grupos)}
 
@@ -244,6 +395,12 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       {lim.get('tx_ativo','?')} transacoes no mes e movimento nos ultimos
       {lim.get('dias_ativo','?')} dias. Sao escolhas discutiveis, e de proposito
       estao expostas aqui.</p>
+      <p>Cada linha mostra o endereco do emissor, e a busca no alto aceita nome,
+      codigo da moeda, endereco ou dominio (a tecla <code>/</code> pula para
+      ela). Isso porque metade dos tokens da XRP Ledger nao publica nome nenhum
+      e aparece aqui pelo codigo da moeda, que ninguem reconhece - o endereco e
+      o unico identificador que nao depende de o projeto ter se cadastrado em
+      algum lugar. Os contadores no alto tambem filtram: clique num deles.</p>
       <p>Discorda de alguma classificacao? Cada cartao tem um "medir de novo"
       que roda a medicao na hora e responde com o numero. Ele nao decide se o
       corte e justo - isso e conversa, e da para puxar no mesmo lugar.</p>
@@ -266,6 +423,7 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     humano com um robo
   </footer>
 </div>
+{JS}
 </body>
 </html>
 """
