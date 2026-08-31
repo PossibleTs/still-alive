@@ -2344,7 +2344,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rs5zZN42NGy9VdEMuTgU6NVPqpBZQRZ2bv:and": {
+ "rs5zZN42NGy9VdEMuTgU6NVPqpBZQRZ2bv:AND": {
   "holders": 407,
   "tx_janela": 58,
   "tx_emissor": 0,
@@ -2526,7 +2526,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rHmRkTx8Gfxz8y3GZpwQN1NBcBeZTdpfGV:sos": {
+ "rHmRkTx8Gfxz8y3GZpwQN1NBcBeZTdpfGV:SOS": {
   "holders": 380,
   "tx_janela": 15,
   "tx_emissor": 0,
@@ -3366,7 +3366,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rJPctYYFhUCbB4ywJqW5UYLVF7U6UmkR3Z:DHy": {
+ "rJPctYYFhUCbB4ywJqW5UYLVF7U6UmkR3Z:DHY": {
   "holders": 254,
   "tx_janela": 12,
   "tx_emissor": 0,
@@ -3646,7 +3646,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rJ5PL1DYXyDuUPNzpSRq52Wz56jFZb8RuP:GiB": {
+ "rJ5PL1DYXyDuUPNzpSRq52Wz56jFZb8RuP:GIB": {
   "holders": 238,
   "tx_janela": 996,
   "tx_emissor": 0,

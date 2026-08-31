@@ -545,7 +545,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rs5zZN42NGy9VdEMuTgU6NVPqpBZQRZ2bv:and": {
+ "rs5zZN42NGy9VdEMuTgU6NVPqpBZQRZ2bv:AND": {
   "holders": 407,
   "tx_janela": 58,
   "tx_emissor": 0,
@@ -727,7 +727,7 @@
   "dias_sem_emissor": null,
   "tx_truncado": false
  },
- "rHmRkTx8Gfxz8y3GZpwQN1NBcBeZTdpfGV:sos": {
+ "rHmRkTx8Gfxz8y3GZpwQN1NBcBeZTdpfGV:SOS": {
   "holders": 380,
   "tx_janela": 15,
   "tx_emissor": 0,

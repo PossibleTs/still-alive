@@ -47,7 +47,7 @@ import glob
 import json
 import os
 
-from coletor import carregar_projetos, chave_do_projeto
+from coletor import carregar_projetos, chave_do_projeto, moeda_canonica
 
 PASTA = "historico"
 
@@ -77,8 +77,17 @@ def migrar(snap: dict, simples: dict, por_emissor: dict) -> tuple[dict, list, li
     apagados = []
     intocados = []
     for velha, reg in snap.items():
-        if ":" in velha:  # ja migrada
-            novo[velha] = reg
+        if ":" in velha:
+            # Ja migrada, mas a forma canonica da moeda pode ter mudado depois
+            # (o da1e3b7 passou a normalizar codigo de 3 letras para maiuscula,
+            # e chaves como `...:sos` viraram `...:SOS`). Renormalizar aqui e o
+            # que torna esta migracao repetivel: rodar de novo conserta em vez
+            # de deixar chave velha passando batido.
+            if velha.startswith("site:"):  # projeto sem token: nao tem moeda
+                novo[velha] = reg
+                continue
+            emissor, _, moeda = velha.partition(":")
+            novo[f"{emissor}:{moeda_canonica(moeda)}"] = reg
             continue
         if velha in simples:
             novo[simples[velha]] = reg
