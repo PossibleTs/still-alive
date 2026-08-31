@@ -47,7 +47,7 @@ RIPPLE_EPOCH = 946684800
 TIMEOUT = 25
 PAUSA_ENTRE_CHAMADAS = 0.35  # no publico e gentileza, nao direito adquirido
 
-AGENTE = "xrpl-vivo/1.0 (+coletor de sinais de atividade)"
+AGENTE = "rwalive/1.0 (+coletor de sinais de atividade)"
 
 # Projetos sem token proprio (carteiras, exploradores, ferramentas). Para esses
 # nao existe sinal on-chain de token: medimos o site e, quando houver, o
