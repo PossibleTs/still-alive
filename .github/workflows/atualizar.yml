@@ -79,3 +79,6 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+# Primeira execucao: o job "publicar" so passa depois que o Pages for
+# ligado (source = GitHub Actions). Antes disso ele falha de proposito.
