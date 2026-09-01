@@ -48,7 +48,8 @@ JS = """
   var conta = document.getElementById('conta');
   var linhas = Array.prototype.slice.call(document.querySelectorAll('.linha'));
   var selos = Array.prototype.slice.call(document.querySelectorAll('.selo'));
-  var grupos = Array.prototype.slice.call(document.querySelectorAll('.grupo'));
+  // So os grupos DE PROJETO (data-grupo) entram no filtro. Method e disclaimer tem class="grupo" so pelo estilo visual, sem nenhuma .linha dentro - contariam n=0 sempre e sumiriam no primeiro clique em qualquer filtro, deixando as ancoras #method/#disclaimer apontando para uma secao escondida.
+  var grupos = Array.prototype.slice.call(document.querySelectorAll('.grupo[data-grupo]'));
   var filtros = {};
 
   function aplicar(){

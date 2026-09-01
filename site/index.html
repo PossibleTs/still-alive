@@ -151,7 +151,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
 <body>
 <div class="page">
   <header>
-    <div class="eyebrow">Updated 01/09/2026 as 12:29 UTC</div>
+    <div class="eyebrow">Updated 01/09/2026 as 16:33 UTC</div>
     <h1>Still Alive</h1>
     <p class="sub">Which projects on the XRP Ledger are still running.</p>
     <p class="dek">No directory tells you which projects died. This page measures
@@ -5356,7 +5356,8 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
   var conta = document.getElementById('conta');
   var linhas = Array.prototype.slice.call(document.querySelectorAll('.linha'));
   var selos = Array.prototype.slice.call(document.querySelectorAll('.selo'));
-  var grupos = Array.prototype.slice.call(document.querySelectorAll('.grupo'));
+  // So os grupos DE PROJETO (data-grupo) entram no filtro. Method e disclaimer tem class="grupo" so pelo estilo visual, sem nenhuma .linha dentro - contariam n=0 sempre e sumiriam no primeiro clique em qualquer filtro, deixando as ancoras #method/#disclaimer apontando para uma secao escondida.
+  var grupos = Array.prototype.slice.call(document.querySelectorAll('.grupo[data-grupo]'));
   var filtros = {};
 
   function aplicar(){
