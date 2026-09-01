@@ -833,8 +833,13 @@ def coletar(projetos: list[dict]) -> list[dict]:
                 print(f"    ! {p['nome']}: {type(e).__name__}: {e}", file=sys.stderr)
                 p["erro_medicao"] = f"{type(e).__name__}: {e}"
 
-    aplicar_tendencia(projetos)
-
+    # aplicar_tendencia NAO entra aqui: ela le holders_anterior/medido_em_anterior,
+    # e quem grava esses dois campos e mesclar() - que so roda depois, em main().
+    # Chamar aqui rodava a tendencia ANTES de existir o que medir, e o campo
+    # nunca aparecia na pagina, em silencio. E a mesma classe do bug de
+    # 31/08 (chave que nao identificava o projeto): correcao presente no
+    # codigo, sem efeito nenhum porque a ordem de chamada nao sustenta a
+    # condicao que ela precisa.
     for p in projetos:
         p["medido_em"] = carimbo
         situacao, motivo = classificar(p)
@@ -949,6 +954,9 @@ def main() -> None:
 
         medidos = coletar(alvos)
         projetos = mesclar(carregar_projetos(), medidos)
+        # Aqui, e so aqui, holders_anterior/medido_em_anterior ja existem nos
+        # projetos remedidos hoje - e a tendencia tem o que comparar.
+        aplicar_tendencia(projetos)
         # Reclassifica tudo: os limiares podem ter mudado desde a ultima
         # medicao de quem nao foi medido hoje.
         for p in projetos:

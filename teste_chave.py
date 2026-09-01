@@ -13,7 +13,9 @@ prova que as duas colapsam na mesma chave.
 
 import datetime as dt
 
-from coletor import aplicar_tendencia, chave_do_projeto, mesclar, moeda_canonica
+import inspect
+
+from coletor import aplicar_tendencia, chave_do_projeto, coletar, main, mesclar, moeda_canonica
 
 FALHAS = []
 
@@ -107,6 +109,28 @@ def main() -> None:
                               "holders": 100, "medido_em": agora}])
     aplicar_tendencia(so_agora)
     checa("sem holders_anterior, sem variacao_holders", "variacao_holders" in so_agora[0], False)
+
+    print("\naplicar_tendencia() so pode rodar depois de mesclar() - guarda estrutural")
+    # Bug real de 01/09: aplicar_tendencia() morava DENTRO de coletar(), que
+    # roda ANTES de mesclar() existir no fluxo. holders_anterior so e gravado
+    # por mesclar(), entao a tendencia nunca tinha o que comparar - "correcao
+    # inerte" pela terceira vez neste projeto. Um teste de valores nao pega
+    # isso (os dois testes acima ja provam a LOGICA certa); so um teste de
+    # ORDEM de chamada pega. Falha aqui de novo se alguem mover a chamada de
+    # volta para dentro de coletar().
+    # Sintaxe de CHAMADA, nao a palavra solta - o comentario acima de proposito
+    # cita "aplicar_tendencia" em prosa para explicar por que ela nao esta
+    # aqui, e isso pegaria como falso positivo num grep ingenuo pela palavra.
+    checa(
+        "aplicar_tendencia() NAO e chamada dentro de coletar()",
+        "aplicar_tendencia(" in inspect.getsource(coletar),
+        False,
+    )
+    checa(
+        "aplicar_tendencia() E chamada dentro de main()",
+        "aplicar_tendencia(" in inspect.getsource(main),
+        True,
+    )
 
     print()
     if FALHAS:
