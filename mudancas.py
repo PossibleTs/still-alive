@@ -8,7 +8,7 @@ cruzaram para dormant nesta semana, e um voltou". Isso a pagina produz de
 graca, todo dia, e ninguem estava lendo.
 
 Le os snapshots de historico/ e compara dois. Imprime em ingles porque a saida
-e para publicar; o cabecalho e em PT-BR porque quem le a saida crua e o quem mantem o projeto.
+e para publicar; o cabecalho e em PT-BR porque quem le a saida crua e quem mantem o projeto.
 
 Uso:
     python mudancas.py                    # ultimo contra 7 dias antes
