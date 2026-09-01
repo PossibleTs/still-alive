@@ -370,6 +370,25 @@ def _num(v, padrao=0):
     return int(f) if f.is_integer() else f
 
 
+def dominio_valido(texto: str | None) -> str:
+    """
+    Filtra o que o catalogo chama de "domain" antes de virar link publico.
+
+    O campo e preenchido por quem cadastra o token, sem validacao nenhuma do
+    lado deles - achamos um projeto (XRG) que pos o proprio e-mail pessoal
+    ali. Sem este filtro, coletor.py publicava "" como site
+    e ainda o transformava em link (https://): expunha o
+    endereco de alguem E gerava link quebrado, dois problemas de um so.
+
+    Nao tenta validar DNS nem alcancar a rede - so recusa o que claramente
+    nao e um dominio (tem @, tem espaco, ou nao tem ponto nenhum).
+    """
+    texto = (texto or "").strip()
+    if not texto or "@" in texto or " " in texto or "." not in texto:
+        return ""
+    return texto
+
+
 def nome_da_moeda(codigo: str | None) -> str:
     """Codigo de moeda de 40 hex vira o texto que ele representa.
 
@@ -496,7 +515,7 @@ def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
                 "x": _perfil_no_x(t),
                 "moeda": nome_da_moeda(_cava(t, "currency")),
                 "moeda_hex": _cava(t, "currency"),
-                "site": _cava(t, "meta.issuer.domain", "meta.token.domain", padrao=""),
+                "site": dominio_valido(_cava(t, "meta.issuer.domain", "meta.token.domain")),
                 # padrao=None de proposito: campo AUSENTE nao e o mesmo que
                 # zero. Se o XRPL Meta mudar o esquema ou responder pela
                 # metade, zero viraria "sem negociacao nas ultimas 24h" - a

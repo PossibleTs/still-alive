@@ -11698,7 +11698,7 @@
    "emissor": "rLk9bGvjTS6bMhvvfw5dFWPKFdyFErYenk",
    "moeda": "RISE",
    "moeda_hex": "5249534500000000000000000000000000000000",
-   "site": "rLk9bGvjTS6bMhvvfw5dFWPKFdyFErYenk",
+   "site": "",
    "holders": 495,
    "trustlines": 788,
    "volume_24h": 0.002184,
@@ -21387,10 +21387,14 @@
    "ultima_do_emissor": null,
    "dias_sem_emissor": null,
    "ultima_atividade": 1787685601,
-   "dias_sem_atividade": 5,
+   "dias_sem_atividade": 6,
    "site_ok": null,
    "situacao": "morrendo",
-   "motivo": "All 3 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days."
+   "motivo": "All 3 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days.",
+   "erro_leitura": null,
+   "medido_em": "2026-09-01T14:54:21+00:00",
+   "holders_anterior": 474,
+   "medido_em_anterior": "2026-09-01T14:54:21+00:00"
   },
   {
    "nome": "XPixie",
