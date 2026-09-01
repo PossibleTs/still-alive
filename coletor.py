@@ -535,9 +535,54 @@ LIMIARES = {
 }
 
 
+# Codigos de moeda fiduciaria e de metal. Um token desses nao e um projeto: e
+# um IOU - a promessa de um gateway de resgatar valor de fora da rede.
+MOEDAS_DE_RESGATE = {
+    "USD", "EUR", "JPY", "CNY", "KRW", "GBP", "CAD", "AUD", "CHF", "BRL", "MXN",
+    "SGD", "NZD", "HKD", "TRY", "RUB", "INR", "ILS", "SEK", "NOK", "DKK", "PLN",
+    "ZAR", "VND", "THB", "IDR", "PHP", "MYR", "TWD", "AED", "SAR", "ARS", "CLP",
+    "COP", "PEN", "XAU", "XAG", "XPT", "XPD",
+}
+
+
+def eh_iou_de_resgate(p: dict) -> bool:
+    """Token de moeda fiduciaria ou metal, emitido por um gateway."""
+    if p.get("categoria") != "Token":
+        return False
+    codigo = str(p.get("moeda") or p.get("moeda_hex") or "").upper()
+    return codigo in MOEDAS_DE_RESGATE
+
+
 def classificar(p: dict) -> tuple[str, str]:
-    """Devolve (situacao, motivo). O motivo aparece na pagina: sem ele a
-    classificacao vira acusacao sem prova."""
+    """
+    Devolve (situacao, motivo). O motivo aparece na pagina: sem ele a
+    classificacao vira acusacao sem prova.
+
+    Um caso nao recebe veredito negativo: IOU de moeda fiduciaria ou metal.
+    Chamar de "morta" uma memecoin quieta e uma observacao sobre a rede;
+    dizer o mesmo de um `USD` ou `JPY` de gateway e uma afirmacao sobre uma
+    PROMESSA DE RESGATE - que esta pagina nao tem como medir e nao se propoe a
+    avaliar. A medicao continua na tela, com o mesmo numero e a mesma data; o
+    que sai e a palavra que vira veredito. Se o gateway sumiu mesmo, a
+    informacao util (silencio de N dias) continua ali, e quem tem o IOU na
+    carteira decide o que ela significa.
+    """
+    situacao, motivo = _avaliar(p)
+    if situacao in ("morto", "morrendo", "parado") and eh_iou_de_resgate(p):
+        # O motivo original vai inteiro na frente: e a medicao que sustentaria
+        # o veredito, e escondê-la para "proteger" o gateway seria trocar um
+        # erro por outro. O que muda e so a palavra que julga.
+        return "indeterminado", (
+            f"{motivo} No call is made here: this is a fiat/metal IOU - a "
+            "gateway's promise to redeem value off the ledger - and this page "
+            "measures ledger activity, not promises. The measurement stands; "
+            "the verdict does not."
+        )
+    return situacao, motivo
+
+
+def _avaliar(p: dict) -> tuple[str, str]:
+    """A classificacao propriamente dita. Ver classificar() para a excecao."""
     dias = p.get("dias_sem_atividade")
     tx = p.get("tx_janela") or 0
     # None = nao sabemos; 0 = sabemos que nao houve. So o segundo acusa.

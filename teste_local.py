@@ -60,7 +60,40 @@ CASOS = [
         "nome": "Conta que nao respondeu", "categoria": "Token", "emissor": "rTESTE8",
         "site": "", "holders": 0, "tx_janela": 0, "dias_sem_atividade": None,
         "site_ok": None, "blackholed": False, "trocas_24h": 0}),
+    # IOU de gateway: a mesma medicao que mataria uma memecoin, mas aqui a
+    # palavra "morto" seria afirmacao sobre uma promessa de resgate.
+    ("IOU de fiat que seria morto", {
+        "nome": "Gateway de iene", "categoria": "Token", "emissor": "rTESTE9",
+        "moeda": "JPY", "site": "exemplo.test", "holders": 300, "tx_janela": 1,
+        "dias_sem_atividade": 400, "site_ok": False, "blackholed": False,
+        "trocas_24h": 0}),
+    ("IOU de metal que seria morrendo", {
+        "nome": "Gateway de ouro", "categoria": "Token", "emissor": "rTESTE10",
+        "moeda": "XAU", "site": "exemplo.test", "holders": 900, "tx_janela": 40,
+        "dias_sem_atividade": 3, "site_ok": True, "blackholed": True,
+        "trocas_7d": 0}),
 ]
+
+
+def conferir_regra_do_iou() -> None:
+    """A regra tira o VEREDITO e nada mais: a medicao que o sustentaria continua
+    no texto, e token que nao e IOU segue sendo julgado normalmente."""
+    iou = dict(dict(CASOS)["IOU de fiat que seria morto"])
+    situacao, motivo = classificar(iou)
+    memecoin = dict(iou, nome="Memecoin", moeda="WOOF")
+    falhas = []
+    if situacao != "indeterminado":
+        falhas.append(f"IOU de fiat recebeu veredito: {situacao}")
+    if "400 days" not in motivo:
+        falhas.append("o motivo perdeu a medicao original")
+    if classificar(memecoin)[0] != "morto":
+        falhas.append("a regra vazou para token que nao e IOU")
+    print("\nRegra do IOU de resgate")
+    for f in falhas:
+        print("  FALHA", f)
+    if falhas:
+        raise SystemExit(1)
+    print("  ok   veredito suprimido, medicao preservada, sem vazamento")
 
 
 def main() -> None:
@@ -87,6 +120,7 @@ def main() -> None:
     # Arquivo proprio: escrever em dados.json apagaria a ultima coleta real.
     with open("dados_teste.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
+    conferir_regra_do_iou()
     print("\nContagem:", dados["contagem"])
     print("dados_teste.json escrito (veja com: python gerar_site.py dados_teste.json).")
 

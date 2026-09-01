@@ -39,6 +39,9 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);
   line-height:1.1;letter-spacing:-.015em;margin:.4rem 0 0}
 header .sub{margin:.15rem 0 0;font-size:1rem;color:var(--muted)}
 .dek{color:var(--muted);max-width:38rem;margin:.5rem 0 0;font-size:.95rem}
+.experimento{color:var(--muted);max-width:44rem;margin:.8rem 0 0;font-size:.88rem;
+  border-left:2px solid var(--rule);padding-left:.8rem}
+.experimento b{color:var(--ink);font-weight:600}
 .escopo{color:var(--muted);max-width:44rem;margin:.7rem 0 0;font-size:.85rem;
   border-left:2px solid var(--rule);padding-left:.8rem}
 .escopo b{color:var(--ink);font-weight:600}
@@ -139,17 +142,23 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
 <body>
 <div class="page">
   <header>
-    <div class="eyebrow">Updated 31/08/2026 as 19:41 UTC</div>
+    <div class="eyebrow">Updated 01/09/2026 as 00:32 UTC</div>
     <h1>Still Alive</h1>
     <p class="sub">Which projects on the XRP Ledger are still running.</p>
     <p class="dek">No directory tells you which projects died. This page measures
     each one's real activity on the ledger and shows the arithmetic. Every row
     carries the date of its own measurement.</p>
+    <p class="experimento"><b>This is an experiment.</b> One person and a robot,
+    measuring the ledger every day. The method is open and the arithmetic is
+    printed next to every call — <a href="#method">read how it works</a> before
+    you trust a label. Nobody reviews these rows by hand, there is no promise
+    that this keeps running, and a wrong call is a bug, not a verdict:
+    <a href="https://github.com/PossibleTs/still-alive/issues">dispute a call</a> and it gets fixed.</p>
     <p class="escopo">Scope: the 670 XRP Ledger tokens with the most holders — today everything above <b>232 holders</b>, on the way to <b>100</b> as the rotation reaches further down the catalogue — plus 8 wallets, explorers and tools that issue no token. Below a hundred holders the catalogue is mostly dust and abandoned tests that were never anyone's project, and calling those dead informs nobody. <b>A project missing from this list is not a project we called dead.</b></p>
   </header>
 
   <div class="barra">
-    <div class="placar"><button class="selo" data-f="ativo" aria-pressed="false"><span class="ponto ativo"></span><b>568</b> alive</button><button class="selo" data-f="morrendo" aria-pressed="false"><span class="ponto morrendo"></span><b>83</b> fading</button><button class="selo" data-f="parado" aria-pressed="false"><span class="ponto parado"></span><b>1</b> dormant</button><button class="selo" data-f="morto" aria-pressed="false"><span class="ponto morto"></span><b>6</b> dead</button><button class="selo" data-f="indeterminado" aria-pressed="false"><span class="ponto indeterminado"></span><b>20</b> unknown</button></div>
+    <div class="placar"><button class="selo" data-f="ativo" aria-pressed="false"><span class="ponto ativo"></span><b>568</b> alive</button><button class="selo" data-f="morrendo" aria-pressed="false"><span class="ponto morrendo"></span><b>78</b> fading</button><button class="selo" data-f="parado" aria-pressed="false"><span class="ponto parado"></span><b>1</b> dormant</button><button class="selo" data-f="morto" aria-pressed="false"><span class="ponto morto"></span><b>3</b> dead</button><button class="selo" data-f="indeterminado" aria-pressed="false"><span class="ponto indeterminado"></span><b>28</b> unknown</button></div>
     <input id="busca" type="search" autocomplete="off" spellcheck="false"
       placeholder="search by name, currency code, issuer address or domain">
     <span class="conta" id="conta">678 projects</span>
@@ -3570,7 +3579,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>
     <section class="grupo" data-grupo="morrendo">
-      <div class="cabeca"><h2>Fading <span class="conta" data-conta="morrendo">(83)</span></h2><p>Still breathing, but the movement dropped off.</p></div>
+      <div class="cabeca"><h2>Fading <span class="conta" data-conta="morrendo">(78)</span></h2><p>Still breathing, but the movement dropped off.</p></div>
       <div class="lista">
       <article class="linha morrendo" data-s="morrendo" data-b="advent advent 414456454e540000000000000000000000000000 rpxvk8vgwj13occ68x8dmmfbfc4qrfw6be token">
         <div class="nome"><span class="ponto"></span>ADVENT</div>
@@ -3728,12 +3737,6 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rwM9XzFHdCxnpNFjanc4Sd3N96cz8ip5pQ" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rwM9XzFHdCxnpNFjanc4Sd3N96cz8ip5pQ</a> · <a href="https://x.com/search?q=HOGX%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">412 holders · 9 tx/30d · quiet 5d<span class="cat">Token</span></div>
       </article>
-      <article class="linha morrendo" data-s="morrendo" data-b="jpy jpy jpy rdkcjtuw5b8urjb5avb41jkteetfxwwahe token">
-        <div class="nome"><span class="ponto"></span>JPY <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">All 7 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+JPY">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rDKcJtUW5b8URJB5AVb41jkTeETfXWwahe" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rDKcJtUW5b8URJB5AVb41jkTeETfXWwahe</a> · <a href="https://x.com/search?q=JPY%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">537 holders · 7 tx/30d · quiet 1d · <span class="quando">measured yesterday</span><span class="cat">Token</span></div>
-      </article>
       <article class="linha morrendo" data-s="morrendo" data-b="kat kat kat remwwstdxxluttazhrs5vwvtjtnuwwcfem katz.army token">
         <div class="nome"><span class="ponto"></span><a href="https://katz.army" rel="nofollow noopener">KAT</a></div>
         <div class="motivo">Issuer blackholed; 3053 holders, but no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+KAT">recheck</a></div>
@@ -3788,23 +3791,11 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rwpQQdPJZmnGFNrPfbtCjtStdBxZK8qs3W" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rwpQQdPJZmnGFNrPfbtCjtStdBxZK8qs3W</a> · <a href="https://x.com/search?q=MGT%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">403 holders · 5 tx/30d · quiet 5d<span class="cat">Token</span></div>
       </article>
-      <article class="linha morrendo" data-s="morrendo" data-b="mr. exchange jpy jpy rb3gzey7vwhyrqjhlohdejxj2pepniekis mr.exchange token">
-        <div class="nome"><span class="ponto"></span><a href="https://mr.exchange" rel="nofollow noopener">Mr. Exchange</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Mr.%20Exchange">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS</a> · mr.exchange · <a href="https://x.com/search?q=Mr.%20Exchange%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">6.7k holders · 4 tx/30d · quiet 6d · <span class="quando">measured today</span><span class="cat">Token</span></div>
-      </article>
       <article class="linha morrendo" data-s="morrendo" data-b="mr. exchange dog dog rb3gzey7vwhyrqjhlohdejxj2pepniekis mr.exchange token">
         <div class="nome"><span class="ponto"></span><a href="https://mr.exchange" rel="nofollow noopener">Mr. Exchange</a> <span class="colisao" title="More than one issuer uses the code DOG. Check the address before trusting the name.">shared code</span></div>
         <div class="motivo">All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Mr.%20Exchange">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS</a> · mr.exchange · <a href="https://x.com/search?q=Mr.%20Exchange%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">539 holders · 4 tx/30d · quiet 5d · <span class="quando">measured yesterday</span><span class="cat">Token</span></div>
-      </article>
-      <article class="linha morrendo" data-s="morrendo" data-b="mr. exchange usd usd rb3gzey7vwhyrqjhlohdejxj2pepniekis mr.exchange token">
-        <div class="nome"><span class="ponto"></span><a href="https://mr.exchange" rel="nofollow noopener">Mr. Exchange</a> <span class="colisao" title="More than one issuer uses the code USD. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Mr.%20Exchange">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS</a> · mr.exchange · <a href="https://x.com/search?q=Mr.%20Exchange%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">260 holders · 4 tx/30d · quiet 5d · <span class="quando">measured today</span><span class="cat">Token</span></div>
       </article>
       <article class="linha morrendo" data-s="morrendo" data-b="ossa ossa 4f53534100000000000000000000000000000000 reidsgjrcx8vyqdmty9hlmzj8cnmfdqzwp token">
         <div class="nome"><span class="ponto"></span>OSSA</div>
@@ -3871,12 +3862,6 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="motivo">Issuer blackholed; 3547 holders, but no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+TEEF">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rfcdWJmFhMVomRM5MqniSZuYfCyZyvRkkh" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rfcdWJmFhMVomRM5MqniSZuYfCyZyvRkkh</a> · <a href="https://x.com/search?q=TEEF%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">3.5k holders · 40 tx/30d · quiet 1d · <span class="quando">measured today</span><span class="cat">Token</span></div>
-      </article>
-      <article class="linha morrendo" data-s="morrendo" data-b="tokyojpy jpy jpy r94s8px6ksw1uz1mv98dhsrtvc6vmpopcn tokyojpy.com token">
-        <div class="nome"><span class="ponto"></span><a href="https://tokyojpy.com" rel="nofollow noopener">TokyoJPY</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">All 17 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+TokyoJPY">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/r94s8px6kSw1uZ1MV98dhSRTvc6VMPoPcN" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r94s8px6kSw1uZ1MV98dhSRTvc6VMPoPcN</a> · tokyojpy.com · <a href="https://x.com/search?q=TokyoJPY%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">3.3k holders · 17 tx/30d · quiet 2d · <span class="quando">measured today</span><span class="cat">Token</span></div>
       </article>
       <article class="linha morrendo" data-s="morrendo" data-b="tone tone 544f4e4500000000000000000000000000000000 rnjx3zl9btwrrwq6usdxhemcts4lylgnjh token">
         <div class="nome"><span class="ponto"></span>TONE</div>
@@ -3949,12 +3934,6 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="motivo">Issuer blackholed; 465 holders, but no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+XMZ">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rfyE95hzWAE93h2sKvW92nX3Mf6eC3Vs7D" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rfyE95hzWAE93h2sKvW92nX3Mf6eC3Vs7D</a> · <a href="https://x.com/search?q=XMZ%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">465 holders · 14 tx/30d · quiet 3d<span class="cat">Token</span></div>
-      </article>
-      <article class="linha morrendo" data-s="morrendo" data-b="xpd xpd xpd rfmc2d2gpzihixbq44xqhac2bgk1qbtma3 token">
-        <div class="nome"><span class="ponto"></span>XPD</div>
-        <div class="motivo">Issuer blackholed; 432 holders, but no trading in the last 7 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+XPD">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rfMc2D2GpZiHiXbq44xQHAC2bGK1qbtMA3" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rfMc2D2GpZiHiXbq44xQHAC2bGK1qbtMA3</a> · <a href="https://x.com/search?q=XPD%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">432 holders · 16 tx/30d · quiet 1d<span class="cat">Token</span></div>
       </article>
       <article class="linha morrendo" data-s="morrendo" data-b="xpg xpg xpg rfjwwjrxzu5vsk9stvxkldyrce1cdtjhdf token">
         <div class="nome"><span class="ponto"></span>XPG</div>
@@ -4086,31 +4065,13 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>
     <section class="grupo" data-grupo="morto">
-      <div class="cabeca"><h2>Dead <span class="conta" data-conta="morto">(6)</span></h2><p>No sign of life and no website up.</p></div>
+      <div class="cabeca"><h2>Dead <span class="conta" data-conta="morto">(3)</span></h2><p>No sign of life and no website up.</p></div>
       <div class="lista">
-      <article class="linha morto" data-s="morto" data-b="digital gate korea krw krw rwdrx4jgrb5rzkbbbg7ezvtbkdbnkvrtpr digital-gate.kr token">
-        <div class="nome"><span class="ponto"></span><a href="https://digital-gate.kr" rel="nofollow noopener">Digital Gate Korea</a></div>
-        <div class="motivo">Website down and only 5 transactions in 30 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Digital%20Gate%20Korea">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rwdRX4jgRB5rZkbbbG7ezVTBKdBNKVrtpR" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rwdRX4jgRB5rZkbbbG7ezVTBKdBNKVrtpR</a> · digital-gate.kr · <a href="https://x.com/search?q=Digital%20Gate%20Korea%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">249 holders · 5 tx/30d · quiet 8d · <span class="quando">measured today</span><span class="cat">Token</span></div>
-      </article>
       <article class="linha morto" data-s="morto" data-b="got jed? jed jed rmuvziukrcznqfpgnjrqqjpatgcpzsdrb8 xrptalk.org token">
         <div class="nome"><span class="ponto"></span><a href="https://xrptalk.org" rel="nofollow noopener">Got Jed?</a></div>
         <div class="motivo">Website down and only 7 transactions in 30 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Got%20Jed%3F">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rMUVZiUKrcZNqfpgNJRqQjpatGCPZSdrB8" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rMUVZiUKrcZNqfpgNJRqQjpatGCPZSdrB8</a> · xrptalk.org · <a href="https://x.com/search?q=Got%20Jed%3F%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">350 holders · 7 tx/30d · quiet 4d<span class="cat">Token</span></div>
-      </article>
-      <article class="linha morto" data-s="morto" data-b="rippleexchangetokyo jpy jpy r9zfpsb1tfdnjwbtmyhvvwfk1bqpucvnfj exchangetokyo.com token">
-        <div class="nome"><span class="ponto"></span><a href="https://exchangetokyo.com" rel="nofollow noopener">RippleExchangeTokyo</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">Website down and only 5 transactions in 30 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+RippleExchangeTokyo">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/r9ZFPSb1TFdnJwbTMYHvVwFK1bQPUCVNfJ" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r9ZFPSb1TFdnJwbTMYHvVwFK1bQPUCVNfJ</a> · exchangetokyo.com · <a href="https://x.com/search?q=RippleExchangeTokyo%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">238 holders · 5 tx/30d · quiet 6d · <span class="quando">measured today</span><span class="cat">Token</span></div>
-      </article>
-      <article class="linha morto" data-s="morto" data-b="ripplemarketjapan jpy jpy rjri8ww24gt9x85phaxfwnpcizmmhquqwg ripple-market.jp token">
-        <div class="nome"><span class="ponto"></span><a href="https://ripple-market.jp" rel="nofollow noopener">RippleMarketJapan</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
-        <div class="motivo">Website down and only 5 transactions in 30 days. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+RippleMarketJapan">recheck</a></div>
-        <div class="id"><a href="https://livenet.xrpl.org/accounts/rJRi8WW24gt9X85PHAxfWNPCizMMhqUQwg" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rJRi8WW24gt9X85PHAxfWNPCizMMhqUQwg</a> · ripple-market.jp · <a href="https://x.com/search?q=RippleMarketJapan%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
-        <div class="metricas">382 holders · 5 tx/30d · quiet 5d<span class="cat">Token</span></div>
       </article>
       <article class="linha morto" data-s="morto" data-b="wlw wlw wlw rjmfkwyz3c8cpx3tyi1ukezdwds5ubyvxy battlewolverine.club token">
         <div class="nome"><span class="ponto"></span><a href="https://battlewolverine.club" rel="nofollow noopener">WLW</a></div>
@@ -4128,7 +4089,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>
     <section class="grupo" data-grupo="indeterminado">
-      <div class="cabeca"><h2>Unknown <span class="conta" data-conta="indeterminado">(20)</span></h2><p>Could not be measured with confidence.</p></div>
+      <div class="cabeca"><h2>Unknown <span class="conta" data-conta="indeterminado">(28)</span></h2><p>Could not be measured with confidence.</p></div>
       <div class="lista">
       <article class="linha indeterminado" data-s="indeterminado" data-b="azht azht 415a485400000000000000000000000000000000 rpnfcwpv9stzw8jaa2hqt3mhbsrnkbkaof token">
         <div class="nome"><span class="ponto"></span>AZHT</div>
@@ -4147,6 +4108,12 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="motivo">The issuer account did not respond. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+BTC">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rpJZ5WyotdphojwMLxCr2prhULvG3Voe3X" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rpJZ5WyotdphojwMLxCr2prhULvG3Voe3X</a> · <a href="https://x.com/search?q=BTC%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">5.6k holders · 0 tx/30d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="digital gate korea krw krw rwdrx4jgrb5rzkbbbg7ezvtbkdbnkvrtpr digital-gate.kr token">
+        <div class="nome"><span class="ponto"></span><a href="https://digital-gate.kr" rel="nofollow noopener">Digital Gate Korea</a></div>
+        <div class="motivo">Website down and only 5 transactions in 30 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Digital%20Gate%20Korea">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rwdRX4jgRB5rZkbbbG7ezVTBKdBNKVrtpR" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rwdRX4jgRB5rZkbbbG7ezVTBKdBNKVrtpR</a> · digital-gate.kr · <a href="https://x.com/search?q=Digital%20Gate%20Korea%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">249 holders · 5 tx/30d · quiet 8d · <span class="quando">measured today</span><span class="cat">Token</span></div>
       </article>
       <article class="linha indeterminado" data-s="indeterminado" data-b="emojicoin emojicoin 456d6f6a69436f696e0000000000000000000000 rp7rsras3viv9kgb4xncy1n7jyanidjb2z token">
         <div class="nome"><span class="ponto"></span>EmojiCoin</div>
@@ -4190,11 +4157,41 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/r4dYV67qy9fhMTscAUxb1GunLXs3BPu2bC" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r4dYV67qy9fhMTscAUxb1GunLXs3BPu2bC</a> · <a href="https://x.com/search?q=GCB%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">246 holders · 0 tx/30d · <span class="quando">measured today</span><span class="cat">Token</span></div>
       </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="jpy jpy jpy rdkcjtuw5b8urjb5avb41jkteetfxwwahe token">
+        <div class="nome"><span class="ponto"></span>JPY <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">All 7 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+JPY">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rDKcJtUW5b8URJB5AVb41jkTeETfXWwahe" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rDKcJtUW5b8URJB5AVb41jkTeETfXWwahe</a> · <a href="https://x.com/search?q=JPY%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">537 holders · 7 tx/30d · quiet 1d · <span class="quando">measured yesterday</span><span class="cat">Token</span></div>
+      </article>
       <article class="linha indeterminado" data-s="indeterminado" data-b="jud jud jud r9qouqdcygawyofgpxwmn3lojkphjhocbd token">
         <div class="nome"><span class="ponto"></span>JUD</div>
         <div class="motivo">The issuer account did not respond. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+JUD">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/r9qouqdcygAWyoFGPxwMN3LoJkpHJHoCBd" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r9qouqdcygAWyoFGPxwMN3LoJkpHJHoCBd</a> · <a href="https://x.com/search?q=JUD%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">242 holders · 0 tx/30d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="mr. exchange jpy jpy rb3gzey7vwhyrqjhlohdejxj2pepniekis mr.exchange token">
+        <div class="nome"><span class="ponto"></span><a href="https://mr.exchange" rel="nofollow noopener">Mr. Exchange</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Mr.%20Exchange">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS</a> · mr.exchange · <a href="https://x.com/search?q=Mr.%20Exchange%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">6.7k holders · 4 tx/30d · quiet 6d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="mr. exchange usd usd rb3gzey7vwhyrqjhlohdejxj2pepniekis mr.exchange token">
+        <div class="nome"><span class="ponto"></span><a href="https://mr.exchange" rel="nofollow noopener">Mr. Exchange</a> <span class="colisao" title="More than one issuer uses the code USD. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+Mr.%20Exchange">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rB3gZey7VWHYRqJHLoHDEJXJ2pEPNieKiS</a> · mr.exchange · <a href="https://x.com/search?q=Mr.%20Exchange%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">260 holders · 4 tx/30d · quiet 5d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="rippleexchangetokyo jpy jpy r9zfpsb1tfdnjwbtmyhvvwfk1bqpucvnfj exchangetokyo.com token">
+        <div class="nome"><span class="ponto"></span><a href="https://exchangetokyo.com" rel="nofollow noopener">RippleExchangeTokyo</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">Website down and only 5 transactions in 30 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+RippleExchangeTokyo">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/r9ZFPSb1TFdnJwbTMYHvVwFK1bQPUCVNfJ" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r9ZFPSb1TFdnJwbTMYHvVwFK1bQPUCVNfJ</a> · exchangetokyo.com · <a href="https://x.com/search?q=RippleExchangeTokyo%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">238 holders · 5 tx/30d · quiet 6d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="ripplemarketjapan jpy jpy rjri8ww24gt9x85phaxfwnpcizmmhquqwg ripple-market.jp token">
+        <div class="nome"><span class="ponto"></span><a href="https://ripple-market.jp" rel="nofollow noopener">RippleMarketJapan</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">Website down and only 5 transactions in 30 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+RippleMarketJapan">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rJRi8WW24gt9X85PHAxfWNPCizMMhqUQwg" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rJRi8WW24gt9X85PHAxfWNPCizMMhqUQwg</a> · ripple-market.jp · <a href="https://x.com/search?q=RippleMarketJapan%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">382 holders · 5 tx/30d · quiet 5d<span class="cat">Token</span></div>
       </article>
       <article class="linha indeterminado" data-s="indeterminado" data-b="sloo sloo 534c4f4f00000000000000000000000000000000 ruaamm6sjabfscpwogeamebvozyfznm5ba token">
         <div class="nome"><span class="ponto"></span>SLOO</div>
@@ -4208,6 +4205,12 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rfNW4nDcD2qM4komm1fW62WAzSFXMpmV3z" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rfNW4nDcD2qM4komm1fW62WAzSFXMpmV3z</a> · swissx.com · <a href="https://x.com/search?q=SWISSX%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">365 holders · 0 tx/30d<span class="cat">Token</span></div>
       </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="tokyojpy jpy jpy r94s8px6ksw1uz1mv98dhsrtvc6vmpopcn tokyojpy.com token">
+        <div class="nome"><span class="ponto"></span><a href="https://tokyojpy.com" rel="nofollow noopener">TokyoJPY</a> <span class="colisao" title="More than one issuer uses the code JPY. Check the address before trusting the name.">shared code</span></div>
+        <div class="motivo">All 17 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+TokyoJPY">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/r94s8px6kSw1uZ1MV98dhSRTvc6VMPoPcN" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">r94s8px6kSw1uZ1MV98dhSRTvc6VMPoPcN</a> · tokyojpy.com · <a href="https://x.com/search?q=TokyoJPY%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">3.3k holders · 17 tx/30d · quiet 2d · <span class="quando">measured today</span><span class="cat">Token</span></div>
+      </article>
       <article class="linha indeterminado" data-s="indeterminado" data-b="usd usd usd rp2paydxvwdvazvleqv7bhhofqeyx1mex7 token">
         <div class="nome"><span class="ponto"></span>USD <span class="colisao" title="More than one issuer uses the code USD. Check the address before trusting the name.">shared code</span></div>
         <div class="motivo">The issuer account did not respond. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+USD">recheck</a></div>
@@ -4219,6 +4222,12 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
         <div class="motivo">The issuer account did not respond. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+XDV">recheck</a></div>
         <div class="id"><a href="https://livenet.xrpl.org/accounts/rUd5EHPczA1dxLkc43svhfX5htRvQzFHdX" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rUd5EHPczA1dxLkc43svhfX5htRvQzFHdX</a> · <a href="https://x.com/search?q=XDV%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
         <div class="metricas">425 holders · 0 tx/30d<span class="cat">Token</span></div>
+      </article>
+      <article class="linha indeterminado" data-s="indeterminado" data-b="xpd xpd xpd rfmc2d2gpzihixbq44xqhac2bgk1qbtma3 token">
+        <div class="nome"><span class="ponto"></span>XPD</div>
+        <div class="motivo">Issuer blackholed; 432 holders, but no trading in the last 7 days. No call is made here: this is a fiat/metal IOU - a gateway&#x27;s promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not. <a class="pedir" href="https://github.com/PossibleTs/still-alive/issues/new?template=revalidar.yml&title=Recheck:+XPD">recheck</a></div>
+        <div class="id"><a href="https://livenet.xrpl.org/accounts/rfMc2D2GpZiHiXbq44xQHAC2bGK1qbtMA3" rel="nofollow noopener" title="Open this account on the XRPL Foundation explorer">rfMc2D2GpZiHiXbq44xQHAC2bGK1qbtMA3</a> · <a href="https://x.com/search?q=XPD%20XRPL" rel="nofollow noopener" title="No profile published - search X for this name">search X</a></div>
+        <div class="metricas">432 holders · 16 tx/30d · quiet 1d<span class="cat">Token</span></div>
       </article>
       <article class="linha indeterminado" data-s="indeterminado" data-b="xrbabydoge xrbabydoge 585242616279446f676500000000000000000000 rjithgj8rsvajb1rmvjctqjy3zx1zqqrwa token">
         <div class="nome"><span class="ponto"></span>XRBabyDoge</div>
@@ -4254,7 +4263,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>
 
-  <section class="grupo">
+  <section class="grupo" id="method">
     <h2>How this is measured</h2>
     <div class="metodo">
       <p>For every project with a token, the robot queries the issuer account on
@@ -4333,7 +4342,7 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
     </div>
   </section>
 
-  <section class="grupo">
+  <section class="grupo" id="disclaimer">
     <h2>Disclaimer</h2>
     <div class="aviso">
       <p><b>This is not financial advice, and it is not an endorsement.</b>
@@ -4369,7 +4378,8 @@ header .sub{margin:.15em 0 0;font-size:1.05rem;opacity:.75}</style>
   <footer>
     Not financial advice · not an endorsement · "alive" measures on-ledger
     activity only<br>
-    678 projects observed · raw data in
+    678 projects observed · <a href="#method">method</a> ·
+    <a href="#disclaimer">disclaimer</a> · raw data in
     <a href="dados.json">dados.json</a> · <a href="https://github.com/PossibleTs/still-alive/issues">dispute a call</a> · made by a human
     with a robot
   </footer>

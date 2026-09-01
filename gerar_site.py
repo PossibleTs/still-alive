@@ -136,6 +136,9 @@ h1{font-family:var(--serif);font-weight:600;font-size:clamp(1.7rem,4vw,2.3rem);
   line-height:1.1;letter-spacing:-.015em;margin:.4rem 0 0}
 header .sub{margin:.15rem 0 0;font-size:1rem;color:var(--muted)}
 .dek{color:var(--muted);max-width:38rem;margin:.5rem 0 0;font-size:.95rem}
+.experimento{color:var(--muted);max-width:44rem;margin:.8rem 0 0;font-size:.88rem;
+  border-left:2px solid var(--rule);padding-left:.8rem}
+.experimento b{color:var(--ink);font-weight:600}
 .escopo{color:var(--muted);max-width:44rem;margin:.7rem 0 0;font-size:.85rem;
   border-left:2px solid var(--rule);padding-left:.8rem}
 .escopo b{color:var(--ink);font-weight:600}
@@ -497,6 +500,12 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     <p class="dek">No directory tells you which projects died. This page measures
     each one's real activity on the ledger and shows the arithmetic. Every row
     carries the date of its own measurement.</p>
+    <p class="experimento"><b>This is an experiment.</b> One person and a robot,
+    measuring the ledger every day. The method is open and the arithmetic is
+    printed next to every call — <a href="#method">read how it works</a> before
+    you trust a label. Nobody reviews these rows by hand, there is no promise
+    that this keeps running, and a wrong call is a bug, not a verdict:
+    {contestacao_curta} and it gets fixed.</p>
     <p class="escopo">{escopo}</p>
   </header>
 
@@ -509,7 +518,7 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
 
 {chr(10).join(grupos)}
 
-  <section class="grupo">
+  <section class="grupo" id="method">
     <h2>How this is measured</h2>
     <div class="metodo">
       <p>For every project with a token, the robot queries the issuer account on
@@ -588,7 +597,7 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     </div>
   </section>
 
-  <section class="grupo">
+  <section class="grupo" id="disclaimer">
     <h2>Disclaimer</h2>
     <div class="aviso">
       <p><b>This is not financial advice, and it is not an endorsement.</b>
@@ -624,7 +633,8 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
   <footer>
     Not financial advice · not an endorsement · "alive" measures on-ledger
     activity only<br>
-    {dados.get('total', 0)} projects observed · raw data in
+    {dados.get('total', 0)} projects observed · <a href="#method">method</a> ·
+    <a href="#disclaimer">disclaimer</a> · raw data in
     <a href="dados.json">dados.json</a> · {contestacao_curta} · made by a human
     with a robot
   </footer>
