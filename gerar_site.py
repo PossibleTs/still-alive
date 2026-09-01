@@ -457,7 +457,12 @@ def gerar(dados: dict) -> str:
         f" — plus {sem_token} wallets, explorers and tools that issue no token. "
         "Below a hundred holders the catalogue is mostly dust and abandoned "
         "tests that were never anyone's project, and calling those dead informs "
-        "nobody. <b>A project missing from this list is not a project we called "
+        "nobody. Institutional real-world-asset tokens — tokenized funds, "
+        "private credit, securitized debt — are excluded for a different "
+        "reason: most exist for a handful of counterparties by design, not by "
+        "neglect, so a holder-count floor will never reach them, and a "
+        "redemption-promise rubric does not fit them either. "
+        "<b>A project missing from this list is not a project we called "
         "dead.</b>"
     )
 
