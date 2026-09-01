@@ -655,8 +655,9 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
     activity only<br>
     {dados.get('total', 0)} projects observed · <a href="#method">method</a> ·
     <a href="#disclaimer">disclaimer</a> · raw data in
-    <a href="dados.json">dados.json</a> · {contestacao_curta} · made by a human
-    with a robot
+    <a href="dados.json">dados.json</a> · {contestacao_curta} · made by
+    <a href="https://x.com/possiblets" rel="nofollow noopener">@possiblets</a>
+    and a robot
   </footer>
 </div>
 {JS}
