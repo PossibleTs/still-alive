@@ -5,3 +5,8 @@ dados_teste.json
 # Handoffs entre os processo interno: documento interno, nao faz parte do
 # produto. Vivem em ../handoffs/. Este repositorio e publico.
 HANDOFF*.md
+
+# Candidatos brutos do institucional.py: o proprio arquivo diz "exigem
+# revisao humana antes de entrar na pagina" - publicar julgamento rotulado
+# como nao revisado contradiz a etica que a pagina declara. Fica local.
+candidatos.json
