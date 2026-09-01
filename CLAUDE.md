@@ -135,5 +135,8 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
   sozinha. `mudancas.py` rankeia por taxa (%/dia), não pela porcentagem bruta,
   pelo mesmo motivo.
 - `historico/` é sagrado: é o que permite mostrar tendência. Nunca limpe.
+- **Este repositório é público.** Handoffs, anotações de infraestrutura e qualquer
+  coisa que cite conta, endereço interno ou outro projeto ficam **fora** dele, em
+  `../handoffs/` — que está no `.gitignore` justamente para não voltarem por engano.
 - Antes de publicar qualquer lista pública, leia a seção "Antes de publicar" do
   README. A parte reputacional é mais arriscada que a técnica.

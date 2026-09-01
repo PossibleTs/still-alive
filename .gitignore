@@ -1,3 +1,7 @@
 __pycache__/
 *.pyc
 dados_teste.json
+
+# Handoffs entre os processo interno: documento interno, nao faz parte do
+# produto. Vivem em ../handoffs/. Este repositorio e publico.
+HANDOFF*.md
