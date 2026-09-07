@@ -51,6 +51,7 @@ jobs:
         # o repositorio for renomeado ou movido de conta.
         env:
           STILLALIVE_REPO: ${{ github.server_url }}/${{ github.repository }}
+          CF_BEACON_TOKEN: ${{ secrets.CF_BEACON_TOKEN }}
         run: python gerar_site.py
 
       # O historico e o que permite mostrar tendencia (queda de detentores).

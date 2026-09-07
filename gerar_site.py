@@ -30,6 +30,7 @@ EXPLORADOR = "https://livenet.xrpl.org/accounts/"
 # crawler de compartilhamento (X, Slack) nao resolve URL relativa. Casa com
 # o site/CNAME versionado.
 SITE_URL = "https://stillalive.report"
+CF_BEACON_TOKEN = os.environ.get("CF_BEACON_TOKEN", "")
 
 SITUACOES = {
     "ativo": ("Alive", "Transacting on the ledger right now."),
@@ -506,6 +507,7 @@ def gerar(dados: dict) -> str:
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=Source+Sans+3:wght@400;600&display=swap">
+{f'''<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{json.dumps({"token": CF_BEACON_TOKEN})}'></script>''' if CF_BEACON_TOKEN else ""}
 <style>{CSS}
 .quando{{opacity:.65;font-style:italic}}
 .pedir{{margin-left:.5em;font-size:.85em;opacity:.6}}
