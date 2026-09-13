@@ -35,9 +35,31 @@ from typing import Any
 # XRPL Meta: catalogo de tokens da rede, gratuito e sem chave.
 XRPLMETA = "https://s1.xrplmeta.org"
 
-# No publico com historico completo. Alternativas: https://s1.ripple.com:51234
-# (historico curto) ou o seu proprio Clio quando o volume justificar.
-RPC = "https://xrplcluster.com"
+# Nos publicos com historico completo, em ordem de preferencia. Um so era
+# ponto unico de falha: em 07/09/2026 o xrplcluster comecou a responder
+# "tooBusy" para a maioria das perguntas e a pagina publicou 53% do universo
+# como "unknown" - sem que nenhum projeto tivesse mudado.
+NOS_RPC = (
+    "https://xrplcluster.com",
+    "https://s2.ripple.com:51234",
+    "https://s1.ripple.com:51234",
+)
+RPC = NOS_RPC[0]
+
+# Primeiro ledger que a rede guarda. Um no que anuncia ledger_index_min maior
+# que isto NAO tem historico completo: nele, "acabou o historico da conta"
+# significa "acabou o que ESTE no guarda" - e contar isso como janela coberta
+# transformaria buraco de arquivo em prova de silencio.
+PRIMEIRO_LEDGER = 32570
+
+# Erros em que o no recusa a pergunta: a rede foi bem, o no e que nao quis
+# (ou nao pode) responder. Recusa nao e resposta - repetir e trocar de no e o
+# certo, e chamar isso de "a conta nao respondeu" seria acusar o projeto de
+# uma falha nossa.
+ERROS_TEMPORARIOS = frozenset({
+    "tooBusy", "slowDown", "noNetwork", "noCurrent", "notSynced",
+    "internal", "backendError", "amendmentBlocked", "failedToForward",
+})
 
 # A XRPL conta o tempo em segundos desde 2000-01-01, nao desde 1970.
 # Errar isso desloca todas as datas em 30 anos - e o bug classico de quem
@@ -46,6 +68,13 @@ RIPPLE_EPOCH = 946684800
 
 TIMEOUT = 25
 PAUSA_ENTRE_CHAMADAS = 0.35  # no publico e gentileza, nao direito adquirido
+
+# Teto de tempo de uma corrida. O passo do GitHub Actions e morto aos 90 min e
+# quem morre nao grava nada: a pagina congelaria inteira porque a cauda demorou.
+# Melhor parar sozinho antes, gravar o que mediu e deixar o resto para amanha -
+# o que nao foi medido hoje continua com a medicao de ontem, e com a data dela.
+ORCAMENTO_MINUTOS = 70
+ORCAMENTO_ESGOTADO = "run out of time"
 
 AGENTE = "still-alive/1.0 (+coletor de sinais de atividade)"
 
@@ -110,28 +139,79 @@ def _get_json(url: str, tentativas: int = 3) -> Any:
             espera = min(espera * 2, 30.0)
 
 
+# Qual no esta atendendo agora. Quando um passa a recusar, a troca fica: sem
+# isso, cada conta pagaria de novo o tempo de descobrir que o primeiro da fila
+# esta ocupado - eram 458 contas por corrida.
+_NO_ATUAL = 0
+
+# Quantas perguntas seguidas terminaram sem nenhum no responder. Passando do
+# limite, o coletor para de insistir em cada conta: quando a recusa e geral,
+# insistir 6 vezes por conta transforma uma corrida de 40 min em uma de 4h e
+# nao melhora a medicao - a proxima corrida mede. Um sucesso zera a conta.
+_RECUSAS_SEGUIDAS = 0
+LIMITE_DE_INSISTENCIA = 5
+
+
 def _rpc(metodo: str, params: dict) -> dict:
-    """Chamada JSON-RPC ao no da XRPL. Devolve result ou {} em caso de erro."""
+    """
+    Chamada JSON-RPC ao no da XRPL. Devolve result; em caso de falha, um dict
+    com 'error' (o no recusou) ou 'erro_rede' (a conexao caiu).
+
+    Duas falhas diferentes moram aqui, e confundi-las custou metade da pagina.
+    A de rede sempre foi tratada. A outra: o no responde HTTP 200, com JSON
+    valido, dizendo {"error": "tooBusy"}. Nao e excecao, entao passava direto
+    pela retentativa e chegava na classificacao como silencio da conta - isto
+    e, a pagina acusava o projeto de uma indisponibilidade nossa.
+
+    Duas voltas na fila de nos: a primeira sem espera (se este no esta ocupado,
+    o proximo pode nao estar), a segunda com espera crescente (se TODOS estao
+    ocupados, insistir rapido so piora). O limite importa: uma corrida mede
+    ~460 contas e nao pode virar madrugada porque a rede teve um pico.
+    """
+    global _NO_ATUAL, _RECUSAS_SEGUIDAS
     corpo = json.dumps({"method": metodo, "params": [params]}).encode("utf-8")
-    req = urllib.request.Request(
-        RPC,
-        data=corpo,
-        headers={"Content-Type": "application/json", "User-Agent": AGENTE},
+    ultimo: dict = {"erro_rede": "sem tentativa"}
+    voltas = 1 if _RECUSAS_SEGUIDAS >= LIMITE_DE_INSISTENCIA else 2
+
+    for volta in range(voltas):
+        for salto in range(len(NOS_RPC)):
+            indice = (_NO_ATUAL + salto) % len(NOS_RPC)
+            no = NOS_RPC[indice]
+            req = urllib.request.Request(
+                no,
+                data=corpo,
+                headers={"Content-Type": "application/json", "User-Agent": AGENTE},
+            )
+            try:
+                with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
+                    res = json.loads(r.read().decode("utf-8")).get("result", {}) or {}
+                if res.get("error") not in ERROS_TEMPORARIOS:
+                    # Inclui error=None (sucesso) e erros definitivos como
+                    # actNotFound, que sao resposta de verdade sobre a conta.
+                    if indice != _NO_ATUAL:
+                        print(f"    . no {no} assumiu", file=sys.stderr)
+                        _NO_ATUAL = indice
+                    _RECUSAS_SEGUIDAS = 0
+                    return res
+                ultimo = res
+            except FALHAS_DE_REDE as e:
+                ultimo = {"erro_rede": str(e)}
+            if volta:
+                time.sleep(2.0 * (salto + 1))
+
+    _RECUSAS_SEGUIDAS += 1
+    if _RECUSAS_SEGUIDAS == LIMITE_DE_INSISTENCIA:
+        print(
+            f"    ! {LIMITE_DE_INSISTENCIA} recusas seguidas: a rede publica "
+            "esta fechada para nos agora - o resto da corrida para de insistir",
+            file=sys.stderr,
+        )
+    print(
+        f"    ! rpc {metodo}: nenhum no respondeu "
+        f"({ultimo.get('error') or ultimo.get('erro_rede')})",
+        file=sys.stderr,
     )
-    for tentativa in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=TIMEOUT) as r:
-                resposta = json.loads(r.read().decode("utf-8"))
-            return resposta.get("result", {}) or {}
-        except FALHAS_DE_REDE as e:
-            if tentativa == 2:
-                print(f"    ! rpc {metodo} falhou: {e}", file=sys.stderr)
-                # Marcado, e nao {} vazio: "a rede falhou" e "a conta nao tem
-                # nada" davam o mesmo resultado, e dez projetos de 208 foram
-                # dados como nao medidos quando o problema era nosso.
-                return {"erro_rede": str(e)}
-            time.sleep(1.5 * (tentativa + 1))
-    return {"erro_rede": "tentativas esgotadas"}
+    return ultimo
 
 
 # Hospedeiros que servem SO o xrp-ledger.toml. Quem registra token pela
@@ -238,6 +318,10 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
     marker = None
     paginas = 0
     janela_completa = False
+    # Ate provar o contrario, supomos que o no que atender tem a rede inteira.
+    # Quem responde diz ate onde guarda, e so isso separa "a conta ficou calada"
+    # de "este no nao tem esse pedaco da historia".
+    no_com_historico = True
 
     def _saida(erro=None) -> dict:
         return {
@@ -261,9 +345,23 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
             params["marker"] = marker
 
         res = _rpc("account_tx", params)
+        if res.get("ledger_index_min", PRIMEIRO_LEDGER) > PRIMEIRO_LEDGER:
+            no_com_historico = False
+
+        falha = res.get("error") or res.get("erro_rede")
+        if falha:
+            # Na primeira pagina nao ha medicao nenhuma: e "nao conseguimos
+            # ler". Da segunda em diante ja ha contagem, e ela vale como PISO -
+            # mas a janela nao esta coberta. Antes desta guarda, a resposta
+            # vazia de um no ocupado caia no "acabou o historico da conta" logo
+            # abaixo, e a leitura interrompida virava leitura completa: uma
+            # conta cuja leitura parou na pagina 5 de 12 podia ser publicada
+            # como emissor calado, que e acusacao.
+            if paginas == 0:
+                return _saida(erro=falha)
+            break
+
         txs = res.get("transactions") or []
-        if not txs and paginas == 0:
-            return _saida(erro=res.get("error") or res.get("erro_rede"))
 
         for t in txs:
             quando = _data_da_transacao(t)
@@ -288,8 +386,10 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
         marker = res.get("marker")
         paginas += 1
         if not marker:
-            # Acabou o historico da conta: a janela esta coberta por inteiro.
-            janela_completa = True
+            # Acabou o historico DA CONTA - se o no tiver a rede inteira. Num
+            # no de historico curto, o fim da lista e o fim do arquivo dele, e
+            # dar isso como janela coberta viraria silencio inventado.
+            janela_completa = no_com_historico
             break
         time.sleep(PAUSA_ENTRE_CHAMADAS)
 
@@ -301,7 +401,7 @@ def atividade_da_conta(endereco: str, dias: int = 30) -> dict:
 BURACO_NEGRO = "rrrrrrrrrrrrrrrrrrrrBZbvji"
 
 
-def conta_esta_blackholed(endereco: str) -> bool:
+def conta_esta_blackholed(endereco: str) -> bool | None:
     """
     Emissor 'blackholed' (ninguem consegue mais assinar pela conta) e boa
     pratica de seguranca, nao abandono. Contar isso como morte e o erro que
@@ -317,6 +417,11 @@ def conta_esta_blackholed(endereco: str) -> bool:
         "account_info",
         {"account": endereco, "ledger_index": "validated", "signer_lists": True},
     )
+    if res.get("error") or res.get("erro_rede"):
+        # None, e nao False: "o no nao respondeu" nao e "a conta tem dono". O
+        # False silencioso tirava do projeto a protecao do galho blackholed -
+        # justamente a que existe para nao chamar boa pratica de abandono.
+        return None
     dados = res.get("account_data") or {}
     flags = dados.get("Flags", 0)
     LSF_DISABLE_MASTER = 0x00100000
@@ -588,6 +693,7 @@ def classificar(p: dict) -> tuple[str, str]:
     """
     situacao, motivo = _avaliar(p)
     if situacao in ("morto", "morrendo", "parado") and eh_iou_de_resgate(p):
+        motivo = _com_data_da_leitura(p, motivo)
         # O motivo original vai inteiro na frente: e a medicao que sustentaria
         # o veredito, e escondê-la para "proteger" o gateway seria trocar um
         # erro por outro. O que muda e so a palavra que julga.
@@ -597,7 +703,58 @@ def classificar(p: dict) -> tuple[str, str]:
             "measures ledger activity, not promises. The measurement stands; "
             "the verdict does not."
         )
-    return situacao, motivo
+    return situacao, _com_data_da_leitura(p, motivo)
+
+
+def _erro_curto(p: dict) -> str:
+    erro = p.get("erro_leitura") or p.get("erro_medicao") or "no answer"
+    return str(erro)[:48]
+
+
+def _com_data_da_leitura(p: dict, motivo: str) -> str:
+    """
+    Quando os sinais de ledger sao de uma leitura anterior, a data vai junto.
+
+    Numero sem data e a forma educada de mentir: a pagina afirma coisas sobre
+    projetos de terceiros, e quem for contestar tem direito de saber de quando
+    e a medicao que sustenta a frase.
+    """
+    if not p.get("releitura_falhou_em") or not p.get("ledger_em"):
+        return motivo
+    return (
+        f"{motivo} (Ledger signals measured on {p['ledger_em'][:10]}: the "
+        f"public node refused today's re-read - {_erro_curto(p)}.)"
+    )
+
+
+def _motivo_sem_leitura(p: dict) -> str:
+    """
+    O que dizer quando nao ha sinal de ledger nenhum para mostrar.
+
+    Ate 09/2026 a pagina dizia "The issuer account did not respond" para os
+    tres casos abaixo. Nos dois primeiros isso e falso, e do pior tipo: e uma
+    afirmacao sobre o projeto ("a conta dele nao responde") quando o fato e
+    sobre nos ("o no publico nao nos respondeu"). Chegou a valer para 1141 de
+    2184 projetos - RLUSD e Bitcoin entre eles.
+    """
+    erro = p.get("erro_leitura") or p.get("erro_medicao")
+    if erro == ORCAMENTO_ESGOTADO:
+        return (
+            "Not measured in this run: it ran out of time before reaching this "
+            "project. Nothing here is a finding about it - the next run starts "
+            "with what was left behind."
+        )
+    if erro in ERROS_TEMPORARIOS:
+        return (
+            f"Not measured: the public XRPL node refused the query ({erro}). "
+            "This says nothing about the project - it is a limit of this "
+            "page's reading. The next run tries again."
+        )
+    if erro == "actNotFound":
+        return "The issuer account does not exist on the ledger."
+    if erro:
+        return f"Could not read this account from the ledger ({_erro_curto(p)}); no verdict is made."
+    return "No ledger reading for this account yet; it is queued for the next run."
 
 
 def _avaliar(p: dict) -> tuple[str, str]:
@@ -635,6 +792,10 @@ def _avaliar(p: dict) -> tuple[str, str]:
     blackholed = p.get("blackholed")
 
     if dias is None and p["categoria"] != "Token":
+        # Projeto sem token se mede pelo site; a unica forma de nao ter medicao
+        # e a corrida nao ter chegado ate ele.
+        if (p.get("erro_leitura") or p.get("erro_medicao")) == ORCAMENTO_ESGOTADO:
+            return "indeterminado", _motivo_sem_leitura(p)
         if site is True:
             return "ativo", "Website up; no token to measure on-ledger."
         if site is False:
@@ -642,7 +803,7 @@ def _avaliar(p: dict) -> tuple[str, str]:
         return "indeterminado", "Could not measure."
 
     if dias is None:
-        return "indeterminado", "The issuer account did not respond."
+        return "indeterminado", _motivo_sem_leitura(p)
 
     # Emissor blackholed e desenho intencional: a atividade acontece entre os
     # detentores, nao pela conta emissora. Julga-se pelo token, nao pela conta.
@@ -799,15 +960,57 @@ def mesclar(antigos: list[dict], novos: list[dict]) -> list[dict]:
         if anterior and isinstance(anterior.get("holders"), int) and anterior.get("medido_em"):
             novo["holders_anterior"] = anterior["holders"]
             novo["medido_em_anterior"] = anterior["medido_em"]
+        if novo.get("leitura_ok") is False and anterior:
+            _herdar_ledger(novo, anterior)
         por_chave[chave] = novo
     return list(por_chave.values())
 
 
-def coletar(projetos: list[dict]) -> list[dict]:
+# Sinais que vem do no, e so deles. Holders e negociacao nao entram: vem do
+# catalogo, que responde mesmo quando o no recusa.
+CAMPOS_DE_LEDGER = (
+    "dias_sem_atividade", "ultima_atividade", "ultima_do_emissor",
+    "dias_sem_emissor", "tx_janela", "tx_emissor", "tx_truncado", "blackholed",
+)
+
+
+def _herdar_ledger(novo: dict, anterior: dict) -> None:
+    """
+    Leitura que falhou hoje herda a medicao boa de antes, com a data dela.
+
+    Sem isto, uma recusa do no apagava um veredito correto de ontem e publicava
+    "unknown" no lugar: em 08/09/2026, 277 projetos sairam de `alive` num dia
+    sem que nenhum tivesse mudado de comportamento. Dado velho COM DATA e
+    honesto - e muito mais util do que "nao sei" fabricado por indisponibilidade
+    nossa. O motivo na pagina diz a data e diz que a releitura falhou.
+    """
+    if anterior.get("dias_sem_atividade") is None:
+        return  # nao havia medicao boa para herdar
+    for campo in CAMPOS_DE_LEDGER:
+        if campo in anterior:
+            novo[campo] = anterior[campo]
+    # ledger_em pode nao existir em dados anteriores a esta mudanca; ali o
+    # medido_em antigo ERA a data da leitura de ledger.
+    novo["ledger_em"] = anterior.get("ledger_em") or anterior.get("medido_em")
+
+
+def coletar(projetos: list[dict], orcamento_minutos: int = ORCAMENTO_MINUTOS) -> list[dict]:
     agora = int(time.time())
     carimbo = dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+    limite = time.time() + orcamento_minutos * 60 if orcamento_minutos else None
 
     for i, p in enumerate(projetos, 1):
+        if limite and time.time() > limite:
+            faltam = projetos[i - 1:]
+            print(
+                f"\n! orcamento de {orcamento_minutos} min esgotado; "
+                f"{len(faltam)} projetos ficam para a proxima corrida",
+                file=sys.stderr,
+            )
+            for adiado in faltam:
+                adiado["leitura_ok"] = False
+                adiado["erro_leitura"] = ORCAMENTO_ESGOTADO
+            break
         print(f"[{i}/{len(projetos)}] {p['nome']}")
         try:
             _medir(p, agora)
@@ -821,10 +1024,18 @@ def coletar(projetos: list[dict]) -> list[dict]:
 
     # Segunda passada: quem nao respondeu por falha de rede merece outra
     # chance antes de virar "nao foi possivel medir" na pagina.
-    repetir = [p for p in projetos if p.get("erro_leitura") or p.get("erro_medicao")]
+    repetir = [
+        p for p in projetos
+        if (p.get("erro_leitura") or p.get("erro_medicao"))
+        and p.get("erro_leitura") != ORCAMENTO_ESGOTADO
+    ]
     if repetir:
         print(f"\nsegunda passada em {len(repetir)} projetos que falharam")
         for i, p in enumerate(repetir, 1):
+            if limite and time.time() > limite:
+                print(f"! sem tempo para a segunda passada em {len(repetir) - i + 1}",
+                      file=sys.stderr)
+                break
             print(f"[{i}/{len(repetir)}] {p['nome']}")
             p.pop("erro_medicao", None)
             try:
@@ -841,7 +1052,16 @@ def coletar(projetos: list[dict]) -> list[dict]:
     # codigo, sem efeito nenhum porque a ordem de chamada nao sustenta a
     # condicao que ela precisa.
     for p in projetos:
+        # Duas datas, porque sao duas medicoes com fontes diferentes: holders e
+        # negociacao vem do catalogo (que respondeu) e os sinais de ledger vem
+        # do no (que pode ter recusado). Uma data so obrigaria a mentir sobre
+        # uma das duas.
         p["medido_em"] = carimbo
+        if p.get("leitura_ok") is False:
+            p["releitura_falhou_em"] = carimbo
+        else:
+            p["ledger_em"] = carimbo
+            p.pop("releitura_falhou_em", None)
         situacao, motivo = classificar(p)
         p["situacao"] = situacao
         p["motivo"] = motivo
@@ -856,6 +1076,10 @@ def _medir(p: dict, agora: int) -> None:
         time.sleep(PAUSA_ENTRE_CHAMADAS)
         sinais = atividade_da_conta(p["emissor"])
         p["erro_leitura"] = sinais.get("erro")
+        # A pergunta que todo o resto depende: o que vem abaixo e medicao ou
+        # e o vazio que sobra quando o no recusa? mesclar() e classificar()
+        # leem este campo antes de qualquer conclusao.
+        p["leitura_ok"] = not sinais.get("erro")
         p["tx_janela"] = sinais["tx_janela"]
         p["tx_emissor"] = sinais.get("tx_emissor")
         p["tx_truncado"] = bool(sinais.get("truncado"))
@@ -869,6 +1093,9 @@ def _medir(p: dict, agora: int) -> None:
         p["dias_sem_atividade"] = max(0, (agora - ultima) // 86400) if ultima else None
         time.sleep(PAUSA_ENTRE_CHAMADAS)
     else:
+        # Projeto sem token: a medicao dele e o site, logo abaixo - e essa
+        # leitura nao depende de no nenhum.
+        p["leitura_ok"] = True
         p.setdefault("dias_sem_atividade", None)
 
     p["site_ok"] = site_responde(p.get("site", ""))
@@ -926,6 +1153,8 @@ def main() -> None:
     ap.add_argument("--offset", type=int, default=0, help="pula os N primeiros do catalogo")
     ap.add_argument("--fatia", type=int, default=None,
                     help=f"forca uma fatia do ciclo de {CICLO_DIAS} dias")
+    ap.add_argument("--minutos", type=int, default=ORCAMENTO_MINUTOS,
+                    help="teto de tempo da coleta; 0 desliga")
     ap.add_argument("--no-rede", action="store_true", help="so reclassifica o dados.json existente")
     args = ap.parse_args()
 
@@ -952,7 +1181,7 @@ def main() -> None:
             )
             sys.exit(1)
 
-        medidos = coletar(alvos)
+        medidos = coletar(alvos, args.minutos)
         projetos = mesclar(carregar_projetos(), medidos)
         # Aqui, e so aqui, holders_anterior/medido_em_anterior ja existem nos
         # projetos remedidos hoje - e a tendencia tem o que comparar.

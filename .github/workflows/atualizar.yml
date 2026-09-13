@@ -35,6 +35,7 @@ jobs:
       - name: Conferir a logica
         run: |
           python teste_local.py
+          python teste_leitura.py
           python teste_corporativo.py
           python teste_revalidar.py
           python teste_chave.py

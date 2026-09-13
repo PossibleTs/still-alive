@@ -37,7 +37,7 @@ SITUACOES = {
     "morrendo": ("Fading", "Still breathing, but the movement dropped off."),
     "parado": ("Dormant", "No meaningful activity for months."),
     "morto": ("Dead", "No sign of life and no website up."),
-    "indeterminado": ("Unknown", "Could not be measured with confidence."),
+    "indeterminado": ("Unknown", "Not measured, or measured without enough signal to call."),
 }
 
 JS = """
@@ -610,6 +610,15 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       would punish the network's public node to discover almost nothing. That is
       why each row carries the date of its own measurement, instead of the page
       pretending it saw everything today.</p>
+      <p><strong>When the node refuses.</strong> This page has no node of its
+      own: it asks public XRPL nodes, and a node is free to answer "too busy" —
+      which is exactly what happened to most of our questions in the second week
+      of September 2026. A refusal is never a finding about a project. When it
+      happens, the row keeps its previous measurement <em>with the date that
+      measurement was taken</em> and says so in its reasoning; when there is no
+      previous measurement, the row says the reading is missing and waits for
+      the next run. The one thing this page will not do is turn our own blind
+      spot into someone else's obituary.</p>
       <p>The transaction count has a ceiling: above 2400 in the month it shows a
       <code>+</code>, because the reading stops there. It is a floor, not a
       total.</p>
