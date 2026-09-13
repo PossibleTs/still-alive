@@ -191,13 +191,36 @@ def main() -> None:
 
     antes = alvo.get("situacao")
     agora_ts = int(_agora().timestamp())
+    # Medir numa COPIA. `alvo` e o registro que esta publicado: _medir escreve
+    # em cima do que recebe, entao medir direto nele apagava a medicao boa
+    # assim que o no recusasse a pergunta - e trocava o veredito por "unknown"
+    # justamente para quem clicou em contestar. E o pior lugar possivel para
+    # esse erro: quem pede remedicao esta discordando da pagina, e a resposta
+    # seria apagar a prova em vez de refaze-la.
+    medido = dict(alvo)
     try:
-        _medir(alvo, agora_ts)
+        _medir(medido, agora_ts)
     except Exception as e:  # rede pode falhar; o pedido nao pode explodir
         print(f"The measurement failed just now ({type(e).__name__}). Try later.")
         return
 
-    alvo["medido_em"] = _agora().isoformat(timespec="seconds")
+    if medido.get("leitura_ok") is False:
+        print(
+            "The public XRPL node refused the query just now "
+            f"(`{medido.get('erro_leitura')}`), so there is no new measurement "
+            "to report and **nothing on the page changed**. That is a limit of "
+            "this page's reading, not a finding about the project. The daily "
+            "run tries again, and so can you in a few minutes."
+        )
+        return
+
+    alvo = medido
+    agora_iso = _agora().isoformat(timespec="seconds")
+    # As duas datas: quando olhamos o projeto e quando o ledger foi lido. Aqui
+    # sao a mesma - a leitura acabou de acontecer.
+    alvo["medido_em"] = agora_iso
+    alvo["ledger_em"] = agora_iso
+    alvo.pop("releitura_falhou_em", None)
     alvo["situacao"], alvo["motivo"] = classificar(alvo)
 
     pedidos.append(

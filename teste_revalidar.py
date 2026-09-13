@@ -18,6 +18,7 @@ from revalidar import (
     avaliar_limites,
     candidatos,
 )
+from revalidar import main as revalidar_main
 
 FALHAS = []
 
@@ -36,6 +37,57 @@ def agora_menos(horas: float) -> str:
 
 def hoje_iso() -> str:
     return dt.datetime.now(dt.timezone.utc).isoformat(timespec="seconds")
+
+
+def _remedir_com_no_recusando() -> tuple[str, dict]:
+    """
+    Roda o pedido de remedicao inteiro com o no publico recusando tudo.
+
+    E o caminho mais sensivel da pagina: quem clica em "recheck" esta
+    discordando de um veredito. Medir direto no registro publicado fazia a
+    recusa do no apagar a medicao que sustentava a linha - a contestacao
+    virava "unknown" em vez de virar prova.
+    """
+    import contextlib
+    import io as _io
+    import json
+    import os
+    import sys
+    import tempfile
+
+    import coletor
+
+    pagina = {
+        "projetos": [{
+            "nome": "Token", "categoria": "Token", "emissor": "rTESTE",
+            "moeda": "TKN", "moeda_hex": "TKN", "holders": 3000,
+            "dias_sem_atividade": 0, "tx_janela": 900, "tx_emissor": 12,
+            "tx_truncado": False, "blackholed": False, "trocas_7d": 40,
+            "site_ok": True, "situacao": "ativo",
+            "motivo": "900 transactions in 30 days; last one today.",
+            "medido_em": "2026-01-01T00:00:00+00:00",
+            "ledger_em": "2026-01-01T00:00:00+00:00",
+        }],
+        "contagem": {},
+    }
+    guardados = coletor._rpc, coletor.site_responde, sys.argv
+    antes_cwd = os.getcwd()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            with open("dados.json", "w", encoding="utf-8") as f:
+                json.dump(pagina, f)
+            coletor._rpc = lambda metodo, params: {"error": "tooBusy"}
+            coletor.site_responde = lambda url: None
+            sys.argv = ["revalidar.py", "--projeto", "rTESTE:TKN", "--autor", "vizinho"]
+            texto = _io.StringIO()
+            with contextlib.redirect_stdout(texto):
+                revalidar_main()
+            with open("dados.json", encoding="utf-8") as f:
+                return texto.getvalue(), json.load(f)
+    finally:
+        os.chdir(antes_cwd)
+        coletor._rpc, coletor.site_responde, sys.argv = guardados
 
 
 def main() -> None:
@@ -97,6 +149,14 @@ def main() -> None:
     ontem = (dt.datetime.now(dt.timezone.utc) - dt.timedelta(days=1)).isoformat()
     velhos = [{"quando": ontem, "autor": "eu"} for _ in range(TETO_DIARIO + 5)]
     checa("pedido de ontem nao conta para hoje", avaliar_limites(velho, "eu", velhos) is None)
+
+    print("\nRecusa do no no pedido de remedicao")
+    saida, depois = _remedir_com_no_recusando()
+    checa("responde que o no recusou, sem veredito novo", "refused the query" in saida)
+    checa("diz que nada mudou na pagina", "nothing on the page changed" in saida)
+    checa("e o veredito publicado continua de pe",
+          depois["projetos"][0]["situacao"] == "ativo")
+    checa("a medicao boa nao foi apagada", depois["projetos"][0]["tx_janela"] == 900)
 
     print()
     if FALHAS:
