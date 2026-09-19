@@ -18,7 +18,9 @@ import coletor
 from coletor import (
     NOS_RPC,
     PRIMEIRO_LEDGER,
+    alvos_nao_medidos,
     atividade_da_conta,
+    chaves_nao_medidas,
     classificar,
     conta_esta_blackholed,
     mesclar,
@@ -197,6 +199,45 @@ def main() -> None:
     p2 = mesclar([], novo_sem_historico)[0]
     checa("sem medicao anterior, nao inventa uma", p2.get("tx_janela") is None)
     checa("e assume que nao sabe", classificar(p2)[0] == "indeterminado")
+
+    print("\nA corrida de reparo alcanca quem o rodizio deixaria esperando")
+    # Sem isto a espera e de ate CICLO_DIAS: em 07-13/09/2026 o no recusou dias
+    # seguidos e 687 projetos ficaram doze dias na pagina como "nao medido",
+    # sem nada de errado com eles.
+    pagina = [
+        {"nome": "Recusado", "categoria": "Token", "emissor": "rA", "moeda_hex": "AAA",
+         "erro_leitura": "slowDown"},
+        {"nome": "Sem tempo", "categoria": "Token", "emissor": "rB", "moeda_hex": "BBB",
+         "erro_leitura": coletor.ORCAMENTO_ESGOTADO},
+        {"nome": "Conta nao existe", "categoria": "Token", "emissor": "rC",
+         "moeda_hex": "CCC", "erro_leitura": "actNotFound"},
+        {"nome": "Medido", "categoria": "Token", "emissor": "rD", "moeda_hex": "DDD",
+         "leitura_ok": True, "erro_leitura": None, "tx_janela": 12},
+    ]
+    pendentes = chaves_nao_medidas(pagina)
+    checa("recusa do no entra na fila do reparo", "rA:AAA" in pendentes)
+    checa("falta de tempo tambem - so adiou", "rB:BBB" in pendentes)
+    checa("conta inexistente nao: remedir daria o mesmo erro", "rC:CCC" not in pendentes)
+    checa("quem foi medido nao e remedido a toa", "rD:DDD" not in pendentes)
+
+    catalogo = [
+        {"nome": "Recusado", "categoria": "Token", "emissor": "rA", "moeda_hex": "AAA",
+         "holders": 200},
+        {"nome": "Sem tempo", "categoria": "Token", "emissor": "rB", "moeda_hex": "BBB",
+         "holders": 150},
+        {"nome": "Terceiro", "categoria": "Token", "emissor": "rZ", "moeda_hex": "ZZZ",
+         "holders": 900},
+    ]
+    real_descobrir = coletor.descobrir_tokens
+    coletor.descobrir_tokens = lambda limite, offset=0: catalogo if offset == 0 else []
+    alvos = alvos_nao_medidos(pagina)
+    coletor.descobrir_tokens = real_descobrir
+    checa("mede so os pendentes, nao o catalogo inteiro",
+          sorted(a["nome"] for a in alvos) == ["Recusado", "Sem tempo"])
+    checa("com os numeros de hoje, nao os guardados",
+          all(a.get("holders") for a in alvos))
+    checa("pagina inteira medida nao gera corrida nenhuma",
+          alvos_nao_medidos([pagina[3]]) == [])
 
     print()
     if FALHAS:

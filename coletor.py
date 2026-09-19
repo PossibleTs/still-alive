@@ -12,6 +12,7 @@ Guarda um snapshot por execucao em historico/, o que permite medir tendencia
 Uso:
     python coletor.py                  # coleta padrao (40 tokens + projetos sem token)
     python coletor.py --limite 100     # mais tokens
+    python coletor.py --nao-medidos    # reparo: remede so quem ficou sem leitura
     python coletor.py --no-rede        # so recalcula a classificacao do dados.json
 """
 
@@ -1146,6 +1147,52 @@ def alvos_do_dia(fatia: int) -> list[dict]:
     return alvos
 
 
+# Erros em que a leitura NAO aconteceu por causa nossa: o no recusou a
+# pergunta, ou a corrida acabou antes de chegar neste projeto. Sao os unicos
+# que uma remedicao conserta - `actNotFound` voltaria igual amanha.
+def _leitura_pendente(p: dict) -> bool:
+    erro = p.get("erro_leitura") or p.get("erro_medicao")
+    return erro in ERROS_TEMPORARIOS or erro == ORCAMENTO_ESGOTADO
+
+
+def chaves_nao_medidas(projetos: list[dict]) -> set[str]:
+    """Quem esta na pagina sem leitura de ledger por indisponibilidade nossa."""
+    return {chave_do_projeto(p) for p in projetos if _leitura_pendente(p)}
+
+
+def alvos_nao_medidos(projetos: list[dict], pagina: int = 300) -> list[dict]:
+    """
+    Alvos de uma corrida de reparo: so quem ficou sem leitura de ledger.
+
+    O rodizio leva ate CICLO_DIAS para voltar a uma fatia da cauda. Quando o no
+    publico recusa dias seguidos - 07 a 13/09/2026, 687 projetos - a pagina fica
+    ate duas semanas dizendo "nao medido" sobre projeto que tem detentores de
+    sobra para ser medido, e a espera nao e do rodizio, e de uma falha nossa.
+    Esta corrida os alcanca sem esperar a vez deles.
+
+    O catalogo e consultado de novo em vez de reaproveitar o dados.json: holders
+    e negociacao de doze dias atras carimbados com a data de hoje seriam a
+    pagina mentindo sobre quando mediu.
+    """
+    pendentes = chaves_nao_medidas(projetos)
+    if not pendentes:
+        return []
+    print(f"reparo: {len(pendentes)} projetos sem leitura de ledger")
+    # Por chave, nao por lista: o catalogo e vivo e ordenado por detentores, e
+    # um token que sobe de posicao entre duas paginas aparece nas duas. Medir a
+    # mesma conta duas vezes seria cobrar do no publico por nada.
+    alvos: dict[str, dict] = {}
+    for offset in range(0, TOPO_DIARIO + CAUDA_TOTAL, pagina):
+        for t in descobrir_tokens(pagina, offset):
+            chave = chave_do_projeto(t)
+            if chave in pendentes:
+                alvos.setdefault(chave, t)
+    # Quem saiu da janela coberta (caiu abaixo do piso de detentores) nao
+    # aparece aqui - e continua com o registro que ja tinha, com a data dele.
+    print(f"reparo: {len(alvos)} reencontrados no catalogo")
+    return list(alvos.values())
+
+
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--limite", type=int, default=0,
@@ -1155,6 +1202,8 @@ def main() -> None:
                     help=f"forca uma fatia do ciclo de {CICLO_DIAS} dias")
     ap.add_argument("--minutos", type=int, default=ORCAMENTO_MINUTOS,
                     help="teto de tempo da coleta; 0 desliga")
+    ap.add_argument("--nao-medidos", action="store_true",
+                    help="corrida de reparo: remede so quem ficou sem leitura de ledger")
     ap.add_argument("--no-rede", action="store_true", help="so reclassifica o dados.json existente")
     args = ap.parse_args()
 
@@ -1164,7 +1213,13 @@ def main() -> None:
         for p in projetos:
             p["situacao"], p["motivo"] = classificar(p)
     else:
-        if args.limite:
+        if args.nao_medidos:
+            salvos = carregar_projetos()
+            if not chaves_nao_medidas(salvos):
+                print("nada pendente: todo projeto da pagina tem leitura de ledger.")
+                return
+            alvos = alvos_nao_medidos(salvos)
+        elif args.limite:
             alvos = descobrir_tokens(args.limite, args.offset)
             alvos += [dict(p) for p in PROJETOS_SEM_TOKEN]
         else:
