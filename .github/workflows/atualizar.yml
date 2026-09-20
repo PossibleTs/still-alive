@@ -9,12 +9,13 @@ on:
   workflow_dispatch:        # botao para rodar na mao quando quiser
     inputs:
       modo:
-        description: "fatia-do-dia: o rodizio normal. nao-medidos: remede quem ficou sem leitura de ledger."
+        description: "fatia-do-dia: o rodizio normal. nao-medidos: remede quem ficou sem leitura. rever-sites: reconfere os sites dados como fora do ar."
         type: choice
         default: fatia-do-dia
         options:
           - fatia-do-dia
           - nao-medidos
+          - rever-sites
 
 permissions:
   contents: write   # para gravar os snapshots do historico
@@ -60,6 +61,8 @@ jobs:
         run: |
           if [ "$MODO" = "nao-medidos" ]; then
             python coletor.py --nao-medidos
+          elif [ "$MODO" = "rever-sites" ]; then
+            python coletor.py --rever-sites
           else
             python coletor.py
           fi
@@ -77,7 +80,7 @@ jobs:
       # Sem ele, a pagina so sabe o presente.
       - name: Guardar o snapshot do dia
         env:
-          SUFIXO: ${{ inputs.modo == 'nao-medidos' && ' (reparo)' || '' }}
+          SUFIXO: ${{ inputs.modo != '' && inputs.modo != 'fatia-do-dia' && format(' ({0})', inputs.modo) || '' }}
         run: |
           git config user.name "robo"
           git config user.email "robo@users.noreply.github.com"

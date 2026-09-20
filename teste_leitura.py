@@ -20,6 +20,7 @@ from coletor import (
     PRIMEIRO_LEDGER,
     alvos_nao_medidos,
     atividade_da_conta,
+    site_responde,
     chaves_nao_medidas,
     classificar,
     conta_esta_blackholed,
@@ -239,6 +240,93 @@ def main() -> None:
     checa("pagina inteira medida nao gera corrida nenhuma",
           alvos_nao_medidos([pagina[3]]) == [])
 
+    print("\nSite: so dominio que acabou sustenta acusacao")
+    # `site_ok is False` somado a pouca transacao E o veredito de morte - a
+    # unica porta por onde um token sai como `dead`. Em 19/09/2026 dois dos
+    # cinco novos mortos saiam de 404 e de https quebrado com http de pe.
+    def finge_site(por_url: dict, resolve: bool = True):
+        batidas = []
+
+        def falso_urlopen(req, timeout=None):
+            batidas.append(req.full_url)
+            saida = por_url.get(req.full_url)
+            if saida is None:
+                raise urllib.error.URLError("timed out")
+            if isinstance(saida, Exception):
+                raise saida
+            return saida
+
+        def falso_dns(host, porta):
+            if not resolve:
+                raise OSError("Name or service not known")
+            return [(2, 1, 6, "", ("192.0.2.1", 0))]
+
+        coletor.urllib.request.urlopen = falso_urlopen
+        coletor.socket.getaddrinfo = falso_dns
+        return batidas
+
+    class _Pagina:
+        def __init__(self, status): self.status = status
+        def __enter__(self): return self
+        def __exit__(self, *_): return False
+
+    def erro_http(codigo):
+        return urllib.error.HTTPError("https://x", codigo, "", {}, None)
+
+    batidas = finge_site({}, resolve=False)
+    checa("nome que nao resolve e o unico que acusa", site_responde("sumiu.tld") is False)
+    checa("e nem bate na porta de dominio que nao existe mais", batidas == [])
+
+    finge_site({"https://viva.tld": _Pagina(200)})
+    checa("site que responde 200 esta vivo", site_responde("viva.tld") is True)
+
+    finge_site({"https://parada.tld": erro_http(404)})
+    checa("404 nao e dominio extinto: tem servidor atendendo",
+          site_responde("parada.tld") is None)
+
+    finge_site({"https://robo.tld": erro_http(403)})
+    checa("403 continua sendo bloqueio de bot, nao ausencia",
+          site_responde("robo.tld") is True)
+
+    finge_site({"https://tropeco.tld": erro_http(503)})
+    checa("5xx continua sendo tropeco do servidor deles",
+          site_responde("tropeco.tld") is None)
+
+    batidas = finge_site({"http://so80.tld": _Pagina(200)})
+    checa("https quebrado com http de pe e site vivo", site_responde("so80.tld") is True)
+    # A porta 443 ganha a segunda chance (falha de conexao e transitoria com
+    # frequencia); a 80 e uma batida so, porque a essa altura o dominio ja se
+    # sabe de pe e a corrida inteira tem 70 minutos de orcamento.
+    checa("https tem duas chances, http tem uma, nesta ordem",
+          batidas == ["https://so80.tld", "https://so80.tld", "http://so80.tld"])
+
+    finge_site({})
+    checa("dominio de pe e servidor mudo nao sustenta acusacao",
+          site_responde("mudo.tld") is None)
+
+    print("\nLeitura vazia e um fato medido, nao ausencia de medicao")
+    lido_vazio = {"nome": "Calado", "categoria": "Token", "emissor": "rQ",
+                  "moeda_hex": "QQQ", "holders": 200, "leitura_ok": True,
+                  "erro_leitura": None, "tx_janela": 0, "tx_emissor": 0,
+                  "tx_truncado": False, "dias_sem_atividade": None,
+                  "ledger_em": "2026-09-19T11:30:00+00:00"}
+    situacao, motivo = classificar(lido_vazio)
+    checa("sem saber ha quanto tempo, nao ha veredito", situacao == "indeterminado")
+    checa("a pagina diz que leu e nao achou nada",
+          "no transaction reached this account" in motivo)
+    checa("com a data da leitura", "2026-09-19" in motivo)
+    checa("e nao finge que ainda esta na fila", "queued" not in motivo)
+
+    nunca_lido = {"nome": "Na fila", "categoria": "Token", "emissor": "rR",
+                  "moeda_hex": "RRR", "holders": 200, "dias_sem_atividade": None}
+    checa("quem nunca foi lido continua dizendo isso",
+          "queued for the next run" in classificar(nunca_lido)[1])
+
+    truncado = dict(lido_vazio, tx_truncado=True)
+    checa("leitura truncada nao afirma que a janela foi coberta",
+          "queued for the next run" in classificar(truncado)[1])
+
+    coletor.urllib.request.urlopen = real_urlopen
     print()
     if FALHAS:
         print(f"{len(FALHAS)} falha(s):", ", ".join(FALHAS))

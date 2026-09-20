@@ -13,6 +13,7 @@ Uso:
     python coletor.py                  # coleta padrao (40 tokens + projetos sem token)
     python coletor.py --limite 100     # mais tokens
     python coletor.py --nao-medidos    # reparo: remede so quem ficou sem leitura
+    python coletor.py --rever-sites    # reconfere os sites dados como fora do ar
     python coletor.py --no-rede        # so recalcula a classificacao do dados.json
 """
 
@@ -23,6 +24,7 @@ import datetime as dt
 import http.client
 import json
 import os
+import socket
 import sys
 import time
 import urllib.error
@@ -222,15 +224,56 @@ def _rpc(metodo: str, params: dict) -> dict:
 HOSPEDEIROS_DE_METADADO = (".toml.firstledger.net",)
 
 
+# Ninguem atendeu nesta porta. Nao e resposta nenhuma - quem decide o que isso
+# significa e site_responde(), que ainda tem outra porta e o DNS para consultar.
+SEM_CONEXAO = "sem conexao"
+
+
+def _abrir_site(url: str, tentativas: int, espera: int) -> bool | None | str:
+    """O que ESTA porta respondeu, sem tirar conclusao sobre o projeto."""
+    req = urllib.request.Request(url, headers={"User-Agent": AGENTE}, method="GET")
+    for tentativa in range(tentativas):
+        try:
+            with urllib.request.urlopen(req, timeout=espera) as r:
+                return r.status < 400
+        except urllib.error.HTTPError as e:
+            # 401/403/429 sao bloqueio de bot: o site esta la, so nao quer robo.
+            if e.code in (401, 403, 429):
+                return True
+            # Qualquer outro codigo tambem PROVA que tem servidor atendendo:
+            # 404 na raiz e site abandonado ou mal configurado, 5xx e o
+            # servidor deles tropecando. Nenhum dos dois e dominio extinto.
+            return None
+        except (urllib.error.URLError, TimeoutError, OSError):
+            if tentativa < tentativas - 1:
+                time.sleep(1.5)
+    return SEM_CONEXAO
+
+
+def _dominio_resolve(hospedeiro: str) -> bool:
+    try:
+        socket.getaddrinfo(hospedeiro.split(":", 1)[0], None)
+        return True
+    except OSError:
+        return False
+
+
 def site_responde(url: str) -> bool | None:
     """
-    True se o site responde, False se esta fora do ar, None se nao da para
+    True se o site responde, False se o dominio acabou, None se nao da para
     afirmar nada.
 
-    A diferenca entre False e None e o produto inteiro: False vira "site fora
-    do ar" na pagina, e isso e uma acusacao. Dominio que nao resolve e prova.
-    Erro 5xx e o servidor deles tropecando agora - pode ser transitorio, e uma
-    amostra so nao basta para dizer que o projeto abandonou o site.
+    A diferenca entre False e None e o produto inteiro: `site_ok is False`
+    somado a pouca transacao E o veredito de morte - hoje e a unica porta por
+    onde um projeto sai da pagina como `dead`. Por isso a regra e estreita:
+    **so nome que nao resolve sustenta a acusacao.** Servidor que responde 404,
+    TLS quebrado, porta fechada ou tempo esgotado dizem que o site esta
+    abandonado - e abandono de site nao e fim de projeto.
+
+    Ate 19/09/2026 o codigo dizia isso na docstring e fazia outra coisa: 404
+    virava "website down", e so o https era tentado, entao redirecionador na
+    porta 80 com https quebrado tambem. Dois dos cinco `dead` daquele dia
+    saiam dai - um deles com o dominio resolvendo e servidor respondendo.
     """
     if not url:
         return None
@@ -241,29 +284,26 @@ def site_responde(url: str) -> bool | None:
     if hospedeiro.endswith(HOSPEDEIROS_DE_METADADO):
         return None  # nao e site do projeto, e o TOML hospedado por terceiro
 
-    req = urllib.request.Request(url, headers={"User-Agent": AGENTE}, method="GET")
-    for tentativa in range(2):
-        try:
-            with urllib.request.urlopen(req, timeout=12) as r:
-                return r.status < 400
-        except urllib.error.HTTPError as e:
-            # 401/403/429 sao bloqueio de bot: o site esta la, so nao quer robo.
-            if e.code in (401, 403, 429):
-                return True
-            # 5xx e erro do servidor deles, nao ausencia de site.
-            if e.code >= 500:
-                return None
-            return False
-        except (urllib.error.URLError, TimeoutError, OSError) as e:
-            # Nome que nao resolve e dominio que acabou: isso e prova de morte.
-            motivo = str(getattr(e, "reason", e))
-            if "not known" in motivo or "Name or service" in motivo:
-                return False
-            if tentativa == 0:
-                time.sleep(1.5)
-                continue
-            return False
-    return False
+    # O DNS vem primeiro porque e a unica pergunta cuja resposta acusa - e
+    # porque dispensa bater na porta de dominio que nao existe mais.
+    if not _dominio_resolve(hospedeiro):
+        return False
+
+    resposta = _abrir_site(url, tentativas=2, espera=12)
+    if resposta is not SEM_CONEXAO:
+        return resposta
+
+    # Site que so serve na porta 80 e desleixo, nao extincao. Batida curta:
+    # esta e a segunda pergunta a um dominio que ja se sabe existir, e o
+    # orcamento da corrida inteira e de 70 minutos.
+    em_http = "http://" + url.split("://", 1)[1]
+    if em_http != url:
+        resposta = _abrir_site(em_http, tentativas=1, espera=6)
+        if resposta is not SEM_CONEXAO:
+            return resposta
+
+    # Dominio de pe, servidor mudo. Abandono provavel, prova nenhuma.
+    return None
 
 
 # --------------------------------------------------------------------------
@@ -755,6 +795,17 @@ def _motivo_sem_leitura(p: dict) -> str:
         return "The issuer account does not exist on the ledger."
     if erro:
         return f"Could not read this account from the ledger ({_erro_curto(p)}); no verdict is made."
+    # Leitura que DEU CERTO e voltou vazia nao e ausencia de leitura: e um
+    # fato medido - ninguem tocou a conta na janela. Dizer "na fila da proxima
+    # corrida" sobre isso jogava o sinal fora e ainda mentia sobre o metodo.
+    if p.get("tx_janela") is not None and not p.get("tx_truncado"):
+        quando = p.get("ledger_em") or p.get("medido_em")
+        data = f" on {quando[:10]}" if quando else ""
+        return (
+            f"Read{data}: no transaction reached this account in the 30-day "
+            "window. This page reads 30 days, so how long the silence has "
+            "lasted is not known - and silence alone is not a verdict here."
+        )
     return "No ledger reading for this account yet; it is queued for the next run."
 
 
@@ -1204,10 +1255,31 @@ def main() -> None:
                     help="teto de tempo da coleta; 0 desliga")
     ap.add_argument("--nao-medidos", action="store_true",
                     help="corrida de reparo: remede so quem ficou sem leitura de ledger")
+    ap.add_argument("--rever-sites", action="store_true",
+                    help="reconfere so os sites dados como fora do ar e reclassifica")
     ap.add_argument("--no-rede", action="store_true", help="so reclassifica o dados.json existente")
     args = ap.parse_args()
 
-    if args.no_rede:
+    if args.rever_sites:
+        # So quem esta acusado pelo site. `site_ok is False` e a unica porta
+        # por onde um token sai como `dead`, entao mudar a regra do site sem
+        # reconferir esses deixaria a acusacao velha no ar ate o rodizio
+        # voltar - ate quinze dias depois.
+        projetos = carregar_projetos()
+        normalizar_nomes(projetos)
+        alvos = [p for p in projetos if p.get("site_ok") is False]
+        print(f"revisao: {len(alvos)} sites dados como fora do ar")
+        mudou = 0
+        for i, p in enumerate(alvos, 1):
+            antes = p.get("site_ok")
+            p["site_ok"] = site_responde(p.get("site", ""))
+            if p["site_ok"] is not antes:
+                mudou += 1
+                print(f"[{i}/{len(alvos)}] {p['nome']}: {antes} -> {p['site_ok']}")
+        print(f"revisao: {mudou} dos {len(alvos)} nao sustentavam a acusacao")
+        for p in projetos:
+            p["situacao"], p["motivo"] = classificar(p)
+    elif args.no_rede:
         projetos = carregar_projetos()
         normalizar_nomes(projetos)
         for p in projetos:
