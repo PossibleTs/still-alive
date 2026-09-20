@@ -1,5 +1,5 @@
 {
- "gerado_em": "2026-09-20T12:15:22+00:00",
+ "gerado_em": "2026-09-20T14:43:39+00:00",
  "medicao_mais_antiga": "2026-08-31T13:54:01+00:00",
  "ciclo_dias": 15,
  "piso_pretendido": 100,
@@ -13,11 +13,11 @@
  },
  "total": 2505,
  "contagem": {
-  "ativo": 1945,
+  "ativo": 1953,
   "morrendo": 322,
   "parado": 0,
-  "morto": 21,
-  "indeterminado": 217
+  "morto": 14,
+  "indeterminado": 216
  },
  "projetos": [
   {
@@ -180,7 +180,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789902800,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -214,7 +214,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789900630,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -1302,7 +1302,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789850070,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -2526,7 +2526,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789795070,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -2696,7 +2696,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789787520,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -2730,7 +2730,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789890400,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -3172,7 +3172,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789904440,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -3750,7 +3750,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789875512,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -4702,7 +4702,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789889140,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -4872,7 +4872,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789890341,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -5212,7 +5212,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789891980,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -6878,7 +6878,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789875520,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -7082,7 +7082,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789789370,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -7286,7 +7286,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789795000,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -8680,7 +8680,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789787140,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -9088,7 +9088,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789782881,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -10992,7 +10992,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789237481,
    "dias_sem_atividade": 3,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-16T11:36:09+00:00",
    "ledger_em": "2026-09-16T11:36:09+00:00",
    "situacao": "ativo",
@@ -13372,7 +13372,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789554780,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-16T11:36:09+00:00",
    "ledger_em": "2026-09-16T11:36:09+00:00",
    "situacao": "ativo",
@@ -13483,6 +13483,40 @@
    "medido_em_anterior": "2026-09-02T11:19:56+00:00",
    "variacao_holders": 0.1,
    "dias_variacao": 15
+  },
+  {
+   "nome": "XRH",
+   "categoria": "Token",
+   "emissor": "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw",
+   "x": "https://x.com/TheRabbitH0LZ",
+   "moeda": "XRH",
+   "moeda_hex": "XRH",
+   "site": "xrhrabbithole.github.io",
+   "holders": 1518,
+   "trustlines": 2445,
+   "volume_24h": 8.71927599999998,
+   "trocas_24h": 16,
+   "trocas_7d": 57,
+   "volume_7d": 52.6490589999997,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 2400,
+   "tx_emissor": 2,
+   "tx_truncado": true,
+   "ultima_do_emissor": 1789615001,
+   "dias_sem_emissor": 0,
+   "ultima_atividade": 1789643280,
+   "dias_sem_atividade": 0,
+   "site_ok": null,
+   "medido_em": "2026-09-17T11:43:09+00:00",
+   "ledger_em": "2026-09-17T11:43:09+00:00",
+   "situacao": "ativo",
+   "motivo": "2400+ transactions in 30 days; last one today.",
+   "holders_anterior": 1531,
+   "medido_em_anterior": "2026-09-01T19:32:23+00:00",
+   "variacao_holders": -0.8,
+   "dias_variacao": 16
   },
   {
    "nome": "SPY",
@@ -15684,7 +15718,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789645971,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "ativo",
@@ -16908,7 +16942,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789645031,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "ativo",
@@ -16984,6 +17018,40 @@
    "holders_anterior": 1051,
    "medido_em_anterior": "2026-09-02T11:19:56+00:00",
    "variacao_holders": 0.7,
+   "dias_variacao": 15
+  },
+  {
+   "nome": "VBILL",
+   "categoria": "Token",
+   "emissor": "rvaNEC6XVooEXonJzfoNKZG4LAfrCCGAy",
+   "x": "",
+   "moeda": "VBILL",
+   "moeda_hex": "5642494C4C000000000000000000000000000000",
+   "site": "https://www.vaneck.com",
+   "holders": 1058,
+   "trustlines": 1062,
+   "volume_24h": 1.198,
+   "trocas_24h": 2,
+   "trocas_7d": 2,
+   "volume_7d": 1.198,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 7,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1787987041,
+   "dias_sem_atividade": 19,
+   "site_ok": null,
+   "medido_em": "2026-09-17T11:43:09+00:00",
+   "ledger_em": "2026-09-17T11:43:09+00:00",
+   "situacao": "ativo",
+   "motivo": "Token traded in the last 7 days and 7 transactions on the account, but none signed by the issuer within the measured window.",
+   "holders_anterior": 1058,
+   "medido_em_anterior": "2026-09-02T11:19:56+00:00",
+   "variacao_holders": 0.0,
    "dias_variacao": 15
   },
   {
@@ -17146,7 +17214,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789416460,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "ativo",
@@ -21482,7 +21550,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789649510,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "ativo",
@@ -22986,7 +23054,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789744150,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "ativo",
@@ -24908,7 +24976,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789880221,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -25586,6 +25654,40 @@
    "situacao": "ativo",
    "motivo": "Token traded in the last 7 days and 22 transactions on the account, but none signed by the issuer within the measured window.",
    "holders_anterior": 593,
+   "medido_em_anterior": "2026-09-05T10:37:46+00:00",
+   "variacao_holders": 0.0,
+   "dias_variacao": 15
+  },
+  {
+   "nome": "BCHX",
+   "categoria": "Token",
+   "emissor": "r4L9Q861brng8jTDhk73VCDUgPfKxPcXwT",
+   "x": "https://x.com/BCHXofficial",
+   "moeda": "BCHX",
+   "moeda_hex": "4243485800000000000000000000000000000000",
+   "site": "bchx-web-testing.up.railway.app",
+   "holders": 591,
+   "trustlines": 609,
+   "volume_24h": 0.990202,
+   "trocas_24h": 1,
+   "trocas_7d": 1,
+   "volume_7d": 0.990202,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 2,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1788357931,
+   "dias_sem_atividade": 17,
+   "site_ok": null,
+   "medido_em": "2026-09-20T11:25:51+00:00",
+   "ledger_em": "2026-09-20T11:25:51+00:00",
+   "situacao": "ativo",
+   "motivo": "Token traded in the last 7 days and 2 transactions on the account, but none signed by the issuer within the measured window.",
+   "holders_anterior": 591,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
    "dias_variacao": 15
@@ -26532,7 +26634,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789705910,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -27110,7 +27212,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789808580,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -27811,7 +27913,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789905321,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "ativo",
@@ -33136,7 +33238,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1788784390,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "ativo",
    "motivo": "Issuer blackholed (good practice); 301 holders and trading in the last 7 days."
@@ -34294,6 +34396,40 @@
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
    "motivo": "Token traded in the last 7 days and 9 transactions on the account, but none signed by the issuer within the measured window.",
+   "holders_anterior": 290,
+   "medido_em_anterior": "2026-09-07T12:37:01+00:00",
+   "variacao_holders": 0.3,
+   "dias_variacao": 12
+  },
+  {
+   "nome": "BELLY",
+   "categoria": "Token",
+   "emissor": "rEjdfxVXiaPghhJVXeYaLRhnGpEjV7VaQ4",
+   "x": "",
+   "moeda": "BELLY",
+   "moeda_hex": "42454C4C59000000000000000000000000000000",
+   "site": "bellytoken.univer.se",
+   "holders": 291,
+   "trustlines": 362,
+   "volume_24h": 0.010119,
+   "trocas_24h": 1,
+   "trocas_7d": 1,
+   "volume_7d": 0.010119,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 1,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1787438571,
+   "dias_sem_atividade": 28,
+   "site_ok": null,
+   "medido_em": "2026-09-19T23:25:18+00:00",
+   "ledger_em": "2026-09-19T23:25:18+00:00",
+   "situacao": "ativo",
+   "motivo": "Token traded in the last 7 days and 1 transactions on the account, but none signed by the issuer within the measured window.",
    "holders_anterior": 290,
    "medido_em_anterior": "2026-09-07T12:37:01+00:00",
    "variacao_holders": 0.3,
@@ -35861,7 +35997,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789647850,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -45879,6 +46015,40 @@
    "dias_variacao": 10
   },
   {
+   "nome": "USD",
+   "categoria": "Token",
+   "emissor": "rLEsXccBGNR3UPuPu2hUXPjziKC3qKSBun",
+   "x": "",
+   "moeda": "USD",
+   "moeda_hex": "USD",
+   "site": "therocktrading.com",
+   "holders": 188,
+   "trustlines": 524,
+   "volume_24h": 0,
+   "trocas_24h": 0,
+   "trocas_7d": 0,
+   "volume_7d": 0,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 2400,
+   "tx_emissor": 0,
+   "tx_truncado": true,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1789412660,
+   "dias_sem_atividade": 5,
+   "site_ok": true,
+   "medido_em": "2026-09-19T23:25:18+00:00",
+   "ledger_em": "2026-09-19T23:25:18+00:00",
+   "situacao": "ativo",
+   "motivo": "2400+ transactions in 30 days; last one 5 days ago.",
+   "holders_anterior": 187,
+   "medido_em_anterior": "2026-09-10T11:21:36+00:00",
+   "variacao_holders": 0.5,
+   "dias_variacao": 10
+  },
+  {
    "nome": "HootsXRPL",
    "categoria": "Token",
    "emissor": "rNPWp2RX2GHVbFbG77k76Ak8nhKwrHu17b",
@@ -47374,7 +47544,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789855411,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -48663,7 +48833,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789044461,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "ativo",
    "motivo": "Token traded in the last 7 days and 800 transactions on the account, but none signed by the issuer within the measured window."
@@ -49557,6 +49727,40 @@
    "dias_variacao": 9
   },
   {
+   "nome": "BTC",
+   "categoria": "Token",
+   "emissor": "rLEsXccBGNR3UPuPu2hUXPjziKC3qKSBun",
+   "x": "",
+   "moeda": "BTC",
+   "moeda_hex": "BTC",
+   "site": "therocktrading.com",
+   "holders": 162,
+   "trustlines": 505,
+   "volume_24h": 0,
+   "trocas_24h": 0,
+   "trocas_7d": 0,
+   "volume_7d": 0,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 2400,
+   "tx_emissor": 0,
+   "tx_truncado": true,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1789412660,
+   "dias_sem_atividade": 5,
+   "site_ok": true,
+   "medido_em": "2026-09-19T23:25:18+00:00",
+   "ledger_em": "2026-09-19T23:25:18+00:00",
+   "situacao": "ativo",
+   "motivo": "2400+ transactions in 30 days; last one 5 days ago.",
+   "holders_anterior": 161,
+   "medido_em_anterior": "2026-09-11T11:23:23+00:00",
+   "variacao_holders": 0.6,
+   "dias_variacao": 9
+  },
+  {
    "nome": "AAX",
    "categoria": "Token",
    "emissor": "r3vygC9kK2fhL9BozfVwrbTqLQ3joCJxoA",
@@ -50100,7 +50304,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789861982,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -50954,7 +51158,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789416460,
    "dias_sem_atividade": 5,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -52725,6 +52929,40 @@
    "dias_variacao": 8
   },
   {
+   "nome": "MoonRock",
+   "categoria": "Token",
+   "emissor": "rEptSPn856gzRapieyKkBowCdLU7xC6BgF",
+   "x": "",
+   "moeda": "MoonRock",
+   "moeda_hex": "4D6F6F6E526F636B000000000000000000000000",
+   "site": "astronaughties.space",
+   "holders": 139,
+   "trustlines": 171,
+   "volume_24h": 0.0267689999999999,
+   "trocas_24h": 2,
+   "trocas_7d": 2,
+   "volume_7d": 0.0267689999999999,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 9,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1789751842,
+   "dias_sem_atividade": 1,
+   "site_ok": null,
+   "medido_em": "2026-09-19T23:25:18+00:00",
+   "ledger_em": "2026-09-19T23:25:18+00:00",
+   "situacao": "ativo",
+   "motivo": "Token traded in the last 7 days and 9 transactions on the account, but none signed by the issuer within the measured window.",
+   "holders_anterior": 138,
+   "medido_em_anterior": "2026-09-12T10:48:38+00:00",
+   "variacao_holders": 0.7,
+   "dias_variacao": 8
+  },
+  {
    "nome": "Liberty Wings",
    "categoria": "Token",
    "emissor": "rKhWxDDGexgCMB4suSqxL9XEW1ThEycu2E",
@@ -53070,7 +53308,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789861212,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -53528,7 +53766,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789487691,
    "dias_sem_atividade": 4,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -56827,6 +57065,40 @@
    "dias_variacao": 8
   },
   {
+   "nome": "IPCS",
+   "categoria": "Token",
+   "emissor": "rrnFmifxggqgz5brURqZAncXBHicXrtiPc",
+   "x": "",
+   "moeda": "IPCS",
+   "moeda_hex": "4950435300000000000000000000000000000000",
+   "site": "ipcs.xrp-business.com",
+   "holders": 119,
+   "trustlines": 218,
+   "volume_24h": 1.9999,
+   "trocas_24h": 1,
+   "trocas_7d": 1,
+   "volume_7d": 1.9999,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 2,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1788481280,
+   "dias_sem_atividade": 9,
+   "site_ok": null,
+   "medido_em": "2026-09-13T18:17:54+00:00",
+   "ledger_em": "2026-09-13T18:17:54+00:00",
+   "situacao": "ativo",
+   "motivo": "Token traded in the last 7 days and 2 transactions on the account, but none signed by the issuer within the measured window.",
+   "holders_anterior": 119,
+   "medido_em_anterior": "2026-09-13T11:57:03+00:00",
+   "variacao_holders": 0.0,
+   "dias_variacao": 1
+  },
+  {
    "nome": "Sport Central Coin",
    "categoria": "Token",
    "emissor": "rPngE9o6mk3AULfMAp442psq2Rjjoe7BoX",
@@ -57496,7 +57768,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789324061,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "ativo",
@@ -57530,7 +57802,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789827511,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "ativo",
@@ -61746,7 +62018,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789381451,
    "dias_sem_atividade": 1,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "ativo",
@@ -63928,7 +64200,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789823651,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "morrendo",
@@ -64710,7 +64982,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789128602,
    "dias_sem_atividade": 4,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-16T11:36:09+00:00",
    "ledger_em": "2026-09-16T11:36:09+00:00",
    "situacao": "morrendo",
@@ -65084,7 +65356,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1788045891,
    "dias_sem_atividade": 17,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-16T11:36:09+00:00",
    "ledger_em": "2026-09-16T11:36:09+00:00",
    "situacao": "morrendo",
@@ -65365,40 +65637,6 @@
    "dias_variacao": 1
   },
   {
-   "nome": "XRH",
-   "categoria": "Token",
-   "emissor": "r9xu7pdBEx4DdiatMqAUFodgxaPkfFU1Zw",
-   "x": "https://x.com/TheRabbitH0LZ",
-   "moeda": "XRH",
-   "moeda_hex": "XRH",
-   "site": "xrhrabbithole.github.io",
-   "holders": 1518,
-   "trustlines": 2445,
-   "volume_24h": 8.71927599999998,
-   "trocas_24h": 16,
-   "trocas_7d": 57,
-   "volume_7d": 52.6490589999997,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 2400,
-   "tx_emissor": 2,
-   "tx_truncado": true,
-   "ultima_do_emissor": 1789615001,
-   "dias_sem_emissor": 0,
-   "ultima_atividade": 1789643280,
-   "dias_sem_atividade": 0,
-   "site_ok": false,
-   "medido_em": "2026-09-17T11:43:09+00:00",
-   "ledger_em": "2026-09-17T11:43:09+00:00",
-   "situacao": "morrendo",
-   "motivo": "2400+ transactions in 30 days; website down.",
-   "holders_anterior": 1531,
-   "medido_em_anterior": "2026-09-01T19:32:23+00:00",
-   "variacao_holders": -0.8,
-   "dias_variacao": 16
-  },
-  {
    "nome": "xBull",
    "categoria": "Token",
    "emissor": "rNpNdUKp631RXzqxbjjCYsJp6g8Q5T5cGh",
@@ -65558,7 +65796,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789645441,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "morrendo",
@@ -65762,7 +66000,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789573292,
    "dias_sem_atividade": 0,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "morrendo",
@@ -66651,6 +66889,40 @@
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "morrendo",
    "motivo": "2060 transactions in 30 days, but nothing in the last 8 days."
+  },
+  {
+   "nome": "LAMB",
+   "categoria": "Token",
+   "emissor": "rLAMBn9ApWKucdJaSBW9yxZxJQ9HBFE9k4",
+   "x": "",
+   "moeda": "LAMB",
+   "moeda_hex": "4C414D4200000000000000000000000000000000",
+   "site": "https://www.lamb276.org",
+   "holders": 1008,
+   "trustlines": 1010,
+   "volume_24h": 0,
+   "trocas_24h": 0,
+   "trocas_7d": 0,
+   "volume_7d": 0,
+   "blackholed": false,
+   "erro_leitura": null,
+   "leitura_ok": true,
+   "tx_janela": 1,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1787357480,
+   "dias_sem_atividade": 27,
+   "site_ok": null,
+   "medido_em": "2026-09-18T11:16:39+00:00",
+   "ledger_em": "2026-09-18T11:16:39+00:00",
+   "situacao": "morrendo",
+   "motivo": "All 1 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days.",
+   "holders_anterior": 1008,
+   "medido_em_anterior": "2026-09-03T11:16:07+00:00",
+   "variacao_holders": 0.0,
+   "dias_variacao": 15
   },
   {
    "nome": "Lantern Finance",
@@ -68338,7 +68610,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789647610,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "morrendo",
@@ -69340,7 +69612,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789647031,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "morrendo",
@@ -70238,6 +70510,34 @@
    "medido_em_anterior": "2026-09-07T12:37:01+00:00",
    "variacao_holders": 0.0,
    "dias_variacao": 12
+  },
+  {
+   "nome": "024A0003...",
+   "categoria": "Token",
+   "emissor": "rNYEzVuXGen2Rb7VwGi6oXuU3wVXuQKmZN",
+   "x": "",
+   "moeda": "024A0003...",
+   "moeda_hex": "024A00030418407C0000534543323032324E4654",
+   "site": "supereagle2022.secwarrior.club",
+   "holders": 297,
+   "trustlines": 406,
+   "volume_24h": 0,
+   "trocas_24h": 0,
+   "trocas_7d": 0,
+   "volume_7d": 0,
+   "blackholed": false,
+   "erro_leitura": null,
+   "tx_janela": 4,
+   "tx_emissor": 0,
+   "tx_truncado": false,
+   "ultima_do_emissor": null,
+   "dias_sem_emissor": null,
+   "ultima_atividade": 1786783091,
+   "dias_sem_atividade": 23,
+   "site_ok": true,
+   "medido_em": "2026-09-07T12:37:01+00:00",
+   "situacao": "morrendo",
+   "motivo": "All 4 transactions on the account come from third parties; the issuer has signed nothing within the measured window, and there was no trading in the last 7 days."
   },
   {
    "nome": "Footprint",
@@ -71476,7 +71776,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1787680072,
    "dias_sem_atividade": 15,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-10T11:21:36+00:00",
    "situacao": "morrendo",
    "motivo": "Issuer blackholed; 189 holders, but no trading in the last 7 days."
@@ -71901,7 +72201,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1789647850,
    "dias_sem_atividade": 2,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "morrendo",
@@ -71943,40 +72243,6 @@
    "holders_anterior": 164,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
-   "dias_variacao": 9
-  },
-  {
-   "nome": "BTC",
-   "categoria": "Token",
-   "emissor": "rLEsXccBGNR3UPuPu2hUXPjziKC3qKSBun",
-   "x": "",
-   "moeda": "BTC",
-   "moeda_hex": "BTC",
-   "site": "therocktrading.com",
-   "holders": 162,
-   "trustlines": 505,
-   "volume_24h": 0,
-   "trocas_24h": 0,
-   "trocas_7d": 0,
-   "volume_7d": 0,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 2400,
-   "tx_emissor": 0,
-   "tx_truncado": true,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1789412660,
-   "dias_sem_atividade": 5,
-   "site_ok": false,
-   "medido_em": "2026-09-19T23:25:18+00:00",
-   "ledger_em": "2026-09-19T23:25:18+00:00",
-   "situacao": "morrendo",
-   "motivo": "2400+ transactions in 30 days; website down.",
-   "holders_anterior": 161,
-   "medido_em_anterior": "2026-09-11T11:23:23+00:00",
-   "variacao_holders": 0.6,
    "dias_variacao": 9
   },
   {
@@ -72133,11 +72399,11 @@
    "dias_sem_emissor": 28,
    "ultima_atividade": 1787424911,
    "dias_sem_atividade": 28,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "morrendo",
-   "motivo": "397 transactions in 30 days; website down.",
+   "motivo": "397 transactions in 30 days, but nothing in the last 28 days.",
    "holders_anterior": 151,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -73459,7 +73725,7 @@
    "dias_sem_emissor": null,
    "ultima_atividade": 1788631010,
    "dias_sem_atividade": 9,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "morrendo",
@@ -73736,40 +74002,6 @@
    "motivo": "Issuer blackholed; 92 holders, but no trading in the last 7 days."
   },
   {
-   "nome": "VBILL",
-   "categoria": "Token",
-   "emissor": "rvaNEC6XVooEXonJzfoNKZG4LAfrCCGAy",
-   "x": "",
-   "moeda": "VBILL",
-   "moeda_hex": "5642494C4C000000000000000000000000000000",
-   "site": "https://www.vaneck.com",
-   "holders": 1058,
-   "trustlines": 1062,
-   "volume_24h": 1.198,
-   "trocas_24h": 2,
-   "trocas_7d": 2,
-   "volume_7d": 1.198,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 7,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1787987041,
-   "dias_sem_atividade": 19,
-   "site_ok": false,
-   "medido_em": "2026-09-17T11:43:09+00:00",
-   "ledger_em": "2026-09-17T11:43:09+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 7 transactions in 30 days.",
-   "holders_anterior": 1058,
-   "medido_em_anterior": "2026-09-02T11:19:56+00:00",
-   "variacao_holders": 0.0,
-   "dias_variacao": 15
-  },
-  {
    "nome": "Strobe Finance",
    "categoria": "Token",
    "emissor": "rSTRboFbsVmvsF7ZAU2kuwwcVt5ZqYqez",
@@ -73838,40 +74070,6 @@
    "dias_variacao": 15
   },
   {
-   "nome": "LAMB",
-   "categoria": "Token",
-   "emissor": "rLAMBn9ApWKucdJaSBW9yxZxJQ9HBFE9k4",
-   "x": "",
-   "moeda": "LAMB",
-   "moeda_hex": "4C414D4200000000000000000000000000000000",
-   "site": "https://www.lamb276.org",
-   "holders": 1008,
-   "trustlines": 1010,
-   "volume_24h": 0,
-   "trocas_24h": 0,
-   "trocas_7d": 0,
-   "volume_7d": 0,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 1,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1787357480,
-   "dias_sem_atividade": 27,
-   "site_ok": false,
-   "medido_em": "2026-09-18T11:16:39+00:00",
-   "ledger_em": "2026-09-18T11:16:39+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 1 transactions in 30 days.",
-   "holders_anterior": 1008,
-   "medido_em_anterior": "2026-09-03T11:16:07+00:00",
-   "variacao_holders": 0.0,
-   "dias_variacao": 15
-  },
-  {
    "nome": "Chamillions",
    "categoria": "Token",
    "emissor": "r3DuEtGbKxbvkJ3evEEmveCNzw5JTUaHed",
@@ -73902,40 +74100,6 @@
    "motivo": "Website down and only 6 transactions in 30 days."
   },
   {
-   "nome": "BCHX",
-   "categoria": "Token",
-   "emissor": "r4L9Q861brng8jTDhk73VCDUgPfKxPcXwT",
-   "x": "https://x.com/BCHXofficial",
-   "moeda": "BCHX",
-   "moeda_hex": "4243485800000000000000000000000000000000",
-   "site": "bchx-web-testing.up.railway.app",
-   "holders": 591,
-   "trustlines": 609,
-   "volume_24h": 0.990202,
-   "trocas_24h": 1,
-   "trocas_7d": 1,
-   "volume_7d": 0.990202,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 2,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1788357931,
-   "dias_sem_atividade": 17,
-   "site_ok": false,
-   "medido_em": "2026-09-20T11:25:51+00:00",
-   "ledger_em": "2026-09-20T11:25:51+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 2 transactions in 30 days.",
-   "holders_anterior": 591,
-   "medido_em_anterior": "2026-09-05T10:37:46+00:00",
-   "variacao_holders": 0.0,
-   "dias_variacao": 15
-  },
-  {
    "nome": "staX",
    "categoria": "Token",
    "emissor": "rPoYd7PgpNkPyhmquUd8MzwHmJSy8nrHVV",
@@ -73962,68 +74126,6 @@
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "morto",
    "motivo": "Website down and only 7 transactions in 30 days."
-  },
-  {
-   "nome": "024A0003...",
-   "categoria": "Token",
-   "emissor": "rNYEzVuXGen2Rb7VwGi6oXuU3wVXuQKmZN",
-   "x": "",
-   "moeda": "024A0003...",
-   "moeda_hex": "024A00030418407C0000534543323032324E4654",
-   "site": "supereagle2022.secwarrior.club",
-   "holders": 297,
-   "trustlines": 406,
-   "volume_24h": 0,
-   "trocas_24h": 0,
-   "trocas_7d": 0,
-   "volume_7d": 0,
-   "blackholed": false,
-   "erro_leitura": null,
-   "tx_janela": 4,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1786783091,
-   "dias_sem_atividade": 23,
-   "site_ok": false,
-   "medido_em": "2026-09-07T12:37:01+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 4 transactions in 30 days."
-  },
-  {
-   "nome": "BELLY",
-   "categoria": "Token",
-   "emissor": "rEjdfxVXiaPghhJVXeYaLRhnGpEjV7VaQ4",
-   "x": "",
-   "moeda": "BELLY",
-   "moeda_hex": "42454C4C59000000000000000000000000000000",
-   "site": "bellytoken.univer.se",
-   "holders": 291,
-   "trustlines": 362,
-   "volume_24h": 0.010119,
-   "trocas_24h": 1,
-   "trocas_7d": 1,
-   "volume_7d": 0.010119,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 1,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1787438571,
-   "dias_sem_atividade": 28,
-   "site_ok": false,
-   "medido_em": "2026-09-19T23:25:18+00:00",
-   "ledger_em": "2026-09-19T23:25:18+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 1 transactions in 30 days.",
-   "holders_anterior": 290,
-   "medido_em_anterior": "2026-09-07T12:37:01+00:00",
-   "variacao_holders": 0.3,
-   "dias_variacao": 12
   },
   {
    "nome": "INDI",
@@ -74094,40 +74196,6 @@
    "dias_variacao": 10
   },
   {
-   "nome": "MoonRock",
-   "categoria": "Token",
-   "emissor": "rEptSPn856gzRapieyKkBowCdLU7xC6BgF",
-   "x": "",
-   "moeda": "MoonRock",
-   "moeda_hex": "4D6F6F6E526F636B000000000000000000000000",
-   "site": "astronaughties.space",
-   "holders": 139,
-   "trustlines": 171,
-   "volume_24h": 0.0267689999999999,
-   "trocas_24h": 2,
-   "trocas_7d": 2,
-   "volume_7d": 0.0267689999999999,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 9,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1789751842,
-   "dias_sem_atividade": 1,
-   "site_ok": false,
-   "medido_em": "2026-09-19T23:25:18+00:00",
-   "ledger_em": "2026-09-19T23:25:18+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 9 transactions in 30 days.",
-   "holders_anterior": 138,
-   "medido_em_anterior": "2026-09-12T10:48:38+00:00",
-   "variacao_holders": 0.7,
-   "dias_variacao": 8
-  },
-  {
    "nome": "PIVXL",
    "categoria": "Token",
    "emissor": "rnNreMABGZ1Su6MVWzq3yw4AKxs5VvARGk",
@@ -74188,40 +74256,6 @@
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
    "dias_variacao": 8
-  },
-  {
-   "nome": "IPCS",
-   "categoria": "Token",
-   "emissor": "rrnFmifxggqgz5brURqZAncXBHicXrtiPc",
-   "x": "",
-   "moeda": "IPCS",
-   "moeda_hex": "4950435300000000000000000000000000000000",
-   "site": "ipcs.xrp-business.com",
-   "holders": 119,
-   "trustlines": 218,
-   "volume_24h": 1.9999,
-   "trocas_24h": 1,
-   "trocas_7d": 1,
-   "volume_7d": 1.9999,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 2,
-   "tx_emissor": 0,
-   "tx_truncado": false,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1788481280,
-   "dias_sem_atividade": 9,
-   "site_ok": false,
-   "medido_em": "2026-09-13T18:17:54+00:00",
-   "ledger_em": "2026-09-13T18:17:54+00:00",
-   "situacao": "morto",
-   "motivo": "Website down and only 2 transactions in 30 days.",
-   "holders_anterior": 119,
-   "medido_em_anterior": "2026-09-13T11:57:03+00:00",
-   "variacao_holders": 0.0,
-   "dias_variacao": 1
   },
   {
    "nome": "LedgerPunks",
@@ -74511,7 +74545,7 @@
    "medido_em": "2026-09-16T11:36:09+00:00",
    "ledger_em": "2026-09-16T11:36:09+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-16: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1873,
    "medido_em_anterior": "2026-09-01T19:32:23+00:00",
    "variacao_holders": 0.0,
@@ -74579,7 +74613,7 @@
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-17: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1096,
    "medido_em_anterior": "2026-09-02T11:19:56+00:00",
    "variacao_holders": 0.0,
@@ -74613,7 +74647,7 @@
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-17: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1054,
    "medido_em_anterior": "2026-09-02T11:19:56+00:00",
    "variacao_holders": 0.0,
@@ -74647,7 +74681,7 @@
    "medido_em": "2026-09-17T11:43:09+00:00",
    "ledger_em": "2026-09-17T11:43:09+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-17: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1050,
    "medido_em_anterior": "2026-09-02T11:19:56+00:00",
    "variacao_holders": 0.0,
@@ -74681,7 +74715,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1039,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -74715,7 +74749,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1037,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.2,
@@ -74749,7 +74783,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1039,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -74783,7 +74817,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1038,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.1,
@@ -74817,7 +74851,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1036,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -74851,7 +74885,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1033,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -74885,7 +74919,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1028,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.1,
@@ -74919,7 +74953,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1026,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.1,
@@ -74953,7 +74987,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1027,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": -0.1,
@@ -74987,7 +75021,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1025,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75021,7 +75055,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1023,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.1,
@@ -75055,7 +75089,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1023,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": -0.1,
@@ -75089,7 +75123,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1021,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.1,
@@ -75123,7 +75157,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1021,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75157,7 +75191,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1021,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75191,7 +75225,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1013,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75225,7 +75259,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1001,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75259,7 +75293,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 1001,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75293,7 +75327,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 970,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75327,7 +75361,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 967,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75361,7 +75395,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 942,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75395,7 +75429,7 @@
    "medido_em": "2026-09-18T11:16:39+00:00",
    "ledger_em": "2026-09-18T11:16:39+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-18: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 940,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75429,7 +75463,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 929,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75463,7 +75497,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 927,
    "medido_em_anterior": "2026-09-03T11:16:07+00:00",
    "variacao_holders": 0.0,
@@ -75527,7 +75561,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Convera",
@@ -75557,7 +75591,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "DZBANK",
@@ -75587,7 +75621,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "BiLira Kripto",
@@ -75617,7 +75651,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Bitlo",
@@ -75647,7 +75681,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PaxMoneta",
@@ -75703,11 +75737,11 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "xwest",
@@ -75737,7 +75771,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "BoredPandas",
@@ -75767,7 +75801,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PFT",
@@ -75797,7 +75831,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "RippleUnion",
@@ -75857,7 +75891,7 @@
    "medido_em": "2026-09-19T11:00:56+00:00",
    "ledger_em": "2026-09-19T11:00:56+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Gold Gram",
@@ -75921,7 +75955,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 579,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -75955,7 +75989,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 571,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76057,7 +76091,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 522,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76091,7 +76125,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 499,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76125,7 +76159,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 488,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76159,7 +76193,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 480,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76193,7 +76227,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 475,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76227,7 +76261,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 470,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76261,7 +76295,7 @@
    "medido_em": "2026-09-20T11:25:51+00:00",
    "ledger_em": "2026-09-20T11:25:51+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-20: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 446,
    "medido_em_anterior": "2026-09-05T10:37:46+00:00",
    "variacao_holders": 0.0,
@@ -76321,7 +76355,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRHuskyAvax",
@@ -76349,7 +76383,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "JPY",
@@ -76405,7 +76439,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "SWISSX",
@@ -76433,7 +76467,7 @@
    "site_ok": true,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PIT",
@@ -76461,7 +76495,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRShihTzu",
@@ -76489,7 +76523,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "NUDES",
@@ -76517,7 +76551,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "RBJ",
@@ -76545,7 +76579,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PENG",
@@ -76573,7 +76607,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -76601,7 +76635,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "JKY",
@@ -76629,7 +76663,7 @@
    "site_ok": null,
    "medido_em": "2026-09-06T11:00:53+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-06: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRSharPei",
@@ -76657,7 +76691,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -76685,7 +76719,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "SHIBY",
@@ -76715,7 +76749,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 314,
    "medido_em_anterior": "2026-09-07T12:37:01+00:00",
    "variacao_holders": 0.0,
@@ -76747,7 +76781,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "RSC",
@@ -76775,7 +76809,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRBabyDogeCoin",
@@ -76803,7 +76837,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -76833,7 +76867,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 281,
    "medido_em_anterior": "2026-09-07T12:37:01+00:00",
    "variacao_holders": 0.0,
@@ -76865,7 +76899,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "HATER",
@@ -76893,7 +76927,7 @@
    "site_ok": null,
    "medido_em": "2026-09-07T12:37:01+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-07: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "USD",
@@ -76957,7 +76991,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 256,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -76991,7 +77025,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 253,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -77025,7 +77059,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 250,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -77093,7 +77127,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 246,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -77127,7 +77161,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 245,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -77161,7 +77195,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 242,
    "medido_em_anterior": "2026-09-08T11:21:00+00:00",
    "variacao_holders": 0.0,
@@ -77229,7 +77263,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 238,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": -0.4,
@@ -77263,7 +77297,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 232,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77297,7 +77331,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 231,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77331,7 +77365,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 230,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77363,7 +77397,7 @@
    "site_ok": null,
    "medido_em": "2026-09-09T11:26:14+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-09: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XDNT",
@@ -77393,7 +77427,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 228,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.9,
@@ -77425,7 +77459,7 @@
    "site_ok": null,
    "medido_em": "2026-09-09T11:26:14+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-09: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -77453,7 +77487,7 @@
    "site_ok": null,
    "medido_em": "2026-09-09T11:26:14+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-09: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "JKC",
@@ -77483,7 +77517,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 223,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77517,7 +77551,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 222,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77549,7 +77583,7 @@
    "site_ok": null,
    "medido_em": "2026-09-09T11:26:14+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-09: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -77579,7 +77613,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 219,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77613,7 +77647,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 215,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77647,7 +77681,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 212,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77681,7 +77715,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 206,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77715,7 +77749,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 205,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77749,7 +77783,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 204,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77845,7 +77879,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 202,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77879,7 +77913,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 201,
    "medido_em_anterior": "2026-09-09T11:26:14+00:00",
    "variacao_holders": 0.0,
@@ -77911,7 +77945,7 @@
    "site_ok": null,
    "medido_em": "2026-09-10T11:21:36+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-10: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PHOENIX",
@@ -77939,7 +77973,7 @@
    "site_ok": null,
    "medido_em": "2026-09-10T11:21:36+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-10: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -77967,41 +78001,7 @@
    "site_ok": null,
    "medido_em": "2026-09-10T11:21:36+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
-  },
-  {
-   "nome": "USD",
-   "categoria": "Token",
-   "emissor": "rLEsXccBGNR3UPuPu2hUXPjziKC3qKSBun",
-   "x": "",
-   "moeda": "USD",
-   "moeda_hex": "USD",
-   "site": "therocktrading.com",
-   "holders": 188,
-   "trustlines": 524,
-   "volume_24h": 0,
-   "trocas_24h": 0,
-   "trocas_7d": 0,
-   "volume_7d": 0,
-   "blackholed": false,
-   "erro_leitura": null,
-   "leitura_ok": true,
-   "tx_janela": 2400,
-   "tx_emissor": 0,
-   "tx_truncado": true,
-   "ultima_do_emissor": null,
-   "dias_sem_emissor": null,
-   "ultima_atividade": 1789412660,
-   "dias_sem_atividade": 5,
-   "site_ok": false,
-   "medido_em": "2026-09-19T23:25:18+00:00",
-   "ledger_em": "2026-09-19T23:25:18+00:00",
-   "situacao": "indeterminado",
-   "motivo": "2400+ transactions in 30 days; website down. No call is made here: this is a fiat/metal IOU - a gateway's promise to redeem value off the ledger - and this page measures ledger activity, not promises. The measurement stands; the verdict does not.",
-   "holders_anterior": 187,
-   "medido_em_anterior": "2026-09-10T11:21:36+00:00",
-   "variacao_holders": 0.5,
-   "dias_variacao": 10
+   "motivo": "Read on 2026-09-10: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -78031,7 +78031,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 182,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78065,7 +78065,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 182,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78099,7 +78099,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 181,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78133,7 +78133,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 176,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78167,7 +78167,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 173,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78201,7 +78201,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 170,
    "medido_em_anterior": "2026-09-10T11:21:36+00:00",
    "variacao_holders": 0.0,
@@ -78233,7 +78233,7 @@
    "site_ok": null,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-11: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -78263,7 +78263,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 169,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -78297,7 +78297,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 169,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": -0.6,
@@ -78331,7 +78331,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 167,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -78363,7 +78363,7 @@
    "site_ok": null,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-11: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "TRUST THE PROCESS",
@@ -78391,7 +78391,7 @@
    "site_ok": null,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-11: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "HOGE",
@@ -78421,7 +78421,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 163,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": -0.6,
@@ -78455,7 +78455,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 160,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -78489,7 +78489,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 157,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -78523,7 +78523,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 155,
    "medido_em_anterior": "2026-09-11T11:23:23+00:00",
    "variacao_holders": 0.0,
@@ -78555,7 +78555,7 @@
    "site_ok": null,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-11: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "eXRP",
@@ -78583,7 +78583,7 @@
    "site_ok": false,
    "medido_em": "2026-09-11T11:23:23+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-11: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "NZD",
@@ -78642,10 +78642,10 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Hippo Army",
@@ -78673,7 +78673,7 @@
    "site_ok": null,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "FLEA",
@@ -78703,7 +78703,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 137,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -78765,7 +78765,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 131,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -78799,7 +78799,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 131,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -78828,10 +78828,10 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": true,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "nftwest",
@@ -78861,7 +78861,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 129,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -78893,7 +78893,7 @@
    "site_ok": null,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Que",
@@ -78921,7 +78921,7 @@
    "site_ok": null,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "DOG",
@@ -78951,7 +78951,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 127,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -78985,7 +78985,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 125,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -79019,7 +79019,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 125,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -79053,7 +79053,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 125,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -79085,7 +79085,7 @@
    "site_ok": null,
    "medido_em": "2026-09-12T10:48:38+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-12: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -79115,7 +79115,7 @@
    "medido_em": "2026-09-19T23:25:18+00:00",
    "ledger_em": "2026-09-19T23:25:18+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-19: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 123,
    "medido_em_anterior": "2026-09-12T10:48:38+00:00",
    "variacao_holders": 0.0,
@@ -79149,7 +79149,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 117,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79183,7 +79183,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 116,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79217,7 +79217,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 115,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79251,7 +79251,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 115,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79285,7 +79285,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 115,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79319,7 +79319,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 115,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79353,7 +79353,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 114,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79387,7 +79387,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 114,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79421,7 +79421,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 114,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79455,7 +79455,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 113,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79489,7 +79489,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 113,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79523,7 +79523,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 112,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79557,7 +79557,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 112,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79591,7 +79591,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 111,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79625,7 +79625,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 111,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79659,7 +79659,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 110,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79693,7 +79693,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 110,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79727,7 +79727,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 110,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79761,7 +79761,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 110,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79795,7 +79795,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 110,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79829,7 +79829,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 108,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79863,7 +79863,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 108,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79897,7 +79897,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 108,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79931,7 +79931,7 @@
    "medido_em": "2026-09-13T18:17:54+00:00",
    "ledger_em": "2026-09-13T18:17:54+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run.",
+   "motivo": "Read on 2026-09-13: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here.",
    "holders_anterior": 107,
    "medido_em_anterior": "2026-09-13T11:57:03+00:00",
    "variacao_holders": 0.0,
@@ -79965,7 +79965,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "NUMBER1",
@@ -79995,7 +79995,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "BISON",
@@ -80025,7 +80025,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -80055,7 +80055,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "ASS",
@@ -80085,7 +80085,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "AVNT",
@@ -80115,7 +80115,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "CHUA",
@@ -80145,7 +80145,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "PAC",
@@ -80175,7 +80175,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "KnightWatcher",
@@ -80205,7 +80205,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "VTC",
@@ -80235,7 +80235,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "LSP",
@@ -80265,7 +80265,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GOLD",
@@ -80295,7 +80295,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "MEGUSTA",
@@ -80325,7 +80325,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GREMLY",
@@ -80355,7 +80355,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "FOOL",
@@ -80385,7 +80385,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "FAFO",
@@ -80415,7 +80415,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "KUJI",
@@ -80445,7 +80445,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XGHT",
@@ -80475,7 +80475,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRSamoyedCoin",
@@ -80505,7 +80505,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "mXRP",
@@ -80535,7 +80535,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Ethena",
@@ -80565,7 +80565,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GCB",
@@ -80595,7 +80595,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "MITCH",
@@ -80625,7 +80625,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "ASSDAQ",
@@ -80655,7 +80655,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "HLI Multi-Utility Token",
@@ -80681,11 +80681,11 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "TROLL",
@@ -80711,11 +80711,11 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "LILX",
@@ -80745,7 +80745,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "DADENG",
@@ -80775,7 +80775,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "RippleSingapore",
@@ -80835,7 +80835,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "BILDTK",
@@ -80865,7 +80865,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "HAWK",
@@ -80895,7 +80895,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "Hermes",
@@ -80925,7 +80925,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "GATOR",
@@ -80955,7 +80955,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "DUST",
@@ -80985,7 +80985,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "WOLF",
@@ -81015,7 +81015,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "LAD",
@@ -81045,7 +81045,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "CHEETAH",
@@ -81075,7 +81075,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "SIGMEW",
@@ -81101,11 +81101,11 @@
    "dias_sem_emissor": null,
    "ultima_atividade": null,
    "dias_sem_atividade": null,
-   "site_ok": false,
+   "site_ok": null,
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "RATO",
@@ -81135,7 +81135,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "TYLER",
@@ -81165,7 +81165,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "COPE",
@@ -81195,7 +81195,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "ZEUS",
@@ -81225,7 +81225,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "XRKangal",
@@ -81255,7 +81255,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "FWOG",
@@ -81285,7 +81285,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   },
   {
    "nome": "MFER",
@@ -81315,7 +81315,7 @@
    "medido_em": "2026-09-15T11:46:22+00:00",
    "ledger_em": "2026-09-15T11:46:22+00:00",
    "situacao": "indeterminado",
-   "motivo": "No ledger reading for this account yet; it is queued for the next run."
+   "motivo": "Read on 2026-09-15: no transaction reached this account in the 30-day window. This page reads 30 days, so how long the silence has lasted is not known - and silence alone is not a verdict here."
   }
  ]
 }
