@@ -624,6 +624,12 @@ def moeda_canonica(codigo: str | None) -> str:
     return codigo
 
 
+def eh_token_de_pool(moeda_hex: str | None) -> bool:
+    """Recibo de liquidez de AMM: codigo de 40 hex comecando em 03."""
+    h = str(moeda_hex or "")
+    return h.startswith("03") and len(h) == 40
+
+
 def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
     url = f"{XRPLMETA}/tokens?limit={limite}&sort_by=holders"
     if offset:
@@ -648,8 +654,7 @@ def descobrir_tokens(limite: int, offset: int = 0) -> list[dict]:
         # Token de pool de AMM (codigo comecando em 0x03) nao e projeto de
         # ninguem: e um recibo de liquidez. Listar isso como projeto - e pior,
         # acusar de moribundo - so mostra que o robo nao sabe o que esta lendo.
-        moeda_hex = str(_cava(t, "currency") or "")
-        if moeda_hex.startswith("03") and len(moeda_hex) == 40:
+        if eh_token_de_pool(_cava(t, "currency")):
             continue
         saida.append(
             {
@@ -1262,9 +1267,13 @@ def carregar_projetos(arquivo: str = "dados.json") -> list[dict]:
         return []
     try:
         with open(arquivo, encoding="utf-8") as f:
-            return json.load(f).get("projetos") or []
+            projetos = json.load(f).get("projetos") or []
     except (json.JSONDecodeError, OSError):
         return []
+    # O filtro de descobrir_tokens() so impede a ENTRADA de token de pool; a
+    # mesclagem preservava os que entraram antes dele existir, e seis ficaram
+    # na pagina ate 06/10/2026 - sem medicao, com veredito.
+    return [p for p in projetos if not eh_token_de_pool(p.get("moeda_hex"))]
 
 
 def fatia_do_dia(dia: dt.date | None = None) -> int:
