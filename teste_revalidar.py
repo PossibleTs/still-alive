@@ -90,6 +90,53 @@ def _remedir_com_no_recusando() -> tuple[str, dict]:
         coletor._rpc, coletor.site_responde, sys.argv = guardados
 
 
+def _remedir_token_quieto_ha_um_mes() -> dict:
+    """Pedido de remedicao num projeto em fading, com a rede confirmando o
+    silencio: a sequencia acumulada tem de sobreviver ao clique."""
+    import contextlib
+    import io as _io
+    import json
+    import os
+    import sys
+    import tempfile
+
+    import revalidar
+
+    pagina = {
+        "projetos": [{
+            "nome": "Token", "categoria": "Token", "emissor": "rTESTE",
+            "moeda": "TKN", "moeda_hex": "TKN", "holders": 3000,
+            "dias_sem_atividade": 400, "tx_janela": 0, "tx_emissor": 0,
+            "tx_truncado": False, "blackholed": True, "trocas_7d": 0,
+            "site_ok": True, "situacao": "morrendo", "motivo": "-",
+            "medido_em": "2026-01-01T00:00:00+00:00",
+            "sem_negociacao_desde": "2025-11-01T00:00:00+00:00",
+            "leituras_sem_negociacao": 6,
+        }],
+        "contagem": {},
+    }
+
+    def medir_quieto(p, agora):
+        p.update(leitura_ok=True, trocas_7d=0, blackholed=True, dias_sem_atividade=400)
+
+    guardados = revalidar._medir, sys.argv
+    antes_cwd = os.getcwd()
+    try:
+        with tempfile.TemporaryDirectory() as tmp:
+            os.chdir(tmp)
+            with open("dados.json", "w", encoding="utf-8") as f:
+                json.dump(pagina, f)
+            revalidar._medir = medir_quieto
+            sys.argv = ["revalidar.py", "--projeto", "rTESTE:TKN", "--autor", "dono"]
+            with contextlib.redirect_stdout(_io.StringIO()):
+                revalidar_main()
+            with open("dados.json", encoding="utf-8") as f:
+                return json.load(f)["projetos"][0]
+    finally:
+        os.chdir(antes_cwd)
+        revalidar._medir, sys.argv = guardados
+
+
 def main() -> None:
     print("Busca de projeto")
     lista = [
@@ -157,6 +204,13 @@ def main() -> None:
     checa("e o veredito publicado continua de pe",
           depois["projetos"][0]["situacao"] == "ativo")
     checa("a medicao boa nao foi apagada", depois["projetos"][0]["tx_janela"] == 900)
+
+    print("\nRemedicao de projeto em silencio prolongado")
+    p = _remedir_token_quieto_ha_um_mes()
+    checa("o clique nao apaga a sequencia de silencio",
+          p.get("sem_negociacao_desde") == "2025-11-01T00:00:00+00:00")
+    checa("a leitura nova entra na conta", p.get("leituras_sem_negociacao") == 7)
+    checa("e o veredito continua fading", p["situacao"] == "morrendo")
 
     print()
     if FALHAS:

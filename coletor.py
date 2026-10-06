@@ -697,6 +697,13 @@ LIMIARES = {
     "tx_ativo": 100,
     "tx_minimo": 10,
     "holders_minimo": 25,
+    # Semana sem negociacao, sozinha, e "quiet" - ausencia de sinal, nao
+    # veredito. So vira "fading" quando o silencio PERSISTE: leituras seguidas
+    # sem negociacao cobrindo pelo menos quieto_dias. Em 05/10/2026, 435
+    # projetos tinham caido de alive para fading em quinze dias por uma unica
+    # semana quieta - token blackholed com 9 mil detentores entre eles.
+    "quieto_dias": 30,
+    "quieto_leituras": 2,
 }
 
 
@@ -809,6 +816,50 @@ def _motivo_sem_leitura(p: dict) -> str:
     return "No ledger reading for this account yet; it is queued for the next run."
 
 
+def _dias_entre(de: str | None, ate: str | None) -> int | None:
+    if not (de and ate):
+        return None
+    try:
+        d1, d2 = dt.datetime.fromisoformat(de), dt.datetime.fromisoformat(ate)
+    except ValueError:
+        return None
+    return max(0, round((d2 - d1).total_seconds() / 86400))
+
+
+def _quieto_ou_morrendo(p: dict, motivo: str) -> tuple[str, str]:
+    """
+    Token com detentores e sem negociacao na janela da leitura.
+
+    Uma semana quieta e ausencia de sinal: ate token vivo de projeto pequeno
+    passa semanas sem ninguem negociar. "fading" so quando o silencio se
+    repete em leituras seguidas por quieto_dias - e o motivo diz quantas
+    leituras e desde quando, porque a persistencia e a prova. Conta-se do
+    dia da PRIMEIRA leitura quieta, nao da semana anterior a ela: entre duas
+    leituras da cauda (15 dias) pode ter havido negociacao que nenhuma das
+    duas janelas viu, e o piso honesto e o intervalo entre as leituras.
+    """
+    desde = p.get("sem_negociacao_desde")
+    leituras = p.get("leituras_sem_negociacao") or 0
+    dias = _dias_entre(desde, p.get("medido_em"))
+    if (
+        dias is not None
+        and leituras >= LIMIARES["quieto_leituras"]
+        and dias >= LIMIARES["quieto_dias"]
+    ):
+        return "morrendo", (
+            f"{motivo} Same in each of {leituras} readings since "
+            f"{desde[:10]} ({dias} days)."
+        )
+    if leituras >= 2 and dias is not None:
+        sequencia = f"Quiet in {leituras} readings in a row since {desde[:10]}"
+    else:
+        sequencia = "First quiet reading"
+    return "quieto", (
+        f"{motivo} {sequencia}; called fading only if this lasts "
+        f"{LIMIARES['quieto_dias']} days."
+    )
+
+
 def _avaliar(p: dict) -> tuple[str, str]:
     """A classificacao propriamente dita. Ver classificar() para a excecao."""
     dias = p.get("dias_sem_atividade")
@@ -868,7 +919,9 @@ def _avaliar(p: dict) -> tuple[str, str]:
                     f"Issuer blackholed with {holders} holders, but the catalogue "
                     "reported no trading data - nothing to judge on."
                 )
-            return "morrendo", f"Issuer blackholed; {holders} holders, but no trading {janela_trocas}."
+            return _quieto_ou_morrendo(
+                p, f"Issuer blackholed; {holders} holders, but no trading {janela_trocas}."
+            )
         return "parado", f"Issuer blackholed and only {holders} holders."
 
     if dias > LIMIARES["dias_morto"]:
@@ -893,11 +946,11 @@ def _avaliar(p: dict) -> tuple[str, str]:
                 f"parties and the issuer has signed nothing {desde}; no trading "
                 "data to conclude."
             )
-        return "morrendo", (
+        return _quieto_ou_morrendo(p, (
             f"All {tx_txt} transactions on the account come from third parties; "
             f"the issuer has signed nothing {desde}, and there was no trading "
             f"{janela_trocas}."
-        )
+        ))
 
 
     if dias > LIMIARES["dias_parado"] or tx < LIMIARES["tx_minimo"]:
@@ -943,6 +996,8 @@ def salvar_snapshot(projetos: list[dict]) -> None:
             "tx_emissor": p.get("tx_emissor"),
             "dias_sem_emissor": p.get("dias_sem_emissor"),
             "tx_truncado": p.get("tx_truncado"),
+            "sem_negociacao_desde": p.get("sem_negociacao_desde"),
+            "leituras_sem_negociacao": p.get("leituras_sem_negociacao"),
         }
         for p in projetos
     }
@@ -1014,8 +1069,43 @@ def mesclar(antigos: list[dict], novos: list[dict]) -> list[dict]:
             novo["medido_em_anterior"] = anterior["medido_em"]
         if novo.get("leitura_ok") is False and anterior:
             _herdar_ledger(novo, anterior)
+        _seguir_silencio(novo, anterior)
         por_chave[chave] = novo
     return list(por_chave.values())
+
+
+CAMPOS_DE_SILENCIO = ("sem_negociacao_desde", "leituras_sem_negociacao")
+
+
+def _seguir_silencio(novo: dict, anterior: dict | None) -> None:
+    """
+    Mantem a sequencia de leituras sem negociacao que _quieto_ou_morrendo()
+    usa como prova. Negociacao zera; ausencia de dado nao zera nem estende -
+    "nao sabemos" nao pode nem absolver nem acusar. Duas corridas no mesmo dia
+    (a de reparo, por exemplo) contam como uma leitura.
+    """
+    trocas = novo.get("trocas_7d")
+    if trocas is None:
+        trocas = novo.get("trocas_24h")
+    anterior = anterior or {}
+    if trocas is None:
+        for campo in CAMPOS_DE_SILENCIO:
+            if campo in anterior:
+                novo[campo] = anterior[campo]
+        return
+    if trocas > 0:
+        for campo in CAMPOS_DE_SILENCIO:
+            novo.pop(campo, None)
+        return
+    desde = anterior.get("sem_negociacao_desde")
+    if not desde:
+        novo["sem_negociacao_desde"] = novo.get("medido_em")
+        novo["leituras_sem_negociacao"] = 1
+        return
+    leituras = anterior.get("leituras_sem_negociacao") or 1
+    mesmo_dia = (anterior.get("medido_em") or "")[:10] == (novo.get("medido_em") or "")[:10]
+    novo["sem_negociacao_desde"] = desde
+    novo["leituras_sem_negociacao"] = leituras if mesmo_dia else leituras + 1
 
 
 # Sinais que vem do no, e so deles. Holders e negociacao nao entram: vem do
@@ -1319,7 +1409,7 @@ def main() -> None:
             p["situacao"], p["motivo"] = classificar(p)
         salvar_snapshot(projetos)
 
-    ordem = {"ativo": 0, "morrendo": 1, "parado": 2, "morto": 3, "indeterminado": 4}
+    ordem = {"ativo": 0, "quieto": 1, "morrendo": 2, "parado": 3, "morto": 4, "indeterminado": 5}
     projetos.sort(key=lambda p: (ordem.get(p["situacao"], 9), -(p.get("holders") or 0)))
 
     medidos_em = sorted(p["medido_em"] for p in projetos if p.get("medido_em"))

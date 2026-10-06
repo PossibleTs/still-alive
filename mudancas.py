@@ -27,9 +27,10 @@ import os
 PASTA = "historico"
 
 # Ordem de gravidade. Descer nessa lista e piorar.
-ESCALA = ["ativo", "morrendo", "parado", "morto"]
+ESCALA = ["ativo", "quieto", "morrendo", "parado", "morto"]
 ROTULO = {
     "ativo": "alive",
+    "quieto": "quiet",
     "morrendo": "fading",
     "parado": "dormant",
     "morto": "dead",
@@ -101,8 +102,10 @@ def main() -> None:
         print("(o snapshot antigo nao guardava a situacao; o primeiro"
               " comparativo util sai na proxima coleta)\n")
 
-    caiu = [t for t in trocas if piorou(t[2], t[3])]
-    subiu = [t for t in trocas if piorou(t[3], t[2])]
+    # Entrar em quiet nao e noticia em nenhuma direcao: e ausencia de sinal, e
+    # a pagina nao chama isso de declinio. Sair de quiet para fading, sim.
+    caiu = [t for t in trocas if t[3] != "quieto" and piorou(t[2], t[3])]
+    subiu = [t for t in trocas if t[3] != "quieto" and piorou(t[3], t[2])]
     novos = [k for k in novo if k not in velho]
     sairam = [k for k in velho if k not in novo]
 

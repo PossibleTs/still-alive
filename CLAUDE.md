@@ -134,6 +134,17 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
   mostra a janela junto do número (`+12.3% over 14d`), nunca a porcentagem
   sozinha. `mudancas.py` rankeia por taxa (%/dia), não pela porcentagem bruta,
   pelo mesmo motivo.
+- **Silêncio (`quieto`):** token com detentores e uma semana sem negociação é
+  `quieto` (Quiet), não `morrendo`: é ausência de sinal, não veredito. Vira
+  `morrendo` só quando o silêncio se repete em `quieto_leituras` leituras
+  seguidas cobrindo `quieto_dias` (hoje 2 e 30). A prova é a sequência
+  `sem_negociacao_desde` + `leituras_sem_negociacao`, mantida por
+  `_seguir_silencio()` dentro de `mesclar()`: negociação zera, falta de dado não
+  mexe, duas corridas no mesmo dia contam uma. Por isso **classificar sempre
+  depois de mesclar**, inclusive no `revalidar.py`. Motivo da regra: em
+  05/10/2026, 435 projetos tinham caído de alive para fading em quinze dias por
+  uma única semana quieta. `mudancas.py` não trata entrada em `quieto` como
+  notícia.
 - `historico/` é sagrado: é o que permite mostrar tendência. Nunca limpe.
 - **Este repositório é público.** Handoffs, anotações de infraestrutura e qualquer
   coisa que cite conta, endereço interno ou outro projeto ficam **fora** dele, em

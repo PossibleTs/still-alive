@@ -12,7 +12,7 @@ de verdade. Os numeros aqui sao INVENTADOS - servem so para testar o codigo.
 import datetime as dt
 import json
 
-from coletor import LIMIARES, classificar
+from coletor import LIMIARES, _seguir_silencio, classificar
 
 CASOS = [
     # (descricao esperada, projeto)
@@ -30,6 +30,13 @@ CASOS = [
         "nome": "Token blackholed quieto", "categoria": "Token", "emissor": "rTESTE3",
         "site": "", "holders": 900, "tx_janela": 0, "dias_sem_atividade": 1200,
         "site_ok": None, "blackholed": True, "trocas_24h": 0}),
+    ("blackholed quieto ha mais de um mes vira morrendo", {
+        "nome": "Token blackholed esquecido", "categoria": "Token", "emissor": "rTESTE11",
+        "site": "", "holders": 600, "tx_janela": 0, "dias_sem_atividade": 900,
+        "site_ok": None, "blackholed": True, "trocas_7d": 0,
+        "medido_em": "2026-10-05T12:00:00+00:00",
+        "sem_negociacao_desde": "2026-09-01T12:00:00+00:00",
+        "leituras_sem_negociacao": 5}),
     ("morrendo por volume baixo", {
         "nome": "Token minguando", "categoria": "Token", "emissor": "rTESTE4",
         "site": "exemplo.test", "holders": 400, "tx_janela": 60,
@@ -96,6 +103,47 @@ def conferir_regra_do_iou() -> None:
     print("  ok   veredito suprimido, medicao preservada, sem vazamento")
 
 
+def conferir_persistencia() -> None:
+    """Uma semana quieta e quiet; so o silencio que se repete por quieto_dias
+    vira fading. Negociacao zera a sequencia, falta de dado nao mexe nela, e
+    duas corridas no mesmo dia contam como uma leitura."""
+    base = {"nome": "T", "categoria": "Token", "emissor": "rQ", "holders": 900,
+            "tx_janela": 0, "dias_sem_atividade": 900, "blackholed": True}
+    falhas = []
+
+    def leitura(dia, trocas, anterior):
+        novo = dict(base, medido_em=f"2026-{dia}T12:00:00+00:00", trocas_7d=trocas)
+        _seguir_silencio(novo, anterior)
+        return novo
+
+    a = leitura("09-01", 0, None)
+    if classificar(a)[0] != "quieto":
+        falhas.append("primeira semana quieta ja virou veredito")
+    b = leitura("09-01", 0, a)  # corrida de reparo no mesmo dia
+    if b.get("leituras_sem_negociacao") != 1:
+        falhas.append("duas corridas no mesmo dia contaram como duas leituras")
+    c = leitura("09-16", None, b)  # catalogo sem dado
+    if c.get("sem_negociacao_desde") != a["medido_em"]:
+        falhas.append("falta de dado mexeu na sequencia")
+    d = leitura("09-20", 0, c)
+    if classificar(d)[0] != "quieto":
+        falhas.append("virou fading antes de quieto_dias")
+    e = leitura("10-01", 0, d)
+    if classificar(e)[0] != "morrendo":
+        falhas.append(f"silencio de 30 dias nao virou fading: {classificar(e)}")
+    elif "since 2026-09-01" not in classificar(e)[1]:
+        falhas.append("o motivo de fading nao diz desde quando")
+    f = leitura("10-02", 3, e)
+    if "sem_negociacao_desde" in f or classificar(f)[0] != "ativo":
+        falhas.append("negociacao nao zerou a sequencia")
+    print("\nPersistencia do silencio")
+    for x in falhas:
+        print("  FALHA", x)
+    if falhas:
+        raise SystemExit(1)
+    print("  ok   quiet primeiro, fading so com 30 dias, negociacao zera")
+
+
 def main() -> None:
     projetos = []
     print("Classificacao dos casos de teste:\n")
@@ -106,7 +154,7 @@ def main() -> None:
         print(f"  {situacao:14} <- {descricao}")
         print(f"                  {motivo}")
 
-    ordem = {"ativo": 0, "morrendo": 1, "parado": 2, "morto": 3, "indeterminado": 4}
+    ordem = {"ativo": 0, "quieto": 1, "morrendo": 2, "parado": 3, "morto": 4, "indeterminado": 5}
     projetos.sort(key=lambda p: (ordem[p["situacao"]], -(p.get("holders") or 0)))
 
     dados = {
@@ -121,6 +169,7 @@ def main() -> None:
     with open("dados_teste.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
     conferir_regra_do_iou()
+    conferir_persistencia()
     print("\nContagem:", dados["contagem"])
     print("dados_teste.json escrito (veja com: python gerar_site.py dados_teste.json).")
 

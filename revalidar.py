@@ -221,7 +221,6 @@ def main() -> None:
     alvo["medido_em"] = agora_iso
     alvo["ledger_em"] = agora_iso
     alvo.pop("releitura_falhou_em", None)
-    alvo["situacao"], alvo["motivo"] = classificar(alvo)
 
     pedidos.append(
         {
@@ -236,12 +235,17 @@ def main() -> None:
     _gravar_registro(pedidos)
 
     projetos = mesclar(projetos, [alvo])
+    # Classifica DEPOIS de mesclar: e mesclar() quem traz a sequencia de
+    # leituras sem negociacao. Antes dela, um projeto em fading voltava a
+    # "primeira leitura quieta" - e o botao de revalidar virava um jeito de
+    # apagar a prova acumulada com um clique.
+    alvo["situacao"], alvo["motivo"] = classificar(alvo)
     with open("dados.json", encoding="utf-8") as f:
         dados = json.load(f)
     dados["projetos"] = projetos
     dados["contagem"] = {
         s: sum(1 for p in projetos if p["situacao"] == s)
-        for s in ("ativo", "morrendo", "parado", "morto", "indeterminado")
+        for s in ("ativo", "quieto", "morrendo", "parado", "morto", "indeterminado")
     }
     with open("dados.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)

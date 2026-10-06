@@ -34,6 +34,7 @@ CF_BEACON_TOKEN = os.environ.get("CF_BEACON_TOKEN", "")
 
 SITUACOES = {
     "ativo": ("Alive", "Transacting on the ledger right now."),
+    "quieto": ("Quiet", "Holders still there, but nobody traded this week. No verdict yet."),
     "morrendo": ("Fading", "Still breathing, but the movement dropped off."),
     "parado": ("Dormant", "No meaningful activity for months."),
     "morto": ("Dead", "No sign of life and no website up."),
@@ -115,13 +116,13 @@ JS = """
 CSS = """
 :root{
   /* Escuro sempre. Quem olha esta pagina olha terminal e explorador de blocos
-     o dia inteiro, e e onde as cinco cores de situacao ficam mais separadas.
+     o dia inteiro, e e onde as seis cores de situacao ficam mais separadas.
      color-scheme:dark faz o navegador desenhar o campo de busca e a barra de
      rolagem escuros tambem - sem isso o input sai branco no meio da barra. */
   color-scheme:dark;
   --ground:#0B1113;--surface:#131B1D;--sunken:#0E1517;--ink:#E6EDEB;--muted:#93A4A3;
   --rule:#25302F;--accent:#5CC9AA;--amber:#DCA65C;--red:#E58472;--slate:#8D9C9E;
-  --violeta:#AC9DDB;
+  --violeta:#AC9DDB;--azul:#7FB2CF;
   --serif:"Fraunces",Georgia,serif;--sans:"Source Sans 3",system-ui,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
 }
@@ -183,6 +184,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
   border-radius:2px;padding:.4rem .7rem;display:grid;gap:.1rem .8rem;
   grid-template-columns:minmax(9rem,14rem) 1fr}
 .linha.ativo{border-left-color:var(--accent)}
+.linha.quieto{border-left-color:var(--azul)}
 .linha.morrendo{border-left-color:var(--amber)}
 .linha.parado{border-left-color:var(--slate)}
 .linha.morto{border-left-color:var(--red)}
@@ -194,6 +196,7 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
    (.ponto.ativo). So o descendente estava escrito, e por isso as bolinhas dos
    contadores saiam sem cor nenhuma - um vao em branco antes do numero. */
 .ativo .ponto,.ponto.ativo{background:var(--accent)}
+.quieto .ponto,.ponto.quieto{background:var(--azul)}
 .morrendo .ponto,.ponto.morrendo{background:var(--amber)}
 .parado .ponto,.ponto.parado{background:var(--slate)}
 .morto .ponto,.ponto.morto{background:var(--red)}
@@ -411,14 +414,14 @@ def gerar(dados: dict) -> str:
         f'<button class="selo" data-f="{k}" aria-pressed="false">'
         f'<span class="ponto {k}"></span><b>{contagem.get(k,0)}</b> '
         f'{SITUACOES[k][0].lower()}</button>'
-        for k in ("ativo", "morrendo", "parado", "morto", "indeterminado")
+        for k in ("ativo", "quieto", "morrendo", "parado", "morto", "indeterminado")
         if contagem.get(k)
     )
 
     repetidos = codigos_repetidos(dados["projetos"])
 
     grupos = []
-    for chave in ("ativo", "morrendo", "parado", "morto", "indeterminado"):
+    for chave in ("ativo", "quieto", "morrendo", "parado", "morto", "indeterminado"):
         do_grupo = [p for p in dados["projetos"] if p.get("situacao") == chave]
         if not do_grupo:
             continue
@@ -579,9 +582,13 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       days with no transaction; dormant above {lim.get('dias_parado','?')} days
       or fewer than {lim.get('tx_minimo','?')} transactions in the month; alive
       with at least {lim.get('tx_ativo','?')} transactions in the month and
-      movement in the last {lim.get('dias_ativo','?')} days. Accusing a project
-      of being quiet takes a whole week without trading, never a single quiet
-      day. These are arguable choices, and they are printed here on purpose.</p>
+      movement in the last {lim.get('dias_ativo','?')} days. A token with holders
+      and a whole week without trading is marked quiet, not fading: plenty of
+      live small projects go weeks without a trade. It is called fading only
+      when the silence repeats across at least {lim.get('quieto_leituras','?')}
+      readings in a row spanning {lim.get('quieto_dias','?')} days, and the
+      reason says how many readings and since when. These are arguable choices,
+      and they are printed here on purpose.</p>
       <p><strong>Checking it yourself.</strong> Every issuer address links to
       that account on <code>livenet.xrpl.org</code>, the XRPL Foundation's
       explorer, where you can see the same transactions this page counted. The
