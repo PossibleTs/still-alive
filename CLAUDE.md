@@ -45,9 +45,15 @@ revalidar.py          atende pedido de remedicao vindo de issue no GitHub
 institucional.py      descoberta continua de atores institucionais
                       ouve o fluxo de transacoes (WebSocket proprio, stdlib)
                       -> candidatos.json, para revisao humana
-gerar_site.py         dados.json -> site/index.html
+familias.py           origem dos detentores: quem criou os 60 maiores
+                      detentores de cada token -> origens.json (+ cache
+                      eterno em ativadores.json, no cache do Actions).
+                      So alive e quiet, rodizio de 30 dias.
+                      Vira NOTA na linha, nunca muda a situacao.
+gerar_site.py         dados.json (+ origens.json) -> site/index.html
 teste_local.py        exercita a classificacao de tokens, sem rede
 teste_corporativo.py  exercita a classificacao corporativa, sem rede
+teste_familias.py     exercita a regra da nota de origem, sem rede
 historico/            um snapshot JSON por dia, versionado
 .github/workflows/    roda tudo as 03:17 e publica no Pages
 ```
@@ -70,6 +76,8 @@ python gerar_site.py
 python institucional.py --minutos 10            # ouve a rede, junta candidatos
 python mudancas.py                              # o que mudou, pronto para post
 python mudancas.py --dias 1                     # so o dia anterior
+python familias.py                              # origem dos detentores, fatia do dia
+python teste_familias.py                        # regra da nota de origem
 ```
 
 Antes de publicar, defina `STILLALIVE_REPO` (ou `REPO` em `gerar_site.py`) com o
@@ -145,6 +153,31 @@ detentores vêm zerados e a classificação sai errada em silêncio. Confira uma
   05/10/2026, 435 projetos tinham caído de alive para fading em quinze dias por
   uma única semana quieta. `mudancas.py` não trata entrada em `quieto` como
   notícia.
+- **Origem dos detentores (`familias.py`):** a primeira coisa na página que
+  pode soar como acusação, por isso as travas: (1) nunca muda a situação, só
+  acrescenta selo e nota com a conta; (2) só com **os dois** limiares juntos
+  (`NOTA_MINIMO` 10 e `NOTA_FRACAO` 20%); (3) contas da lista pública de
+  exchanges do XRPSCAN nunca formam grupo — sem a lista, a leitura do dia não
+  roda; (4) pools AMM saem da amostra; (5) nó sem histórico completo = "não
+  sei", nunca uma ativadora inventada; (6) soma **famílias** (fábrica criada
+  por outra fábrica do token, ou irmãs do mesmo pai privado), um nível só.
+  Piloto de 09/10/2026, 300 tokens: serviços fora da lista nunca passaram de
+  9 detentores num mesmo token (daí o limiar 10), e uma rede de 5 fábricas
+  criou ~40 dos 60 maiores detentores de 9 tokens sem nenhuma passar de 11
+  sozinha (daí a soma por família). (7) A página **só fala de inflação de
+  contagem**: a família segura menos de `SELO_OFERTA_MAXIMA` (1%) da oferta.
+  Acima disso é concentração de posse — outro assunto — e a página se cala.
+  Caso que ensinou (10/10/2026): AUG, ouro tokenizado da Phi Wallet, com 59
+  dos 60 maiores detentores criados por uma carteira só — clientes segurando
+  36,6% da oferta, não poeira. Nunca resolva um caso assim tirando a nota à
+  mão: ajuste a regra, com teste, para que valha para todos. (8) Só tokens
+  alive e quiet entram no rodízio; leitura com mais de `VALIDADE_DIAS` sai da
+  página; a página declara a cobertura real (lidos de alvo), como faz com o
+  piso. (9) Fora do escopo, de propósito: "quem é este operador?" (fábricas,
+  redes, fluxo de retorno) mora em `../wallet-factories`, repositório próprio.
+  Aqui a pergunta continua sendo se o **projeto** está vivo.
+- **XRPL Meta, endpoint de detentores:** `/token/:t/holders` sai do ar em
+  01/01/2027; `familias.py` já usa `/v2/token/:t/holders`.
 - `historico/` é sagrado: é o que permite mostrar tendência. Nunca limpe.
 - **Este repositório é público.** Handoffs, anotações de infraestrutura e qualquer
   coisa que cite conta, endereço interno ou outro projeto ficam **fora** dele, em

@@ -19,6 +19,9 @@ import sys
 import unicodedata
 import urllib.parse
 
+import familias
+from coletor import chave_do_projeto
+
 # Endereco do repositorio, usado no canal de contestacao da pagina.
 REPO = os.environ.get("STILLALIVE_REPO", "")
 
@@ -217,6 +220,12 @@ h2{font-family:var(--serif);font-weight:600;font-size:1.15rem;margin:0}
   border-radius:2px;padding:0 .3em;white-space:nowrap;cursor:help}
 .cat{font-family:var(--mono);font-size:.62rem;color:var(--muted);text-transform:uppercase;
   letter-spacing:.06em;white-space:nowrap}
+/* Selo de origem: azul, nao ambar - e informacao sobre os detentores, nao
+   aviso de imitacao. A conta inteira vai no motivo, junto da classificacao. */
+.origem{font-family:var(--mono);font-size:.6rem;text-transform:uppercase;
+  letter-spacing:.06em;color:var(--azul);border:1px solid var(--azul);
+  border-radius:2px;padding:0 .3em;white-space:nowrap;cursor:help;margin-left:.3em}
+.motivo .nota-origem{display:block;margin-top:.25rem;color:var(--azul)}
 .sobe{color:var(--accent)}.desce{color:var(--red)}
 .quando{opacity:.7;font-style:italic}
 .pedir{margin-left:.5em;font-size:.95em;opacity:.6}
@@ -281,7 +290,7 @@ def codigos_repetidos(projetos: list[dict]) -> set:
     return {c for c, emissores in por_codigo.items() if len(emissores) > 1}
 
 
-def linha(p: dict, repetidos: set = frozenset()) -> str:
+def linha(p: dict, repetidos: set = frozenset(), origens: dict | None = None) -> str:
     e = html.escape
     nome = e(str(p.get("nome", "?")))
     site = p.get("site") or ""
@@ -393,16 +402,31 @@ def linha(p: dict, repetidos: set = frozenset()) -> str:
             f'shared code</span>'
         )
 
+    # Origem dos detentores: so inflacao de contagem (familias.nota), e nunca
+    # mexe na situacao. O selo chama o olho; a conta fica no motivo.
+    origem = ""
+    nota_origem = ""
+    n = None
+    # So onde a contagem pode enganar: alive e quiet, os mesmos que o rodizio
+    # le. Token unknown ou dead ja esta rotulado como sem pulso.
+    if p.get("emissor") and p.get("situacao") in familias.SITUACOES_LIDAS:
+        n = familias.nota((origens or {}).get(chave_do_projeto(p)), p["emissor"], dt.date.today())
+    if n:
+        origem = (
+            f' <span class="origem" title="{e(n["texto"])}">same-origin holders</span>'
+        )
+        nota_origem = f'<span class="nota-origem">{e(n["texto"])}</span>'
+
     situacao = e(p.get("situacao", "indeterminado"))
     return f"""      <article class="linha {situacao}" data-s="{situacao}" data-b="{e(busca)}">
-        <div class="nome"><span class="ponto"></span>{titulo}{aviso}</div>
-        <div class="motivo">{e(str(p.get('motivo','')))}{pedir}</div>
+        <div class="nome"><span class="ponto"></span>{titulo}{aviso}{origem}</div>
+        <div class="motivo">{e(str(p.get('motivo','')))}{pedir}{nota_origem}</div>
         <div class="id">{' · '.join(ident) if ident else '&nbsp;'}</div>
         <div class="metricas">{' · '.join(metricas) if metricas else '&nbsp;'}<span class="cat">{e(str(p.get('categoria','')))}</span></div>
       </article>"""
 
 
-def gerar(dados: dict) -> str:
+def gerar(dados: dict, origens: dict | None = None) -> str:
     gerado = dados.get("gerado_em", "")
     try:
         quando = dt.datetime.fromisoformat(gerado).strftime("%d/%m/%Y as %H:%M UTC")
@@ -434,7 +458,7 @@ def gerar(dados: dict) -> str:
             f"""    <section class="grupo" data-grupo="{chave}">
       <div class="cabeca"><h2>{titulo} <span class="conta" data-conta="{chave}">({len(do_grupo)})</span></h2><p>{sub}</p></div>
       <div class="lista">
-{chr(10).join(linha(p, repetidos) for p in do_grupo)}
+{chr(10).join(linha(p, repetidos, origens) for p in do_grupo)}
       </div>
       <p class="vazio" hidden>No project in this group matches the search.</p>
     </section>"""
@@ -478,6 +502,15 @@ def gerar(dados: dict) -> str:
 
     lim = dados.get("limiares", {})
     ciclo = dados.get("ciclo_dias", 15)
+    # Cobertura da origem dita na pagina, como o piso de detentores: anunciar
+    # o rodizio sem dizer que ainda esta na primeira volta seria prometer
+    # cobertura que nao existe.
+    alvo_origem = [
+        chave_do_projeto(p) for p in dados["projetos"]
+        if p.get("emissor") and p.get("situacao") in familias.SITUACOES_LIDAS
+    ]
+    origem_alvo = len(alvo_origem)
+    origem_lidos = sum(1 for k in alvo_origem if k in (origens or {}))
 
     # Canal de contestacao. Chamar projeto dos outros de morto sem oferecer
     # como reclamar e o jeito mais rapido de perder a comunidade. Preencha
@@ -608,6 +641,30 @@ header .sub{{margin:.15em 0 0;font-size:1.05rem;opacity:.75}}</style>
       nobody recognises — the address is the only identifier that does not
       depend on the project having registered somewhere. The counters at the top
       are filters too: click one. Hover a row, or tap it, to see the reasoning.</p>
+      <p><strong>Where the holders came from.</strong> Every account on the XRP
+      Ledger is created by a payment from another account. For the top
+      {familias.TOP} holders of each token, the robot looks up which account
+      created each one. A row gets the <span class="origem">same-origin
+      holders</span> mark when at least {familias.NOTA_MINIMO} of them, and at
+      least {int(familias.NOTA_FRACAO * 100)}% of those traced, were created by
+      the same wallet (or by wallets that wallet created) <em>and</em> together
+      hold less than {familias.SELO_OFERTA_MAXIMA:g}% of the supply. Wallets
+      that hold almost nothing add to the holder count without holding the
+      token — that is the one case where the holder count misleads, and the
+      only one this page speaks about. Many holders created by one wallet that
+      do hold real amounts is a different story (usually an app or custodian
+      opening a wallet for each user) and is not marked. Exchanges create
+      accounts for thousands of
+      unrelated customers, so wallets created by a known exchange or service
+      never form a group; AMM pools are left out, because a pool is an account
+      too. The mark does not prove wrongdoing — an app that creates wallets for
+      its users, or an airdrop, leaves exactly the same trace. What it does
+      show is that those holders did not arrive on their own. It never changes
+      a classification. Only alive and quiet tokens are read, on a
+      {familias.CICLO_DIAS}-day rotation that is still on its first pass:
+      {origem_lidos} of {origem_alvo} have been read so far, and a reading
+      older than {familias.VALIDADE_DIAS} days is dropped. The raw readings are
+      in <a href="origens.json">origens.json</a>.</p>
       <p><strong>Disagree?</strong> Every row has a "recheck" link that runs the
       measurement right now and answers with the numbers. It does not decide
       whether the cut-off is fair — that is a conversation, and you can start it
@@ -695,9 +752,13 @@ def main() -> None:
     origem = sys.argv[1] if len(sys.argv) > 1 else "dados.json"
     with open(origem, encoding="utf-8") as f:
         dados = json.load(f)
+    # Sem origens.json a pagina sai sem as notas de origem, nao quebra.
+    origens = familias.carregar_origens()
     os.makedirs("site", exist_ok=True)
     with open("site/index.html", "w", encoding="utf-8") as f:
-        f.write(gerar(dados))
+        f.write(gerar(dados, origens))
+    if origens:
+        familias.salvar_origens(origens, "site/origens.json")
     with open("site/dados.json", "w", encoding="utf-8") as f:
         json.dump(dados, f, ensure_ascii=False, indent=1)
     print(f"site/index.html escrito a partir de {origem} ({dados.get('total', 0)} projetos).")

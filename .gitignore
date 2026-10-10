@@ -7,3 +7,6 @@ HANDOFF*.md
 
 # Candidatos brutos, exigem revisao humana antes de entrar na pagina.
 candidatos.json
+
+# Cache de quem criou cada conta: mora no cache do GitHub Actions, nao no git.
+ativadores.json
